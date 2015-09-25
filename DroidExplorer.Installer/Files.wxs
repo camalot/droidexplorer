@@ -93,7 +93,6 @@
 						<File Source="$(var.OutputPath)Microsoft.WindowsAPICodePack.Shell.dll" Id="Microsoft.WindowsAPICodePack.Shell.dll" Name="Microsoft.WindowsAPICodePack.Shell.dll" />
 
 						<File Source="$(var.OutputPath)Vista.Controls.BreadcrumbBar.dll" Id="Vista.Controls.BreadcrumbBar.dll" Name="Vista.Controls.BreadcrumbBar.dll" />
-						<File Source="$(var.OutputPath)Vista.Controls.BreadcrumbBar.pdb" Id="Vista.Controls.BreadcrumbBar.pdb" Name="Vista.Controls.BreadcrumbBar.pdb" />
 
 						<File Source="$(var.OutputPath)Newtonsoft.Json.dll" Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" />
 						<File Source="$(var.OutputPath)Camalot.Common.dll" Id="Camalot.Common.dll" Name="Camalot.Common.dll" />

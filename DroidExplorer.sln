@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{10E51F
 	ProjectSection(SolutionItems) = preProject
 		Shared\AndroidSdkEULA.txt = Shared\AndroidSdkEULA.txt
 		Shared\connectionStrings.config = Shared\connectionStrings.config
+		Shared\droidexplorer.pfx = Shared\droidexplorer.pfx
 		Shared\license.rtf = Shared\license.rtf
 		Shared\License.txt = Shared\License.txt
 		Shared\SharedAssemblyInfo.cs = Shared\SharedAssemblyInfo.cs

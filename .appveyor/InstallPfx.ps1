@@ -11,6 +11,11 @@ Param (
    [string] $containerName
 );
 
+if(!(Test-Path -Path $pfx)) {
+	Write-Error "Unable to locate PFX file: $pfx";
+	return;
+}
+
 $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
 $cert.Import($pfx, $password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
 $exportPrivateKeyInformation = $true

@@ -130,6 +130,7 @@ ClientBin/
 *.dbmdl
 *.[Pp]ublish.xml
 *.pfx
+!droidexplorer.pfx
 *.publishsettings
 
 # RIA/Silverlight projects

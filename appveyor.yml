@@ -27,8 +27,10 @@ hosts:
 install:
 - choco install -y ilmerge
 - choco install -y wixtoolset
-- set PATH=C:\ProgramData\chocolatey\lib\ilmerge;%PATH%
+- choco install -y nuget.commandline
+- set PATH=C:\ProgramData\chocolatey\lib\ilmerge;C:\ProgramData\chocolatey\lib\NuGet.CommandLine\tools;%PATH%
 before_build:
+- cmd: nuget.exe restore
 - ps: .\.appveyor\appveyor.before-build.ps1
 build:
   project: .\.build\BuildDroidExplorer.msbuild

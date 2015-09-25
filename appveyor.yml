@@ -39,8 +39,11 @@ build:
   verbosity: detailed
 after_build:
 - ps: .\.appveyor\appveyor.after-build.ps1
+artifacts:
+- path: '**\bin\**\DroidExplorer*.setup.zip'
+  name: Zip
 before_deploy:
-- ps: .\.appveyor\appveyor.before-deployment.ps1
+- ps: .\.appveyor\appveyor-before-deployment.ps1
 deploy:
 - provider: GitHub
   tag: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)
@@ -53,4 +56,4 @@ deploy:
     branch: master
     CI_DEPLOY_GITHUB: True
 after_deploy:
-- ps: .\.appveyor\appveyor.after-deployment.ps1
+- ps: .\.appveyor\appveyor-after-deployment.ps1

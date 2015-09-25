@@ -18,7 +18,7 @@ environment:
   DE_PFX_KEY:
     secure: p7A0E/BfE4md3QJjC+BsCw==
   VS_PFX_KEY:
-    secure: vdbR/9WhTByVcNNg87aBsA==
+    secure: DJ/nrcNs85BUM9EiPfPWCr526TUk7WgPnN9PIAiI8lU=
   ProductionApiDomain: de.bit13.com
   DevelopmentApiDomain: de.bit13.local
   ReleaseMode: Setup
@@ -30,8 +30,10 @@ install:
 - choco install -y nuget.commandline
 - set PATH=C:\ProgramData\chocolatey\lib\ilmerge;C:\ProgramData\chocolatey\lib\NuGet.CommandLine\tools;%PATH%
 before_build:
-- cmd: nuget.exe restore
-- ps: .\.appveyor\appveyor.before-build.ps1
+- ps: >-
+    nuget.exe restore
+
+    .\.appveyor\appveyor.before-build.ps1
 build:
   project: .\.build\BuildDroidExplorer.msbuild
   verbosity: detailed

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+	<String Id="WixUIFinish">&amp;Next</String>
+
+	<String Id="AdroidBackupLocationDialogDescription">Select the location where you would like to save Android Device Backups.</String>
+	<String Id="AdroidBackupLocationDialogTitle">Android Device Backups</String>
+	<String Id="AdroidBackupLocationDialogFolderLabel">Android Device Backups Location:</String>
+
+	<String Id="AdroidSdkLocationDialogDescription">Select the location of your installed Android SDK.</String>
+	<String Id="AdroidSdkLocationDialogTitle">Android SDK Location</String>
+	<String Id="AdroidSdkLocationDialogFolderLabel">Android SDK Location:</String>
+
+</WixLocalization>

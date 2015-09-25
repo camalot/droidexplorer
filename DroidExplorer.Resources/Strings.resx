@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdbdInsecureAppUrl" xml:space="preserve">
+    <value>https://play.google.com/store/apps/details?id=eu.chainfire.adbd&amp;hl=en</value>
+    <comment>adbd Insecure lets you run adbd in root mode if your device is rooted.</comment>
+  </data>
+  <data name="AdbRootQAUrl" xml:space="preserve">
+    <value>http://android.stackexchange.com/a/96066/1951</value>
+  </data>
+  <data name="ApplicationWebsiteUrl" xml:space="preserve">
+    <value>http://de.bit13.com/</value>
+  </data>
+  <data name="Button_Add" xml:space="preserve">
+    <value>&amp;Add</value>
+  </data>
+  <data name="Button_Remove" xml:space="preserve">
+    <value>&amp;Remove</value>
+  </data>
+  <data name="CanAdbRootRegex" xml:space="preserve">
+    <value>(root access is disabled|cannot run as root)</value>
+  </data>
+  <data name="Configuration_PluginDirectoriesHeading" xml:space="preserve">
+    <value>Plugin Directories</value>
+  </data>
+  <data name="Configuration_SelectPluginDirectory" xml:space="preserve">
+    <value>Select plugins directory</value>
+  </data>
+  <data name="ErrorUncaughtCommands" xml:space="preserve">
+    <value>Restart Application|Close Application|Ask for Help|Report Bug</value>
+  </data>
+  <data name="ErrorUncaughtMessage" xml:space="preserve">
+    <value>What would you like to do?</value>
+  </data>
+  <data name="ErrorUncaughtTitle" xml:space="preserve">
+    <value>Error while running Droid Explorer</value>
+  </data>
+  <data name="ExtensionRegisterErrorMessage" xml:space="preserve">
+    <value>There was an error while registering Droid Explorer with explorer</value>
+  </data>
+  <data name="ExtensionRegisterErrorTitle" xml:space="preserve">
+    <value>Error during registration</value>
+  </data>
+  <data name="ExtensionRegisterSuccessMessage" xml:space="preserve">
+    <value>Droid Explorer has been successfully registered with explorer</value>
+  </data>
+  <data name="ExtensionRegisterSuccessTitle" xml:space="preserve">
+    <value>Droid Explorer Registered</value>
+  </data>
+  <data name="ExtensionUnregisterErrorMessage" xml:space="preserve">
+    <value>There was an error while unregistering Droid Explorer with explorer</value>
+  </data>
+  <data name="ExtensionUnregisterErrorTitle" xml:space="preserve">
+    <value>Error during deregistration</value>
+  </data>
+  <data name="ExtensionUnregisterSuccessMessage" xml:space="preserve">
+    <value>Droid Explorer has been successfully unregistered from explorer</value>
+  </data>
+  <data name="ExtensionUnregisterSuccessTitle" xml:space="preserve">
+    <value>Droid Explorer Unregistered</value>
+  </data>
+  <data name="HostDeviceRegex" xml:space="preserve">
+    <value>^([a-zA-Z0-9][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9]{0,1}\.)+([a-zA-Z]{1,6}|[a-zA-Z0-9-]{1,30}\.[a-zA-Z]{2,3})\:\d{1,}$</value>
+  </data>
+  <data name="IPDeviceRegex" xml:space="preserve">
+    <value>^([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\.([0-9]|[1-9][0-9]|1([0-9][0-9])|2([0-4][0-9]|5[0-5]))\:\d{1,}$</value>
+  </data>
+  <data name="IssueTrackerCreateUrl" xml:space="preserve">
+    <value>http://de.codeplex.com/WorkItem/Create.aspx</value>
+  </data>
+  <data name="Log4NetDroidExplorer" xml:space="preserve">
+    <value>DroidExplorer.DroidExplorer.log4net</value>
+  </data>
+  <data name="NoAdbRootCheckboxText" xml:space="preserve">
+    <value>Do not warn me of this in the future.</value>
+  </data>
+  <data name="NoAdbRootCommands" xml:space="preserve">
+    <value>Continue|Continue and show more information|Get Adbd Insecure and Exit|Exit</value>
+  </data>
+  <data name="NoAdbRootMessage" xml:space="preserve">
+    <value>Unable to gain root access for ADB. You may have limited access to folders on the device.
+
+You can use adbd Insecure by Chainfire to allow adb to run as root.</value>
+  </data>
+  <data name="NoAdbRootTitle" xml:space="preserve">
+    <value>Unable to gain ADB root access</value>
+  </data>
+  <data name="NoBuildToolsMessage" xml:space="preserve">
+    <value>Unable to identify a version for build tools.</value>
+  </data>
+  <data name="Pushbullet_ReleasesUrl" xml:space="preserve">
+    <value>https://www.pushbullet.com/channel?tag=droidexplorerreleases</value>
+  </data>
+  <data name="Pushbullet_SourceCommitUrl" xml:space="preserve">
+    <value>https://www.pushbullet.com/channel?tag=droidexplorersource</value>
+  </data>
+  <data name="SdkPathNotFoundMessage" xml:space="preserve">
+    <value>Unable to locate the android SDK tools, please reinstall the application.</value>
+  </data>
+  <data name="SplashConnectingDevice" xml:space="preserve">
+    <value>Connecting to device: {0}</value>
+    <comment>0 = device name</comment>
+  </data>
+  <data name="SplashGetDevices" xml:space="preserve">
+    <value>Getting Attached Devices</value>
+  </data>
+  <data name="SplashLocatingSdk" xml:space="preserve">
+    <value>Locating Android SDK Tools</value>
+  </data>
+  <data name="SplashRegisterDevice" xml:space="preserve">
+    <value>Registering Device: {0}</value>
+    <comment>0 = device</comment>
+  </data>
+  <data name="SplashRunAdbAsRoot" xml:space="preserve">
+    <value>Attempting to launch ADB as Root.</value>
+  </data>
+  <data name="SplashStartAdb" xml:space="preserve">
+    <value>Starting ADB Server</value>
+  </data>
+  <data name="SupportUrl" xml:space="preserve">
+    <value>http://android.stackexchange.com/questions/tagged/droidexplorer</value>
+  </data>
+  <data name="TwitterUrl" xml:space="preserve">
+    <value>http://twitter.com/abryanconrad</value>
+  </data>
+  <data name="DumpSysWindowScreenResolutionRegex" xml:space="preserve">
+    <value>init=(\d{3,})x(\d{3,})</value>
+  </data>
+  <data name="AddressBarPathNotFoundMessage" xml:space="preserve">
+    <value>Droid Explorer cannot find '{0}'. Check the spelling and try again.</value>
+    <comment>0 = path</comment>
+  </data>
+  <data name="DontateLink" xml:space="preserve">
+    <value>https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=8107155</value>
+  </data>
+  <data name="ProjectLink" xml:space="preserve">
+    <value>http://de.codeplex.com/</value>
+  </data>
+  <data name="TitleFormat" xml:space="preserve">
+    <value>Droid Explorer: {0}</value>
+  </data>
+  <data name="TransferFormCopyLabel" xml:space="preserve">
+    <value>Copying {0} item{2} ({1:fs})</value>
+  </data>
+  <data name="TransferFormFromLabel" xml:space="preserve">
+    <value>from {0} ({1}) to {2} ({3})</value>
+    <comment>0 = from device
+1 = from path
+2 = to device
+3 = 3 path</comment>
+  </data>
+  <data name="TransferFormItemsRemainingLabel" xml:space="preserve">
+    <value>Items remaining: {0}</value>
+  </data>
+  <data name="TransferFormTimeRemainingLabel" xml:space="preserve">
+    <value>Time remaining: about {0}</value>
+  </data>
+  <data name="TransferFormTitle" xml:space="preserve">
+    <value>Transfering File{0}...</value>
+  </data>
+  <data name="UninstallErrorGenericMessage" xml:space="preserve">
+    <value>There was an error when attempting to uninstall the package.</value>
+  </data>
+  <data name="UninstallErrorMessage" xml:space="preserve">
+    <value>There was an error while trying to uninstall {0}</value>
+  </data>
+  <data name="UninstallErrorNoPackageMessage" xml:space="preserve">
+    <value>Unable to determine the package name</value>
+  </data>
+  <data name="XdaThreadLink" xml:space="preserve">
+    <value>http://forum.xda-developers.com/showthread.php?t=558108</value>
+  </data>
+  <data name="FFMpegRotateArguments" xml:space="preserve">
+    <value>-i "{0}" -vf "{2}" -metadata:s:v rotate=0 -codec:v libx264 -codec:a copy "{1}" -y</value>
+    <comment>0 = inputFile
+1 = outputFile
+2 = arguments</comment>
+  </data>
+  <data name="UsbDebuggingHelpLink" xml:space="preserve">
+    <value>http://www.kingoapp.com/root-tutorials/how-to-enable-usb-debugging-mode-on-android.htm</value>
+  </data>
+  <data name="WifiAdbHelpLink" xml:space="preserve">
+    <value>https://play.google.com/store/apps/details?id=com.ttxapps.wifiadb</value>
+  </data>
+  <data name="ForwardListRegexPattern" xml:space="preserve">
+    <value>^([^\s]+)\s+(tcp|local|dev|jdwp)\:([^\s]+)\s(tcp|local|dev|jdwp)\:([^\s]+)$</value>
+  </data>
+  <data name="ForwardTypeRegexPattern" xml:space="preserve">
+    <value>^(tcp|local|dev|jdwp)\:(.*?)$</value>
+  </data>
+</root>

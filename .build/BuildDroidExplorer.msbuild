@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="Build">
+	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+	<Import Project="$(MSBuildProjectDirectory)\BootstrapperBuild.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\BootstrapperBuild.msbuild')" />
+	
+	<ItemGroup>
+		<ProjectsToBuild Include="$(CCNetWorkingDirectory)**\*.csproj" Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;$(CCNetWorkingDirectory)**\*Plugins*.csproj;$(CCNetWorkingDirectory)**\DroidExplorer.Bootstrapper.csproj;$(CCNetWorkingDirectory)**\*.Tests\*.csproj" />
+		<PluginProjectsToBuild Include="$(CCNetWorkingDirectory)**\*Plugins*.csproj" Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;" />
+		<BootstrapperProjectToBuild Include="$(CCNetWorkingDirectory)**\DroidExplorer.Bootstrapper.csproj"  Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;"/>
+		<InstallProjectToBuild Include="$(CCNetWorkingDirectory)**\*.wix.msbuild"  Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;"/>
+	</ItemGroup>
+
+	<Target Name="CopyLicenseFiles">
+		<CreateItem Include="$(CCNetWorkingDirectory)Shared\License.*">
+			<Output ItemName="LicenseFiles" TaskParameter="Include" />
+		</CreateItem>
+		<Copy SourceFiles="@(LicenseFiles)" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+	</Target>
+
+	<Target Name="CleanBuild">
+		<RemoveDir Directories="$(OutputPath)" Condition="Exists('$(OutputPath)')" ContinueOnError="true" />
+		<MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')" />
+		<MakeDir Directories="$(OutputPath)Plugins\" Condition="!Exists('$(OutputPath)Plugins\')" />
+		<MakeDir Directories="$(OutputPath)Data\" Condition="!Exists('$(OutputPath)Data\')" />
+	</Target>
+
+	<Target Name="CoreBuild">
+		<MSBuild Projects ="@(ProjectsToBuild)" ContinueOnError="false"
+						 Properties="$(MSBuildProperties)">
+			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+		</MSBuild>
+	</Target>
+
+	<Target Name="PluginBuild" DependsOnTargets="CoreBuild">
+		<MSBuild Projects ="@(PluginProjectsToBuild)" ContinueOnError="false"
+						 Properties="$(PluginMsBuildProperties)">
+			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+		</MSBuild>
+	</Target>
+
+	<!-- Zips releases up -->
+	<Target Name="ZipRelease" Condition=" '$(ReleaseMode)' == 'Binary' ">
+		<CreateItem Include="$(OutputPath)**\*.*" Exclude="$(OutputPath)*.zip;$(OutputPath)*.vshost.*;$(OutputPath)*.msi;$(OutputPath)*.wixpdb">
+			<Output ItemName="ZipFiles" TaskParameter="Include" />
+		</CreateItem>
+
+		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CCNetProject) version $(CCNetLabel)" Files="@(ZipFiles);@(AndroidTools)"
+				 WorkingDirectory="$(OutputPath)"
+				 ZipFileName="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).zip" ZipLevel="9" Flatten="False" />
+	</Target>
+
+	<Target Name="CopyDrivers">
+		<MakeDir Condition="!Exists('$(OutputPath)Drivers\')" Directories="$(OutputPath)Drivers\" />
+		<CreateItem Include="$(CCNetWorkingDirectory)3rdParty\driver\*.*;$(CCNetWorkingDirectory)3rdParty\driver\**\*.*">
+			<Output ItemName="DriverFiles" TaskParameter="Include" />
+		</CreateItem>
+		<Copy SourceFiles="@(DriverFiles)" DestinationFolder="$(OutputPath)Drivers\%(RecursiveDir)" ContinueOnError="false" />
+	</Target>
+
+	<Target Name="BuildInstall" DependsOnTargets="CopyLicenseFiles;AppConfigUpdate">
+		<MSBuild Projects="@(InstallProjectToBuild)"
+						 Properties="Configuration=$(Configuration);ReleasePlatform=$(ReleasePlatform);Platform=$(Platform);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CCNetProject=$(CCNetProject);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
+			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+		</MSBuild>
+	</Target>
+
+	<Target Name="ReleaseCleanup" DependsOnTargets="ZipRelease">
+		<CreateItem Include="$(OutputPath)*.*" Exclude="$(OutputPath)*.msi;$(OutputPath)*.zip;$(OutputPath)*.vshost.*">
+			<Output ItemName="Files" TaskParameter="Include"/>
+		</CreateItem>
+
+		<CreateItem Include="$(OutputPath)**\*" Exclude="$(OutputPath)*.*">
+			<Output ItemName="SubFiles" TaskParameter="Include"/>
+		</CreateItem>
+
+		<CreateItem Include="%(SubFiles.RelativeDir)" Exclude="%(OutputDirectory.FullPath)">
+			<Output TaskParameter="Include" ItemName="Folders"/>
+		</CreateItem>
+
+		<RemoveDir Directories="%(Folders.FullPath)" ContinueOnError="true" />
+		<Delete Files="@(Files);@(AndroidTools)" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="Build" DependsOnTargets="BuildPrep;PluginBuild;AppConfigUpdate;BuildInstall;ReleaseCleanup;BuildBootStrapper">
+	</Target>
+
+
+	<Target Name="AppConfigUpdate">
+		<Message Importance="high" Text="Setting Config cloud/@hostName values to '$(ProductionApiDomain)'" />
+		<CreateItem Include="$(OutputPath)\DroidExplorer.exe.config;$(OutputPath)\DroidExplorer.Runner.exe.config;$(OutputPath)\DroidExplorer.Service.exe.config">
+			<Output ItemName="ConfigFiles" TaskParameter="Include" />
+		</CreateItem>
+		<Attrib ReadOnly="false" Files="@(ConfigFiles)" />
+		<XmlUpdate
+			XmlFileName="$(OutputPath)\DroidExplorer.exe.config"
+			XPath="//configuration/droidexplorer/cloud/@hostName"
+			Value="$(ProductionApiDomain)" />
+		<XmlUpdate
+			XmlFileName="$(OutputPath)\DroidExplorer.Runner.exe.config"
+			XPath="//configuration/droidexplorer/cloud/@hostName"
+			Value="$(ProductionApiDomain)" />
+		<XmlUpdate
+			XmlFileName="$(OutputPath)\DroidExplorer.Service.exe.config"
+			XPath="//configuration/droidexplorer/cloud/@hostName"
+			Value="$(ProductionApiDomain)" />
+	</Target>
+</Project>

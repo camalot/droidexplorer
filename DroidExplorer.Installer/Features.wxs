@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<Feature Id="CompleteFeature"
+						 Title="Droid Explorer"
+						 Level="1"
+						 Display="expand"
+						 InstallDefault="local"
+						 TypicalDefault="install"
+						 AllowAdvertise="no"
+						 Absent="disallow"
+						 Description="The complete Droid Explorer install."
+						 ConfigurableDirectory="INSTALLDIR">
+			<ComponentRef Id="Empty" />
+
+			<Feature Id="MainFilesFeature"
+							 Title="Required Files"
+							 Absent="disallow"
+							 Display="hidden"
+							 Description="The main files required to run the application."
+							 Level="1">
+				<ComponentRef Id="Libaries" />
+				<ComponentRef Id="Log4NetLib"/>
+				<ComponentRef Id="ICSharpCodeSharpZipLib"/>
+				<ComponentRef Id="LogFiles"/>
+				<ComponentRef Id="ConfigFiles"/>
+				<ComponentRef Id="DroidExplorer" />
+				<ComponentRef Id="DataFiles"/>
+				<ComponentRef Id="ApkExtRegister86"/>
+				<ComponentRef Id="BackupExtRegister86"/>
+				<ComponentRef Id="BackupFolderFiles"/>
+				<ComponentRef Id="AssetsDir"/>
+				
+				<ComponentRef Id="InstallDirectoryRegister86" />
+				<!--ComponentRef Id="SdkInstallDirectoryRegister86"/-->
+			</Feature>
+
+			<Feature Id="CreateDesktopShortcut"
+							 Title="Desktop Shortcut"
+							 AllowAdvertise="no"
+							 Level="0"
+							 Description="Creates a shortcut on your desktop to launch Droid Explorer.">
+				<ComponentRef Id="DesktopShortcut"/>
+			</Feature>
+
+			<Feature Id="PluginsFeature"
+							 Level="1000"
+							 Title="Core Plugins"
+							 AllowAdvertise="no"
+							 InstallDefault="local"
+							 TypicalDefault="install"
+							 Description="Installs a set of core plugins. This includes the shell console, debug console, screenshot, screencast and more."
+							 >
+				
+				<ComponentRef Id="Runner"/>
+				<ComponentRef Id="RunnerToolsRootFiles"/>
+				<ComponentRef Id="SqliteBrowserToolFiles"/>
+				<ComponentRef Id="SqliteBrowserPlatformFiles"/>
+				<ComponentRef Id="PluginsFiles" />
+				<ComponentRef Id="Shortcuts"/>
+			</Feature>
+
+			<Feature Id="CloudStatsFeature" Level="1000"
+				 AllowAdvertise="no"
+				 TypicalDefault="install"
+				 InstallDefault="local"
+				 Title="Usage Statistics"
+				 Description="Provide some usage statistics to improve the application"
+							 >
+				<ComponentRef Id="CloudStatsRegistry" />
+			</Feature>
+
+			<Feature Id="ServiceFeature"
+							 Level="1000"
+							 AllowAdvertise="no"
+							 TypicalDefault="install"
+							 InstallDefault="local"
+							 Title="Device Monitor Service"
+							 Description="When installed, monitors for the device to be connected and displays the device in &quot;Computer&quot;"
+							 >
+				<ComponentRef Id="ServiceFiles" />
+			</Feature>
+
+			<Feature Id="ShellExtensionFeature"
+							 Level="1000"
+							 Title="APK Shell Extension"
+							 AllowAdvertise="no"
+							 InstallDefault="local"
+							 TypicalDefault="install"
+							 Description="Registers .apk files so they can be installed to a device right from explorer."
+							 >
+				<!--Condition Level="0" ><![CDATA[VersionNT64]]></Condition-->
+				<ComponentRef Id="ShellExtension" />
+				<ComponentRef Id="ShellExtRegister86"/>
+			</Feature>
+		</Feature>
+	</Fragment>
+</Wix>

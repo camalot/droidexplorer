@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="Publish">
+	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+	<Import Project="$(MSBuildProjectDirectory)\..\.build\MSBuild.Community.Tasks.Targets" Condition="'$(MSBuildCommunityTasksPath)' == ''"/>
+	
+	<PropertyGroup>
+		<PublishTarget>PublishTarget</PublishTarget>
+		<MSBuildDeploymentTasksPath>$(MSBuildProjectDirectory)\..\3rdParty\msbuildtasks\MSBuild.Deployment.Tasks.Targets</MSBuildDeploymentTasksPath>
+		<Project>de</Project>
+		<ProjectFriendlyName>Droid Explorer</ProjectFriendlyName>
+		<Status>Beta</Status>
+		<ReleaseTimeout>120</ReleaseTimeout>
+		<CanPublish Condition=" Exists('$(MSBuildDeploymentTasksPath)') ">True</CanPublish>
+		<CanPublish Condition=" '$(CanPublish)' == '' ">False</CanPublish>
+		<ReleaseName>$(ProjectFriendlyName) $(CCNetLabel) $(Status)</ReleaseName>
+		<DevelopmentPublishVersionInfoUrl>http://de.bit13.local/api/update/create/</DevelopmentPublishVersionInfoUrl>
+		<PublishVersionInfoUrl>http://de.bit13.com/api/update/create/</PublishVersionInfoUrl>
+		<ReleaseId>617264</ReleaseId>
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildDeploymentTasksPath)" Condition=" '$(CanPublish)' == 'True' "/>
+	
+  <Target Name="Publish" Condition=" '$(CanPublish)' == 'True' AND '$(PublishMode)' != 'None' " >
+		<Error Condition=" '$(PublishKey)' == '' " Code="500" Text="'PublishKey' property was not set." />
+		<Error Condition=" '$(PublishAppId)' == '' " Code="500" Text="'PublishAppId' property was not set." />
+
+		<ReadTextFile Files="$(MSBuildProjectDirectory)\publishchangelog.txt">
+			<Output TaskParameter="OutputText" PropertyName="ReleaseDescription" />
+		</ReadTextFile>
+
+		<CreateProperty Value="Id=$(ReleaseId)&amp;Version=$(CCNetLabel)&amp;Description=$(ReleaseDescription)&amp;Name=$(ReleaseName)&amp;url=http://$(Project).codeplex.com/releases/view/$(ReleaseId)">
+			<Output PropertyName="Content" TaskParameter="Value"/>
+		</CreateProperty>
+
+		<Message Text="Posting Content: $(Content)" Importance="High" />
+
+		<HttpPost Url="$(DevelopmentPublishVersionInfoUrl)?apikey=$(PublishKey)&amp;appid=$(PublishAppId)" Content="$(Content)" ContinueOnError="True" ContentType="application/x-www-form-urlencoded" />
+		<HttpPost Url="$(PublishVersionInfoUrl)?apikey=$(PublishKey)&amp;appid=$(PublishAppId)" Content="$(Content)" ContinueOnError="False" ContentType="application/x-www-form-urlencoded" Timeout="$(ReleaseTimeout)" />
+
+	</Target>
+
+</Project>

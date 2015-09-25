@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5" DefaultTargets="Build"  InitialTargets="Prebuild">
+	<Import Project="$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+
+	<PropertyGroup>
+		<!-- Always build the installer as x86 -->
+		<Platform Condition=" '$(Platform)' != 'x86' ">x86</Platform>
+		<ProductVersion>3.0</ProductVersion>
+		<ProjectGuid>{3d036348-8b1e-4ec3-aa20-d10bab9fecf6}</ProjectGuid>
+		<SchemaVersion>2.0</SchemaVersion>
+		<OutputType>Package</OutputType>
+		<OutputName>$(CCNetProject).$(CCNetLabel).$(ReleasePlatform)</OutputName>
+		<Cultures>en-US</Cultures>
+		<ProjectOutputGroups>Binaries;Symbols</ProjectOutputGroups>
+		<WixPath>$(WIX)</WixPath>
+		<WixToolPath Condition=" '$(WixToolPath)' == '' AND '$(WixPath)' != ''">$(WixPath)\bin\</WixToolPath>
+		<WixToolPath Condition=" '$(WixToolPath)' == '' AND '$(WixPath)' == '' ">$(PROGRAMFILES)\WiX Toolset v3.10\bin\</WixToolPath>
+
+		<WixUIDialogBmp>$(MSBuildProjectDirectory)\Resources\UIDialog.bmp</WixUIDialogBmp>
+		<WixUIBannerBmp>$(MSBuildProjectDirectory)\Resources\UIBanner.bmp</WixUIBannerBmp>
+		<WixVariables>$(WixVariables);WixUIDialogBmp=$(WixUIDialogBmp);WixUIBannerBmp=$(WixUIBannerBmp)</WixVariables>
+		
+		<LinkerAdditionalOptions>&quot;$(WixToolPath)difxapp_$(Platform).wixlib&quot; -loc custom_en-us.wxl</LinkerAdditionalOptions>
+		<IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+
+		<ProductName>Droid Explorer $(CCNetLabel) ($(ReleasePlatform))</ProductName>
+		<PlatformProgramFilesFolder Condition=" '$(ReleasePlatform)' == 'x64' ">ProgramFiles64Folder</PlatformProgramFilesFolder>
+		<PlatformProgramFilesFolder Condition=" '$(ReleasePlatform)' == 'x86' ">ProgramFilesFolder</PlatformProgramFilesFolder>
+
+		<!--RegistryPath Condition=" '$(ReleasePlatform)' == 'x86' ">SOFTWARE\DroidExplorer\InstallPath</RegistryPath-->
+		<!--RegistryPath Condition=" '$(ReleasePlatform)' == 'x64' ">SOFTWARE\WOW6432Node\DroidExplorer\InstallPath</RegistryPath-->
+		<RegistryPath>SOFTWARE\DroidExplorer\InstallPath</RegistryPath>
+
+		<!--RegistryPathCloudStats Condition=" '$(ReleasePlatform)' == 'x86' ">SOFTWARE\DroidExplorer</RegistryPathCloudStats>
+		<RegistryPathCloudStats Condition=" '$(ReleasePlatform)' == 'x64' ">SOFTWARE\WOW6432Node\DroidExplorer</RegistryPathCloudStats-->
+		<RegistryPathCloudStats>SOFTWARE\DroidExplorer</RegistryPathCloudStats>
+
+
+		<DefineConstants>RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CCNetProject=$(CCNetProject);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)</DefineConstants>
+		
+		<GetGUIDCode>
+			<![CDATA[
+				public static string ScriptMain() {
+						return Guid.NewGuid().ToString("D");
+				}
+				]]>
+		</GetGUIDCode>
+
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets" />
+	<Import Project="$(MSBuildProjectDirectory)\..\.build\MSBuild.Community.Tasks.Targets" Condition="'$(MSBuildCommunityTasksPath)' == ''"/>
+
+	<ItemGroup>
+		<SourceFiles Include="*.wxs;*.wxi"/>
+		<EmbeddedResourceFiles Include="*.wxl" />
+		<ProjectReference Include="..\DroidExplorer.WixCA\DroidExplorer.WixCA.csproj">
+			<DoNotHarvest>True</DoNotHarvest>
+			<Name>DroidExplorer.WixCA</Name>
+			<Project>{17cafc3a-9bfc-455a-93c2-da8f241edd8a}</Project>
+			<Private>True</Private>
+		</ProjectReference>
+	</ItemGroup>
+
+	<Target Name="Prebuild" DependsOnTargets="AddSourceFiles;AddContentFiles" Condition=" '$(CCNetLabel)' != '' ">
+		<MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')" />
+
+		<Script Language="C#" Code="$(GetGUIDCode)">
+			<Output TaskParameter="ReturnValue" PropertyName="ProductGuid" />
+		</Script>
+
+		<CreateProperty Value="$(DefineConstants);ProductGuid=$(ProductGuid)">
+			<Output
+					TaskParameter="Value"
+					PropertyName="DefineConstants" />
+		</CreateProperty>
+		
+	</Target>
+
+	<Target Name="AddSourceFiles">
+		<CreateItem Include="@(SourceFiles)" ContinueOnError="false">
+			<Output TaskParameter="Include" ItemName="Compile" />
+		</CreateItem>
+
+		<!--<CreateItem Include="@(EmbeddedResourceFiles)" ContinueOnError="false">
+			<Output TaskParameter="Include" ItemName="EmbeddedResource" />
+		</CreateItem>-->
+	</Target>
+
+	<Target Name="AddContentFiles">
+		<CreateItem Include="$(OutputPath)**"
+								ContinueOnError="false">
+			<Output TaskParameter="Include" ItemName="Content" />
+		</CreateItem>
+	</Target>
+
+	<ItemGroup>
+		<WixExtension Include="$(WixToolPath)WixUIExtension.dll;$(WixToolPath)WixNetFxExtension.dll;$(WixToolPath)WixUtilExtension.dll;$(WixToolPath)WixDifxAppExtension.dll" />
+	</ItemGroup>
+</Project>

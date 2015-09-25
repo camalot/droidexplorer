@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="0.2 1.0"
+      codebase="http://www.ekiii.net/android/"
+      href="desktopsmslauncher.jnlp">
+  <information>
+    <title>Desktop SMS</title>
+    <vendor>Gaëtan Eleouet</vendor>
+    <homepage href="http://sites.google.com/site/desktopsmsforandroid/en"/>
+    <description>DesktopSMS is an application for Android who allows you sending text messages (SMS) from your computer through your Android phone.</description>
+    <description kind="short">Send SMS Message from your PC</description>
+    <offline-allowed/>
+    <shortcut online="true"/>
+    <update check="timeout" policy="always"/>
+  </information>
+  <resources>
+    <j2se version="1.5+" href="http://java.sun.com/products/autodl/j2se"/>
+    <j2se version="1.5+"/>
+    <jar href="http://www.ekiii.net/android/MainGUI.jar" main="true" download="eager"/>
+  </resources>
+  <application-desc main-class="fr.galize.desktopsms.ui.MainGui"/>
+  <security>
+    <all-permissions/>
+  </security>
+</jnlp>

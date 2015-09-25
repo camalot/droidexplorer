@@ -1,0 +1,48 @@
+version: 0.10.{build}
+pull_requests:
+  do_not_increment_build_number: true
+skip_tags: true
+os: Visual Studio 2015
+environment:
+  CI_CODEPLEX_USER:
+    secure: HW7bjsXQTL9wIwYhN8WQpg==
+  CI_CODEPLEX_PASSWORD:
+    secure: 0VuHba1FogMX3TBBC2RJQw==
+  CI_PUBLISHAPPID:
+    secure: fe++r3+ZTiE0b0TPHw+6hF/dLxYoiDpDogcEJXmt4OAk58QbSqeLnSmP1a3OJcOL
+  CI_PUBLISHKEY:
+    secure: fe++r3+ZTiE0b0TPHw+6hF/dLxYoiDpDogcEJXmt4ODgxEvVyuhmXBXL4f8Cy+27
+  DE_PFX_KEY:
+    secure: p7A0E/BfE4md3QJjC+BsCw==
+  VS_PFX_KEY:
+    secure: vdbR/9WhTByVcNNg87aBsA==
+  ProductionApiDomain: de.bit13.com
+  DevelopmentApiDomain: de.bit13.local
+hosts:
+  de.bit13.local: 69.245.210.157
+install:
+- choco install -y ilmerge
+- choco install -y wixtoolset
+- set PATH=C:\ProgramData\chocolatey\lib\ilmerge;%PATH%
+before_build:
+- ps: .\.appveyor\appveyor.before-build.ps1
+build:
+  project: .\.build\BuildAll.msbuild
+  verbosity: minimal
+after_build:
+- ps: .\.appveyor\appveyor.after-build.ps1
+before_deploy:
+- ps: .\.appveyor\appveyor-before-deployment.ps1
+deploy:
+- provider: GitHub
+  tag: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)
+  release: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)
+  description: $(CI_RELEASE_DESCRIPTION)
+  auth_token:
+    secure: UEgy2H9zJKLi599QoO3qVf5BKFqloRQ246ez9cEgsfV3vooAUfVopMS9+IjRtArL
+  artifact: ReleaseZips
+  on:
+    branch: master
+    CI_DEPLOY_GITHUB: True
+after_deploy:
+- ps: .\.appveyor\appveyor-after-deployment.ps1

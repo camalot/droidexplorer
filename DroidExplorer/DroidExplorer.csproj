@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <Import Project="$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CFDAA14B-565F-4EC2-9AB8-86EEE59256E8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DroidExplorer</RootNamespace>
+    <AssemblyName>DroidExplorer</AssemblyName>
+    <StartupObject>DroidExplorer.Program</StartupObject>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(CCNetLabel)' == '' ">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CCNetLabel)\$(Platform)\</OutputPath>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('..\shared\droidexplorer.pfx')">
+    <!-- this stays false in this project because not all libraries are signed. -->
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="Exists('..\shared\droidexplorer.pfx')">..\shared\droidexplorer.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>PLATFORMX64;DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <Optimize>true</Optimize>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineConstants>PLATFORMX64;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DebugSymbols>true</DebugSymbols>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;PLATFORMX86</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;PLATFORMX86;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Camalot.Common, Version=1.0.5520.19655, Culture=neutral, PublicKeyToken=02434577b8ec3216, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Camalot.Common.1.0.5520.19655\lib\net45\Camalot.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
+      <HintPath>..\packages\WindowsAPICodePack-ShellExtensions.1.1.1\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq, Version=1.1.17511.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.1.1.0\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Vista.Controls.BreadcrumbBar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Vista.Controls.BreadcrumbBar.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyVersionInfo.cs" Condition="Exists('..\Shared\AssemblyVersionInfo.cs')">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActiveButtons\ActiveButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ActiveButtons\ActiveItemsImpl.cs" />
+    <Compile Include="ActiveButtons\ActiveMenu.cs" />
+    <Compile Include="ActiveButtons\ActiveMenuImpl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ActiveButtons\IActiveItem.cs" />
+    <Compile Include="ActiveButtons\IActiveItems.cs" />
+    <Compile Include="ActiveButtons\IActiveMenu.cs" />
+    <Compile Include="ActiveButtons\ListWithEvents.cs" />
+    <Compile Include="ActiveButtons\SpillOverMode.cs" />
+    <Compile Include="ActiveButtons\ThemedItem.cs" />
+    <Compile Include="ActiveButtons\Themes\Modern.cs" />
+    <Compile Include="ActiveButtons\Themes\Aero.cs" />
+    <Compile Include="ActiveButtons\Themes\ITheme.cs" />
+    <Compile Include="ActiveButtons\Themes\Standard.cs" />
+    <Compile Include="ActiveButtons\Themes\Styled.cs" />
+    <Compile Include="ActiveButtons\Themes\ThemeBase.cs" />
+    <Compile Include="ActiveButtons\Themes\ThemeFactory.cs" />
+    <Compile Include="ActiveButtons\Themes\XPStyle.cs" />
+    <Compile Include="ActiveButtons\Win32.cs" />
+    <Compile Include="ApkCacheBuilder.cs" />
+    <Compile Include="Components\ApkPackageListViewItem.cs" />
+    <Compile Include="Components\FileTypeHandlerToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\OpenWith.cs" />
+    <Compile Include="Components\TransferDataObject.cs" />
+    <Compile Include="ControlDelegateExtensions.cs" />
+    <Compile Include="Controls\CollapsibleSplitter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CommandButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CommandButton.designer.cs">
+      <DependentUpon>CommandButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\frmTaskDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\frmTaskDialog.designer.cs">
+      <DependentUpon>frmTaskDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageLinkToolStripItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TaskDialog.cs" />
+    <Compile Include="Controls\VistaActiveTaskDialog.cs" />
+    <Compile Include="Controls\VistaTaskDialog.cs" />
+    <Compile Include="Controls\VistaTaskDialogCommonDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\VistaTaskDialogNotificationArgs.cs" />
+    <Compile Include="Controls\VistaUnsafeNativeMethods.cs" />
+    <Compile Include="FileTypeActionHandlers.cs" />
+    <Compile Include="Plugins\PluginLoader.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\CollapsibleSplitter.resx">
+      <DependentUpon>CollapsibleSplitter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\frmTaskDialog.resx">
+      <DependentUpon>frmTaskDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PackageManagerForm.resx">
+      <DependentUpon>PackageManagerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SplashManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\AndroidUsbDriverHelper.cs" />
+    <Compile Include="Tools\ExplorerRegistrationUtility.cs" />
+    <Compile Include="UI\AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FileProperiesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FileProperiesDialog.Designer.cs">
+      <DependentUpon>FileProperiesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ISplashDialog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\ISplashHost.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PackageManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PackageManagerForm.Designer.cs">
+      <DependentUpon>PackageManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SplashDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SplashDialog.Designer.cs">
+      <DependentUpon>SplashDialog.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DroidExplorer.Configuration\DroidExplorer.Configuration.csproj">
+      <Project>{F9D5D7F0-20DA-4E43-B0AE-49AA687D29DB}</Project>
+      <Name>DroidExplorer.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Core.UI\DroidExplorer.Core.UI.csproj">
+      <Project>{F585DFB2-97F4-4058-9273-6C66A9DD66A9}</Project>
+      <Name>DroidExplorer.Core.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Core\DroidExplorer.Core.csproj">
+      <Project>{A2702A24-2882-4F3F-9B9F-959E51E30853}</Project>
+      <Name>DroidExplorer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Resources\DroidExplorer.Resources.csproj">
+      <Project>{E5061086-42E3-454E-BB7A-0200FEC2FD85}</Project>
+      <Name>DroidExplorer.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ActiveButtons\Readme.txt" />
+    <Content Include="app.ico">
+    </Content>
+    <Content Include="Data\speedtest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="DroidExplorer.log4net" />
+    <EmbeddedResource Include="UI\FileProperiesDialog.resx">
+      <DependentUpon>FileProperiesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SplashDialog.resx">
+      <DependentUpon>SplashDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Content Include="Data\OptionsTree.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DroidExplorer.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

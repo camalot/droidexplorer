@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<log4net>
+	<root>
+		<level value="ALL" />
+		<appender-ref ref="RollingLogFileAppender" />
+	</root>
+
+	<appender name="RollingLogFileAppender" type="log4net.Appender.RollingFileAppender,log4net">
+		<threshold value="INFO"/>
+		<!--param name="File" value="${APPDATA}\DroidExplorer\logs\DroidExplorer.Service"/-->
+		<param name="File" value="logs\DroidExplorer.Service"/>
+		<param name="AppendToFile" value="true"/>
+		<param name="RollingStyle" value="Date"/>
+		<param name="DatePattern" value="yyyyMMdd.'log'"/>
+		<param name="StaticLogFileName" value="false"/>
+		<layout type="log4net.Layout.PatternLayout,log4net">
+			<param name="ConversionPattern" value="%date 
+	[%-5thread] %-5level - %logger - %message%newline%exception"/>
+		</layout>
+	</appender>
+</log4net>

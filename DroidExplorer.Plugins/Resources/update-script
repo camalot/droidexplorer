@@ -1,0 +1,9 @@
+show_progress 0.1 0
+
+copy_dir PACKAGE:system SYSTEM:
+
+show_progress 0.2 0
+
+copy_dir PACKAGE:data DATA:
+
+show_progress 0.2 10

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<WixVariable Id='WixUILicenseRtf' Value='$(var.OutputPath)license.rtf' />
+		<Binary Id="DroidExplorerWixCA" SourceFile="$(var.DroidExplorer.WixCA.TargetDir)$(var.DroidExplorer.WixCA.TargetName).CA.dll" />
+		<Property Id="MSIUSEREALADMINDETECTION" Value="1" />
+		<Property Id="INSTALLLEVEL" Value="1000" />
+
+		<Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
+
+		<Icon SourceFile="$(var.OutputPath)DroidExplorer.exe" Id="AppIcon.exe" />
+		<Property Id="APPPRODUCTICON" Value="AppIcon.exe" />
+
+		<Property Id="ANDROIDUSBDRIVERVERSION" Value="0" />
+		<Property Id="ANDROIDUSBDRIVERSINSTALLED" Value="0" />
+
+		<Property Id="ANDROIDSDKVALID">0</Property>
+
+		<!-- this sets the USERPROFILE property to env.USERPROFILE -->
+		<SetProperty Id="USERPROFILE" Value="[%USERPROFILE]" Sequence="ui" Before="AppSearch"/>
+		<!--<SetProperty Id="INSTALLEDSDKDIR" Value="[%ANDROID_SDK_HOME]" Sequence="ui" Before="AppSearch"/>-->
+
+
+		<Property Id="ANDROIDBACKUPDIR" Value="TARGETANDROIDBACKUPDIR" />
+		<!--<Property Id="ANDROIDSDKDIR" Value="INSTALLEDSDKDIR" />-->
+
+		<!--<CustomAction Id="CA_GETANDROIDUSBDRIVERVERSION" BinaryKey="DroidExplorerWixCA" DllEntry="GetAndroidUsbDriverVersionWmi" Execute="immediate" />-->
+
+		<CustomAction Id="CA_SETUSERBACKUPDIRECTORYSYSTEMFOLDER" BinaryKey="DroidExplorerWixCA" DllEntry="SetUserBackupDirectorySystemFolder" Execute="immediate" />
+
+		<!--<CustomAction Id="VerifyAndroidSdkPathData" Return="check" Property="ANDROIDSDKVALID" Value="[ANDROIDSDKDIR];$(var.RegistryPath)" />-->
+		<CustomAction Id="VerifyAndroidSdkPath" BinaryKey="DroidExplorerWixCA" DllEntry="VerifyAndroidSdkPath" Execute="immediate" ></CustomAction>
+
+		<!--<CustomAction Id="GetLatestSdkPlatformData" Return="check" Property="ANDROIDLATESTPLATFORM" Value="[ANDROIDSDKDIR];$(var.RegistryPath)" />-->
+		<!--<CustomAction Id="GetLatestSdkPlatform" BinaryKey="DroidExplorerWixCA" DllEntry="GetLatestSdkPlatform" Execute="deferred" ></CustomAction>-->
+
+
+		<CustomAction Id="RegisterShellExtension.cmd" Property="RegisterShellExtension" Value="&quot;%windir%\Microsoft.NET\Framework\v2.0.50727\regasm.exe&quot; &quot;[INSTALLDIR]DroidExplorer.ShellExtension.dll&quot;" />
+		<CustomAction Id="RegisterShellExtension" Return="ignore" BinaryKey="WixCA" Execute="deferred" DllEntry="CAQuietExec" Impersonate="no" />
+
+		<CustomAction Id="UnregisterShellExtension.cmd" Property="UnregisterShellExtension" Value="&quot;%windir%\Microsoft.NET\Framework\v2.0.50727\regasm.exe&quot; &quot;DroidExplorer.ShellExtension.dll&quot; /unregister" />
+		<CustomAction Id="UnregisterShellExtension" Return="ignore" BinaryKey="WixCA" Execute="deferred" DllEntry="CAQuietExec" Impersonate="no" />
+
+	</Fragment>
+</Wix>

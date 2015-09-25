@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="Publish">
+	<Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' == ''"/>
+	<Import Project="$(MSBuildProjectDirectory)\AppVeyorProperties.msbuild" Condition="'$(AppVeyorProperties)' == ''"/>
+	<Import Project="$(MSBuildProjectDirectory)\..\.build\MSBuild.Community.Tasks.Targets" Condition="'$(MSBuildCommunityTasksPath)' == ''"/>
+	<Import Project="$(MSBuildProjectDirectory)\..\.build\MSBuild.Deployment.Tasks.Targets" />
+
+	<PropertyGroup>
+		<DeployCodePlex>DeployCodePlex</DeployCodePlex>
+		<CI_DEPLOY_CODEPLEX Condition=" '$(CI_DEPLOY_CODEPLEX)' == '' ">False</CI_DEPLOY_CODEPLEX>
+		<OutputPath Condition=" '$(OutputPath)' == '' ">$(APPVEYOR_BUILD_FOLDER)\bin\$(Condition)\$(Platform)</OutputPath>
+
+		<CodePlexProject>de</CodePlexProject>
+
+		<ProjectFriendlyName>Droid Explorer</ProjectFriendlyName>
+
+
+		<!--<IsDefaultRelease>$(CI_DEPLOY_CODEPLEX)</IsDefaultRelease>
+		<IsShown>$(CI_DEPLOY_CODEPLEX)</IsShown>-->
+
+		<!-- For Testing -->
+		<IsDefaultRelease>False</IsDefaultRelease>
+		<IsShown>False</IsShown>
+
+		<Status>Beta</Status>
+
+		<ReleaseTimeout>120</ReleaseTimeout>
+		<UploadTimeout>1200</UploadTimeout>
+
+		<ZipFile>$(OutputPath)$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip</ZipFile>
+		<ReleaseName>$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)</ReleaseName>
+
+	</PropertyGroup>
+
+
+	<Target Name="Publish" Condition=" Exists('$(ZipFile)')" >
+		<Error Condition=" '$(CPUsername)' == '' " Code="500" Text="'CPUsername' property was not set." />
+		<Error Condition=" '$(CPPassword)' == '' " Code="500" Text="'CPPassword' property was not set." />
+		<Error Condition=" '$(PublishKey)' == '' " Code="500" Text="'PublishKey' property was not set." />
+		<Error Condition=" '$(CI_DEPLOY_CODEPLEX)' == 'False' " Code="500" Text="'CI_DEPLOY_CODEPLEX' property is set to False" />
+		<CallTarget Targets="Upload" />
+	</Target>
+
+	<Target Name="CreateRelease" Condition=" Exists('$(ZipFile)') AND '$(Platform)' != 'x86'">
+		<Message Text="The platform is '$(Platform)' so creating the release is skipped." />
+	</Target>
+
+
+	<!-- This should only create the release when it is x86 -->
+	<!-- BUT! When we do x64, we need to know the Release Name -->
+	<Target Name="CreateRelease" Condition=" Exists('$(ZipFile)') AND '$(Platform)' == 'x86'">
+
+		<ReadTextFile Files="$(MSBuildProjectDirectory)\publishchangelog.txt">
+			<Output TaskParameter="OutputText" PropertyName="ReleaseDescription" />
+		</ReadTextFile>
+
+		<CodePlexCreateRelease
+		  ContinueOnError="True"
+			Project="$(CodePlexProject)"
+			Username="$(CPUsername)"
+			Password="$(CPPassword)"
+			ProjectFriendlyName="$(ProjectFriendlyName)"
+			Version="$(CI_BUILD_VERSION)"
+			Description="$(ReleaseDescription)"
+			IsDefaultRelease="$(IsDefaultRelease)"
+			IsShownToPublic="$(IsShown)"
+			TreatErrorsAsWarnings="True"
+			Status="$(Status)"
+			Timeout="$(ReleaseTimeout)">
+			<Output PropertyName="ReleaseName" TaskParameter="ReleaseName" />
+			<Output PropertyName="ReleaseId" TaskParameter="ReleaseId" />
+			<Output PropertyName="ReleaseUrl" TaskParameter="ReleaseUrl" />
+		</CodePlexCreateRelease>
+
+		<SetEnvironmentVariable Name="CodePlex_ReleaseName" Value="$(ReleaseName)" />
+		<SetEnvironmentVariable Name="CodePlex_ReleaseId" Value="$(ReleaseId)" />
+		<SetEnvironmentVariable Name="CodePlex_ReleaseUrl" Value="$(ReleaseUrl)" />
+
+	</Target>
+
+	<Target Name="CreateRelease" Condition=" '$(Platform)' == 'x64' ">
+		<Message Text="Running 'CreateRelease' for x64. Release should already exist on CodePlex." Importance="normal" />
+		<!-- All we need here is the Release Name, the Release ID, and the Release URL -->
+
+		<Error Condition=" '$(CodePlex_ReleaseName)' == '' " Text="Unable to get CodePlex_ReleaseName from Environment Variables" Code="500" />
+		<Error Condition=" '$(CodePlex_ReleaseId)' == '' " Text="Unable to get CodePlex_ReleaseId from Environment Variables" Code="500" />
+		<Error Condition=" '$(CodePlex_ReleaseUrl)' == '' " Text="Unable to get CodePlex_ReleaseUrl from Environment Variables" Code="500" />
+		
+		
+		<PropertyGroup>
+			<ReleaseName>$(CodePlex_ReleaseName)</ReleaseName>
+			<ReleaseId>$(CodePlex_ReleaseId)</ReleaseId>
+			<ReleaseUrl>$(CodePlex_ReleaseUrl)</ReleaseUrl>
+		</PropertyGroup>
+		
+		
+	</Target>
+
+	<Target Name="Upload" DependsOnTargets="CreateRelease" Condition=" Exists('$(ZipFile)')">
+		<CreateItem Include="$(ZipFile)">
+			<Output ItemName="CopyFiles" TaskParameter="Include"/>
+		</CreateItem>
+		<CodePlexUpload
+			Project="$(CodePlexProject)"
+			Username="$(CPUsername)"
+			Password="$(CPPassword)"
+			ReleaseName="$(ReleaseName)"
+			FileType="RuntimeBinary"
+			File="$(ZipFile)"
+			Timeout="$(UploadTimeout)" />
+	</Target>
+
+</Project>

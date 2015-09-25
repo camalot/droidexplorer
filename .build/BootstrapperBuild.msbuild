@@ -1,0 +1,76 @@
+﻿<?xml version="1.0"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="BuildBootStrapper">
+	<ItemGroup>
+		<BootstrapperProjectToBuild Include="$(CCNetWorkingDirectory)**\DroidExplorer.Bootstrapper.csproj" />
+		<InstallResources Include="$(CCNetWorkingDirectory)\DroidExplorer.Bootstrapper\Installs\*.*" />
+	</ItemGroup>
+	
+	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+	<Import Project="$(MSBuildExtendedTasksTargets)" Condition="Exists($(MSBuildExtendedTasksTargets))" />
+
+
+	<Target Name="InstallResourcesCleanup" DependsOnTargets="BootstrapperCleanup">
+		<CreateItem Include="$(CCNetWorkingDirectory)\DroidExplorer.Bootstrapper\Installs\*.*">
+			<Output ItemName="InstallResources" TaskParameter="Include"/>
+		</CreateItem>
+		<Delete Files="@(InstallResources)" />
+	</Target>
+
+	<Target Name="BootstrapperBuild" DependsOnTargets="AssemblyInfo;">
+
+		<CreateItem Include="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).msi">
+			<Output ItemName="InstallFile" TaskParameter="Include"/>
+		</CreateItem>
+
+		<Copy SourceFiles="@(InstallFile)" DestinationFiles="$(CCNetWorkingDirectory)\DroidExplorer.Bootstrapper\Installs\Setup.msi" />
+
+		<MSBuild Projects="@(BootstrapperProjectToBuild)" ContinueOnError="false"
+						 Properties="$(MSBuildProperties)">
+			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+		</MSBuild>
+
+		<CreateItem Include="$(OutputPath)*Bootstrapper.exe;$(OutputPath)*.dll">
+			<Output ItemName="InputAssemblies" TaskParameter="Include"/>
+		</CreateItem>
+		
+		<ILMerge
+			InputAssemblies="@(InputAssemblies)"
+			Version="$(CCNetLabel)"
+			TargetKind="Exe"
+			LogFile="$(OutputPath)\ilmerge.log"
+			OutputFile="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).exe"
+			DebugInfo="true" />
+
+		<CreateItem Include="$(OutputPath)\*.exe;$(OutputPath)\*.pdb;$(OutputPath)\*.dll" Exclude="$(OutputPath)\*.vshost.exe;$(OutputPath)\*.vshost.pdb;">
+			<Output ItemName="BootstrapperFiles" TaskParameter="Include"/>
+		</CreateItem>
+
+		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CCNetProject) version $(CCNetLabel) Installer"
+			Files="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).exe;$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).pdb" WorkingDirectory="$(OutputPath)"
+			ZipFileName="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).$(ReleaseMode).zip" Flatten="True" ZipLevel="9" />
+	</Target>
+
+	<Target Name="BootstrapperCleanup" DependsOnTargets="BootstrapperBuild">
+		<Delete Files="@(BootstrapperFiles)" ContinueOnError="true"/>
+		<CreateItem Include="$(OutputPath)\*.xml">
+			<Output ItemName="DocComments" TaskParameter="Include"/>
+		</CreateItem>
+		<Delete Files="@(DocComments)" ContinueOnError="true" />
+		<Delete Files="@(InstallFile)" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="BuildBootStrapper" DependsOnTargets="InstallResourcesCleanup">
+	</Target>
+
+	<Target Name="AssemblyInfo"
+					Outputs="$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.cs"
+					Condition=" '$(CCNetLabel)' != '' ">
+
+		<AssemblyInfo CodeLanguage="CS"
+									AssemblyFileVersion="$(CCNetLabel)"
+									AssemblyVersion="$(CCNetLabel)"
+									OutputFile="$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.cs"
+									/>
+	</Target>
+
+</Project>

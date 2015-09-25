@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <Import Project="$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' OR '$(Platform)' == 'AnyCPU' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == 'ia64' ">x64</Platform>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A2702A24-2882-4F3F-9B9F-959E51E30853}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DroidExplorer.Core</RootNamespace>
+    <AssemblyName>DroidExplorer.Core</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <SignAssembly Condition="Exists('..\shared\droidexplorer.pfx')">true</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="Exists('..\shared\droidexplorer.pfx')">..\shared\droidexplorer.pfx</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(CCNetLabel)' == '' ">
+    <DefineConstants>$(PlatformConstant);TRACE;DEBUG</DefineConstants>
+    <CCNetLabel Condition=" '$(CCNetLabel)' == '' ">0.5.0.1</CCNetLabel>
+    <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CCNetLabel)\$(Platform)\</OutputPath>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(PlatformConstant);DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineConstants>$(PlatformConstant);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;PLATFORMX86</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineConstants>$(PlatformConstant);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Camalot.Common, Version=1.0.5520.19655, Culture=neutral, PublicKeyToken=02434577b8ec3216, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Camalot.Common.1.0.5520.19655\lib\net45\Camalot.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\log4net.dll</HintPath>
+    </Reference>
+    <!--<Reference Include="Managed.AndroidDebugBridge, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=AMD64" Condition=" '$(Platform)' == 'x64' ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\madb\$(Platform)\Managed.AndroidDebugBridge.dll</HintPath>
+    </Reference>
+		
+		<Reference Include="Managed.AndroidDebugBridge, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=MSIL" Condition=" '$(Platform)' == 'x86' ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\madb\$(Platform)\Managed.AndroidDebugBridge.dll</HintPath>
+    </Reference>-->
+    <Reference Include="MoreLinq, Version=1.1.17511.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.1.1.0\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyVersionInfo.cs" Condition="Exists('..\Shared\AssemblyVersionInfo.cs')">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="AaptBrandingCommandResult.cs" />
+    <Compile Include="AaptPermissionsCommandResult.cs" />
+    <Compile Include="Adb\AdbHelper.cs" />
+    <Compile Include="Adb\AndroidDebugBridge.cs" />
+    <Compile Include="Adb\BatteryInfo.cs" />
+    <Compile Include="Adb\ColorData.cs" />
+    <Compile Include="Adb\Device.cs" />
+    <Compile Include="Adb\IDevice.cs" />
+    <Compile Include="Adb\Receivers\InstallReceiver.cs" />
+    <Compile Include="Adb\Receivers\IShellOutputReceiver.cs" />
+    <Compile Include="Adb\Receivers\MultiLineReceiver.cs" />
+    <Compile Include="Adb\Receivers\NullOutputReceiver.cs" />
+    <Compile Include="Adb\RawImage.cs" />
+    <Compile Include="Adb\Receivers\BatteryReceiver.cs" />
+    <Compile Include="Architecture.cs" />
+    <Compile Include="Arguments.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\PropertyList.cs" />
+    <Compile Include="CommandResult.cs" />
+    <Compile Include="CommandRunner.cs" />
+    <Compile Include="Components\AaptBrandingCommandResultComparer.cs" />
+    <Compile Include="Components\ApkFileInfoComparer.cs" />
+    <Compile Include="Components\FileSystemInfoComparer.cs" />
+    <Compile Include="Components\MarketApplicationNameComparer.cs" />
+    <Compile Include="Components\ProcessInfoEventArgs.cs" />
+    <Compile Include="Configuration\Handlers\CloudConfigurationSectionHandler.cs" />
+    <Compile Include="Configuration\ISettings.cs" />
+    <Compile Include="Configuration\ISystemStoredSettings.cs" />
+    <Compile Include="DeviceEventArgs.cs" />
+    <Compile Include="DeviceListCommandResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DeviceMonitor.cs" />
+    <Compile Include="DirectoryListCommandResult.cs" />
+    <Compile Include="Exceptions\AdbException.cs" />
+    <Compile Include="Exceptions\AdbRootException.cs" />
+    <Compile Include="Exceptions\CommandAbortingException.cs" />
+    <Compile Include="Exceptions\DeviceNotFoundException.cs" />
+    <Compile Include="Exceptions\InvalidRgb565FileFormatException.cs" />
+    <Compile Include="Exceptions\PermissionDeniedException.cs" />
+    <Compile Include="Exceptions\ShellCommandUnresponsiveException.cs" />
+    <Compile Include="Exceptions\UnknownOptionException.cs" />
+    <Compile Include="Exceptions\UnsupportedAdbVersionException.cs" />
+    <Compile Include="Extensions\FileSystemInfo.cs" />
+    <Compile Include="Extensions\Image.cs" />
+    <Compile Include="Extensions\ISynchronizeInvoke.cs" />
+    <Compile Include="Extensions\String.cs" />
+    <Compile Include="FolderManagment.cs" />
+    <Compile Include="GenericCommandResult.cs" />
+    <Compile Include="Extensions\Byte.cs" />
+    <Compile Include="Extensions\Enums.cs" />
+    <Compile Include="IntegerListCommandResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\ApkFileInfo.cs" />
+    <Compile Include="IO\Cache.cs" />
+    <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\File.cs" />
+    <Compile Include="IO\FileInfo.cs" />
+    <Compile Include="IO\FileSizeFormatProvider.cs" />
+    <Compile Include="IO\FileSystemInfo.cs" />
+    <Compile Include="IO\LinuxDirectoryInfo.cs" />
+    <Compile Include="IO\Path.cs" />
+    <Compile Include="IO\Permission.cs" />
+    <Compile Include="IO\ProcessInfo.cs" />
+    <Compile Include="IO\Rgb565.cs" />
+    <Compile Include="IO\ScreenResolution.cs" />
+    <Compile Include="IO\SymbolicLinkInfo.cs" />
+    <Compile Include="IO\ZipHelper.cs" />
+    <Compile Include="LinuxConsole.cs" />
+    <Compile Include="LogCatCommandResult.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Market\MarketApplication.cs" />
+    <Compile Include="Market\MarketSource.cs" />
+    <Compile Include="Net\AdbScanner.cs" />
+    <Compile Include="Net\Bits.cs" />
+    <Compile Include="Net\IPAddressRange.cs" />
+    <Compile Include="Net\ProxyInfo.cs" />
+    <Compile Include="Net\SoftwareRelease.cs" />
+    <Compile Include="Net\VersionCheckService.cs" />
+    <Compile Include="PackageManagerListPackagesCommandResult.cs" />
+    <Compile Include="Plugins\BasePlugin.cs" />
+    <Compile Include="Plugins\IFileTypeHandler.cs" />
+    <Compile Include="Plugins\IFileTypeIconHandler.cs" />
+    <Compile Include="Plugins\IPaidPlugin.cs" />
+    <Compile Include="Plugins\IPaidPluginExtendedInfo.cs" />
+    <Compile Include="Plugins\IPlugin.cs" />
+    <Compile Include="Plugins\IPluginExtendedInfo.cs" />
+    <Compile Include="Plugins\IPluginHost.cs" />
+    <Compile Include="Plugins\IPluginSettings.cs" />
+    <Compile Include="Plugins\IShellProcess.cs" />
+    <Compile Include="Plugins\PluginHelper.cs" />
+    <Compile Include="ProcessInfoListCommandResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyListCommandResult.cs" />
+    <Compile Include="ScreenCaptureCommandResult.cs" />
+    <Compile Include="TcpConnectCommandResult.cs" />
+    <Compile Include="Threading\ThreadPool.cs" />
+    <Compile Include="TransferCommandResult.cs" />
+    <Compile Include="Xml\Serialization\XmlSerializer.cs" />
+    <Compile Include="Xml\Serialization\XmlSerializerException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DroidExplorer.Resources\DroidExplorer.Resources.csproj">
+      <Project>{E5061086-42E3-454E-BB7A-0200FEC2FD85}</Project>
+      <Name>DroidExplorer.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

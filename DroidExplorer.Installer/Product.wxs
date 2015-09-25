@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product
+					 Id="$(var.ProductGuid)"
+					 Name="$(var.ProductName)"
+					 Language="1033"
+					 Version="$(var.CCNetLabel)"
+					 Manufacturer="Ryan Conrad"
+					 UpgradeCode="4F8871E6-5E8B-4667-B3A8-2CBB060199E3">
+
+		<Package
+			Description="$(var.ProductName)"
+			InstallerVersion="200"
+			Compressed="yes"
+			InstallPrivileges="elevated"
+			Platform="$(var.Platform)"
+		/>
+
+
+		<Upgrade Id="4F8871E6-5E8B-4667-B3A8-2CBB060199E3">
+			<UpgradeVersion Minimum="$(var.CCNetLabel)"
+											OnlyDetect="no"
+											IncludeMinimum="yes"
+											Property="NEWERVERSIONDETECTED" />
+
+			<UpgradeVersion Minimum="0.0.0.1"
+											OnlyDetect="no"
+											IncludeMinimum="yes"
+											Maximum="$(var.CCNetLabel)"
+											IncludeMaximum="no"
+											Property="OLDERVERSIONBEINGUPGRADED" />
+		</Upgrade>
+
+		<PropertyRef Id="NETFRAMEWORK35" />
+		<PropertyRef Id="NETFRAMEWORK35_SP_LEVEL" />
+		<!--Condition Message="This setup requires the .NET Framework 3.5 SP1 to be installed.">
+			<![CDATA[Installed OR (NETFRAMEWORK35_SP_LEVEL and NOT NETFRAMEWORK35_SP_LEVEL = "#0")]]>
+		</Condition-->
+
+
+		<Media Id="1" Cabinet="contents.cab" EmbedCab="yes" />
+		<Directory Id="TARGETDIR" Name="SourceDir"/>
+		<FeatureRef Id="CompleteFeature" />
+
+		<UIRef Id="WixUI_FeatureTree" />
+		<!--UI>
+			<Publish Dialog="CustomizeDlg" Control="Next" Event="DoAction" Value="VerifyAndroidSdkPath"><![CDATA[NOT Installed AND (&AndroidSdk <> 0 )]]></Publish>
+		</UI-->
+		<UI>
+
+			<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="AndroidBackupLocationDialog" Order="1">NOT Installed</Publish>
+			<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="AndroidBackupLocationDialog" Order="2">Installed</Publish>
+
+			<!--<Publish Dialog="AndroidSdkLocationDialog" Control="Back" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+			<Publish Dialog="AndroidSdkLocationDialog" Control="Next" Event="SetTargetPath" Value="[ANDROIDSDKDIR]" Order="1">1</Publish>
+			<Publish Dialog="AndroidSdkLocationDialog" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+			<Publish Dialog="AndroidSdkLocationDialog" Control="Next" Event="DoAction" Value="VerifyAndroidSdkPath" Order="3">NOT WIXUI_DONTVALIDATEPATH</Publish>
+			<Publish Dialog="AndroidSdkLocationDialog" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="4"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+			<Publish Dialog="AndroidSdkLocationDialog" Control="Next" Event="NewDialog" Value="AndroidBackupLocationDialog" Order="5">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+			<Publish Dialog="AndroidSdkLocationDialog" Control="ChangeFolder" Property="_BrowseProperty" Value="[ANDROIDSDKDIR]" Order="1">1</Publish>
+			<Publish Dialog="AndroidSdkLocationDialog" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>-->
+
+
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Back" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="SetTargetPath" Value="[ANDROIDBACKUPDIR]" Order="1">1</Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="ChangeFolder" Property="_BrowseProperty" Value="[ANDROIDBACKUPDIR]" Order="1">1</Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="AndroidBackupLocationDialog" Order="1">NOT Installed</Publish>
+
+		</UI>
+		<InstallExecuteSequence>
+			<RemoveExistingProducts Before="InstallInitialize" />
+
+			<!--<Custom Action="CA_GETANDROIDUSBDRIVERVERSION" After="InstallInitialize"><![CDATA[NOT VersionNT = 501 AND NOT VersionNT64 = 501]]></Custom>-->
+
+			<Custom Action="RegisterShellExtension.cmd" After="InstallFiles"><![CDATA[NOT Installed AND (&ShellExtensionFeature=3 OR &ShellExtensionFeature=4)]]></Custom>
+			<Custom Action="RegisterShellExtension" After="RegisterShellExtension.cmd"><![CDATA[NOT Installed AND (&ShellExtensionFeature=3 OR &ShellExtensionFeature=4)]]></Custom>
+
+			<Custom Action="CA_SETUSERBACKUPDIRECTORYSYSTEMFOLDER" After="RegisterShellExtension">NOT Installed</Custom>
+
+			<Custom Action="UnregisterShellExtension.cmd" After="InstallInitialize">Installed</Custom>
+			<Custom Action="UnregisterShellExtension" After="UnregisterShellExtension.cmd">Installed</Custom>
+		</InstallExecuteSequence>
+	</Product>
+</Wix>

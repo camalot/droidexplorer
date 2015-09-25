@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ia64'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ia64'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <Import Project="$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F585DFB2-97F4-4058-9273-6C66A9DD66A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DroidExplorer.Core.UI</RootNamespace>
+    <AssemblyName>DroidExplorer.Core.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SignAssembly Condition="Exists('..\shared\droidexplorer.pfx')">true</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="Exists('..\shared\droidexplorer.pfx')">..\shared\droidexplorer.pfx</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(CCNetLabel)' == '' ">
+    <DefineConstants>$(PlatformConstant);TRACE;DEBUG</DefineConstants>
+    <CCNetLabel Condition=" '$(CCNetLabel)' == '' ">0.5.0.1</CCNetLabel>
+    <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CCNetLabel)\$(Platform)\</OutputPath>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(PlatformConstant);DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineConstants>$(PlatformConstant);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(PlatformConstant);DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineConstants>$(PlatformConstant);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Camalot.Common, Version=1.0.5520.19655, Culture=neutral, PublicKeyToken=02434577b8ec3216, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Camalot.Common.1.0.5520.19655\lib\net45\Camalot.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\morelinq.1.1.0\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyVersionInfo.cs" Condition="Exists('..\Shared\AssemblyVersionInfo.cs')">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="AlphaImageList.cs" />
+    <Compile Include="CConsole\Api\Imports.cs" />
+    <Compile Include="CConsole\Api\ProcessEventArgs.cs" />
+    <Compile Include="CConsole\Api\ProcessInterface.cs" />
+    <Compile Include="CConsole\ConsoleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CConsole\ConsoleControl.Designer.cs">
+      <DependentUpon>ConsoleControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CConsole\ConsoleEventArgs.cs" />
+    <Compile Include="CConsole\ConsoleWriter.cs" />
+    <Compile Include="CConsole\DefaultConsoleOutputProcessor.cs" />
+    <Compile Include="CConsole\IConsoleColorHandler.cs" />
+    <Compile Include="CConsole\KeyMapping.cs" />
+    <Compile Include="CConsole\LinuxConsoleOutputProcessor.cs" />
+    <Compile Include="CConsole\DebugConsoleOutputProcessor.cs" />
+    <Compile Include="Combobox\ComboBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Combobox\IComboBoxExtender.cs" />
+    <Compile Include="Combobox\TreeViewComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\ApkFileSystemInfoListViewItem.cs" />
+    <Compile Include="Components\CpuProcessInfoListViewItem.cs" />
+    <Compile Include="Components\DirectoryTreeNode.cs" />
+    <Compile Include="Components\DummyTreeNode.cs" />
+    <Compile Include="Components\FileSystemInfoColumnSorter.cs" />
+    <Compile Include="Components\FileSystemInfoListViewItem.cs" />
+    <Compile Include="Components\FileSystemInfoModifiedColumnSorter.cs" />
+    <Compile Include="Components\FileSystemInfoSizeColumnSorter.cs" />
+    <Compile Include="Components\FileSystemInfoStringColumnSorter.cs" />
+    <Compile Include="Components\FileTypeFilterItem.cs" />
+    <Compile Include="Components\NumericColumnSorter.cs" />
+    <Compile Include="Components\ProcessInfoCpuColumnSorter.cs" />
+    <Compile Include="Components\ProcessInfoNameColumnSorter.cs" />
+    <Compile Include="Components\ProcessInfoPidColumnSorter.cs" />
+    <Compile Include="Components\ProcessInfoRssColumnSorter.cs" />
+    <Compile Include="Components\ProcessInfoThreadColumnSorter.cs" />
+    <Compile Include="Components\ProcessInfoUserColumnSorter.cs" />
+    <Compile Include="Components\ProcessInfoVssColumnSorter.cs" />
+    <Compile Include="Components\SortableColumnHeader.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\StringColumnSorter.cs" />
+    <Compile Include="CustomPlacesPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Delegates.cs" />
+    <Compile Include="Extensions\Control.cs" />
+    <Compile Include="GenericDeviceSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenericDeviceSelectionForm.Designer.cs">
+      <DependentUpon>GenericDeviceSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DirectoryTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exceptions\InstallUninstallException.cs" />
+    <Compile Include="FileDialogCustomPlace.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FileDialogCustomPlacesCollection.cs" />
+    <Compile Include="FileSystemListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FileDialog.Designer.cs">
+      <DependentUpon>FileDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InstallDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstallDialog.designer.cs">
+      <DependentUpon>InstallDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NativeApi.cs" />
+    <Compile Include="NewVersionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewVersionForm.Designer.cs">
+      <DependentUpon>NewVersionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenFileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginForm.designer.cs">
+      <DependentUpon>PluginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\ToolStrip\VisualStudio2012Renderer.cs" />
+    <Compile Include="SaveFileDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StickyWindow.cs" />
+    <Compile Include="SystemImageList.cs" />
+    <Compile Include="SystemImageListHost.cs" />
+    <Compile Include="TcpIpDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TcpIpDialog.Designer.cs">
+      <DependentUpon>TcpIpDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransferDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransferDialog.Designer.cs">
+      <DependentUpon>TransferDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GenericDeviceSelectionForm.resx">
+      <DependentUpon>GenericDeviceSelectionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileDialog.resx">
+      <DependentUpon>FileDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallDialog.resx">
+      <DependentUpon>InstallDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewVersionForm.resx">
+      <DependentUpon>NewVersionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PluginForm.resx">
+      <DependentUpon>PluginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TcpIpDialog.resx">
+      <DependentUpon>TcpIpDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransferDialog.resx">
+      <DependentUpon>TransferDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DroidExplorer.Configuration\DroidExplorer.Configuration.csproj">
+      <Project>{F9D5D7F0-20DA-4E43-B0AE-49AA687D29DB}</Project>
+      <Name>DroidExplorer.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Core\DroidExplorer.Core.csproj">
+      <Project>{A2702A24-2882-4F3F-9B9F-959E51E30853}</Project>
+      <Name>DroidExplorer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Resources\DroidExplorer.Resources.csproj">
+      <Project>{e5061086-42e3-454e-bb7a-0200fec2fd85}</Project>
+      <Name>DroidExplorer.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Resources\exec.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\execSL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folderClosed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folderClosed32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folderClosedSL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FolderClosedSL32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GearSL32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Generic_Document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GenericDocumentSL32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\library.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\library32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\txt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\txtSL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\package.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\package32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\device-32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\openHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\newfolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application_view_detail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoToParentFolderHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sdcard32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\database32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wifi.png" />
+    <None Include="Resources\Refresh.png" />
+    <None Include="Resources\sync.png" />
+    <None Include="Resources\htc-hero.png" />
+    <None Include="Resources\apk32.png" />
+    <None Include="Resources\apk16.png" />
+    <None Include="Resources\device48.png" />
+    <EmbeddedResource Include="CConsole\Console.ico" />
+    <EmbeddedResource Include="CConsole\ConsoleControl.bmp" />
+    <Content Include="Resources\installmain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

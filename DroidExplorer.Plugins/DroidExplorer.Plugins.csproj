@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ia64'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ia64'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <Import Project="$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' OR '$(Platform)' == 'AnyCPU' ">x86</Platform>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4D57B49B-3BAA-4D57-BB06-9698B2C6077A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DroidExplorer.Plugins</RootNamespace>
+    <AssemblyName>DroidExplorer.Plugins</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <CCNetArtifactDirectory Condition="'$(CCNetArtifactDirectory)' == ''">$(MSBuildProjectDirectory)\..\bin\</CCNetArtifactDirectory>
+    <CCNetLabel Condition="'$(CCNetLabel)' == ''">0.5.0.1</CCNetLabel>
+    <OutputPath>$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleaseMode)\$(ReleasePlatform)\Plugins\</OutputPath>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
+    <SignAssembly Condition="Exists('..\shared\droidexplorer.pfx')">true</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="Exists('..\shared\droidexplorer.pfx')">..\shared\droidexplorer.pfx</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(PlatformConstant);DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(PlatformConstant);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(PlatformConstant);DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(PlatformConstant);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Camalot.Common, Version=1.0.5520.19655, Culture=neutral, PublicKeyToken=02434577b8ec3216, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Camalot.Common.1.0.5520.19655\lib\net45\Camalot.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\morelinq.1.1.0\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=$(Platform)">
+      <HintPath>..\3rdParty\Sqlite\$(Platform)\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyVersionInfo.cs" Condition="Exists('..\Shared\AssemblyVersionInfo.cs')">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="ApkExtension.cs" />
+    <Compile Include="ApplicationBackup.cs" />
+    <Compile Include="BackupConverter.cs" />
+    <Compile Include="BackupPacker.cs" />
+    <None Include="app.config" />
+    <Compile Include="BatchInstaller.cs" />
+    <Compile Include="Configuration\ShellConfiguration.cs" />
+    <Compile Include="ConsoleCharacter.cs" />
+    <Compile Include="Contacts\Contact.cs" />
+    <Compile Include="Contacts\Phone.cs" />
+    <Compile Include="Data\ContactsDataProvider.cs" />
+    <Compile Include="Data\FacebookContactsDataProvider.cs" />
+    <Compile Include="Data\SqliteDataProvider.cs" />
+    <Compile Include="Data\SqliteHelper.cs" />
+    <Compile Include="AvdManager.cs" />
+    <Compile Include="PictureExtension.cs" />
+    <Compile Include="PortManager.cs" />
+    <Compile Include="Screencast.cs" />
+    <Compile Include="ScreenRecording.cs" />
+    <Compile Include="SDKManager.cs" />
+    <Compile Include="DdmsLaunch.cs" />
+    <Compile Include="DebugInfo.cs" />
+    <Compile Include="Delegates.cs" />
+    <Compile Include="DeviceBackup.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FlashRecovery.cs" />
+    <Compile Include="HierarchyViewer.cs" />
+    <Compile Include="Installer.cs" />
+    <Compile Include="LogCat.cs" />
+    <Compile Include="ProcessExplorer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Reboot.cs" />
+    <Compile Include="ScreenShot.cs" />
+    <Compile Include="ShellExtension\ApkShellExtension.cs" />
+    <Compile Include="Shell.cs" />
+    <Compile Include="SignPackage.cs" />
+    <Compile Include="SqliteExplorer.cs" />
+    <Compile Include="UI\BackupDeviceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BackupDeviceForm.Designer.cs">
+      <DependentUpon>BackupDeviceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\BatchInstallerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BatchInstallerDialog.Designer.cs">
+      <DependentUpon>BatchInstallerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DebugConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DebugConsole.Designer.cs">
+      <DependentUpon>DebugConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LogCatConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LogCatConsole.Designer.cs">
+      <DependentUpon>LogCatConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PackPasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PackPasswordForm.Designer.cs">
+      <DependentUpon>PackPasswordForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PortManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PortManagerForm.Designer.cs">
+      <DependentUpon>PortManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ProcessViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ProcessViewerForm.Designer.cs">
+      <DependentUpon>ProcessViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RebootForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RebootForm.Designer.cs">
+      <DependentUpon>RebootForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RestoreDeviceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\RestoreDeviceForm.Designer.cs">
+      <DependentUpon>RestoreDeviceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ScreenRecordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ScreenRecordForm.Designer.cs">
+      <DependentUpon>ScreenRecordForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ScreenShotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ScreenShotForm.designer.cs">
+      <DependentUpon>ScreenShotForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ShellConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ShellConsole.designer.cs">
+      <DependentUpon>ShellConsole.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DroidExplorer.Configuration\DroidExplorer.Configuration.csproj">
+      <Project>{F9D5D7F0-20DA-4E43-B0AE-49AA687D29DB}</Project>
+      <Name>DroidExplorer.Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Core.UI\DroidExplorer.Core.UI.csproj">
+      <Project>{F585DFB2-97F4-4058-9273-6C66A9DD66A9}</Project>
+      <Name>DroidExplorer.Core.UI</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Core\DroidExplorer.Core.csproj">
+      <Project>{A2702A24-2882-4F3F-9B9F-959E51E30853}</Project>
+      <Name>DroidExplorer.Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\DroidExplorer.Resources\DroidExplorer.Resources.csproj">
+      <Project>{E5061086-42E3-454E-BB7A-0200FEC2FD85}</Project>
+      <Name>DroidExplorer.Resources</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BackupDeviceForm.resx">
+      <DependentUpon>BackupDeviceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BatchInstallerDialog.resx">
+      <DependentUpon>BatchInstallerDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DebugConsole.resx">
+      <DependentUpon>DebugConsole.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LogCatConsole.resx">
+      <DependentUpon>LogCatConsole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PackPasswordForm.resx">
+      <DependentUpon>PackPasswordForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PortManagerForm.resx">
+      <DependentUpon>PortManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ProcessViewerForm.resx">
+      <DependentUpon>ProcessViewerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RebootForm.resx">
+      <DependentUpon>RebootForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\RestoreDeviceForm.resx">
+      <DependentUpon>RestoreDeviceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ScreenRecordForm.resx">
+      <DependentUpon>ScreenRecordForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\androidscreencast.jnlp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.ico" />
+    <EmbeddedResource Include="Data\BareBonesBackup.config" />
+    <EmbeddedResource Include="UI\ScreenShotForm.resx">
+      <DependentUpon>ScreenShotForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ShellConsole.resx">
+      <DependentUpon>ShellConsole.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Resources\BareBonesBackup.config" />
+    <None Include="Resources\bart_de.sh" />
+    <None Include="Resources\desktopsmslauncher.jnlp" />
+    <None Include="Resources\SignApk.zip" />
+    <None Include="Resources\update-script" />
+    <None Include="Resources\appengine.png" />
+    <None Include="Resources\andapk.png" />
+    <None Include="Resources\Bart.png" />
+    <None Include="Resources\bartqr.png" />
+    <None Include="Resources\backup.png" />
+    <Content Include="Resources\CascadeWindowsHS.png" />
+    <None Include="Resources\contacts.png" />
+    <Content Include="Resources\Debug.png" />
+    <Content Include="Resources\debugicon.png" />
+    <None Include="Resources\DeleteHS.png" />
+    <Content Include="Resources\desktopSMS.png" />
+    <Content Include="Resources\device-16x16.png" />
+    <Content Include="Resources\error.png" />
+    <None Include="Resources\facebook.png" />
+    <None Include="Resources\flash_icon.png" />
+    <None Include="Resources\flash2.png" />
+    <Content Include="Resources\info.png" />
+    <None Include="Resources\lock.png" />
+    <None Include="Resources\logcat.png" />
+    <None Include="Resources\saveHS.png" />
+    <Content Include="Resources\screencast.png" />
+    <Content Include="Resources\warn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

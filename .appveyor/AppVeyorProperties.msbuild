@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="Build">
+	<PropertyGroup>
+		<AppVeyorProperties>AppVeyorProperties</AppVeyorProperties>
+		
+		<APPVEYOR_BUILD_VERSION Condition=" '$(APPVEYOR_BUILD_VERSION)' == ''"></APPVEYOR_BUILD_VERSION>
+
+		<APPVEYOR Condition=" '$(APPVEYOR)' == '' ">False</APPVEYOR>
+		<CI Condition=" '$(CI)' == '' ">False</CI>
+		<APPVEYOR_PROJECT_NAME Condition=" '$(APPVEYOR_PROJECT_NAME)' == '' ">DroidExplorer</APPVEYOR_PROJECT_NAME>
+		<APPVEYOR_PROJECT_SLUG Condition=" '$(APPVEYOR_PROJECT_SLUG)' == '' ">droidexplorer</APPVEYOR_PROJECT_SLUG>
+		<APPVEYOR_ACCOUNT_NAME Condition=" '$(APPVEYOR_ACCOUNT_NAME)' == '' ">camalot</APPVEYOR_ACCOUNT_NAME>
+		<APPVEYOR_BUILD_FOLDER Condition=" '$(APPVEYOR_BUILD_FOLDER)' == ''"></APPVEYOR_BUILD_FOLDER>
+		<APPVEYOR_BUILD_ID Condition=" '$(APPVEYOR_BUILD_ID)' == '' "></APPVEYOR_BUILD_ID>
+		<APPVEYOR_BUILD_NUMBER Condition=" '$(APPVEYOR_BUILD_NUMBER)' == ''" >0</APPVEYOR_BUILD_NUMBER>
+		<APPVEYOR_REPO_PROVIDER Condition=" '$(APPVEYOR_REPO_PROVIDER)' == ''">UNKNOWN</APPVEYOR_REPO_PROVIDER>
+		<APPVEYOR_REPO_SCM Condition=" '$(APPVEYOR_REPO_SCM)' == '' ">UNKNOWN</APPVEYOR_REPO_SCM>
+		<APPVEYOR_REPO_NAME Condition=" '$(APPVEYOR_REPO_NAME)' == ''">$(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_PROJECT_SLUG)</APPVEYOR_REPO_NAME>
+		<APPVEYOR_REPO_BRANCH Condition=" '$(APPVEYOR_REPO_BRANCH)' == '' ">UNKNOWN</APPVEYOR_REPO_BRANCH>
+		<APPVEYOR_REPO_TAG Condition=" '$(APPVEYOR_REPO_TAG') == '' ">False</APPVEYOR_REPO_TAG>
+		<APPVEYOR_SCHEDULED_BUILD Condition=" '$(APPVEYOR_SCHEDULED_BUILD') == '' ">False</APPVEYOR_SCHEDULED_BUILD>
+		<APPVEYOR_FORCED_BUILD Condition=" '$(APPVEYOR_FORCED_BUILD)' == ''" >False</APPVEYOR_FORCED_BUILD>
+		<APPVEYOR_RE_BUILD Condition=" '$(APPVEYOR_RE_BUILD)' == '' ">False</APPVEYOR_RE_BUILD>
+		
+		<Platform Condition="'$(Platform)' == 'AnyCPU' OR '$(Platform)' == ''">x86</Platform>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	</PropertyGroup>
+</Project>

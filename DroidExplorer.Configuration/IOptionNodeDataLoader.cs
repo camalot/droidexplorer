@@ -1,0 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace DroidExplorer.Configuration {
+  public interface IOptionNodeDataLoader {
+    void Load ( TreeNode parentNode );
+  }
+}

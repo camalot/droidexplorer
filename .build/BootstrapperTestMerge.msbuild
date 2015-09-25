@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="BootstrapperMerge">
+
+	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+
+	<PropertyGroup>
+		<CCNetLabel>0.5.0.1</CCNetLabel>
+		<OutputPath>$(MSBuildProjectDirectory)\..\bin\Setup\$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\</OutputPath>
+	</PropertyGroup>
+
+	<Target Name="BootstrapperMerge">
+		<CreateItem Include="$(OutputPath)*.exe;$(OutputPath)*.dll">
+			<Output ItemName="InputAssemblies" TaskParameter="Include"/>
+		</CreateItem>
+
+		<CreateItem Include="$(OutputPath)*.exe;$(OutputPath)*.pdb;$(OutputPath)*.dll;$(OutputPath)*.xml">
+			<Output ItemName="BootstrapperFiles" TaskParameter="Include"/>
+		</CreateItem>
+
+		<CreateItem Include="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).*">
+			<Output ItemName="MergedFiles" TaskParameter="Include"/>
+		</CreateItem>
+
+		<Delete Files="@(MergedFiles)" />
+
+		<ILMerge
+			InputAssemblies="@(InputAssemblies)"
+			Version="$(CCNetLabel)"
+			TargetKind="Exe"
+			LogFile="$(OutputPath)\ilmerge.log"
+			OutputFile="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).exe"
+			DebugInfo="true" />
+
+
+
+		<Delete Files="@(BootstrapperFiles)" />
+
+	</Target>
+</Project>

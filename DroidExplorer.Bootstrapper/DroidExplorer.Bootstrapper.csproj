@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ReleasePlatform>$(Platform)</ReleasePlatform>
+    <ReleasePlatform Condition=" '$(ReleasePlatform)' == '' OR '$(ReleasePlatform)' == 'Any CPU' ">x86</ReleasePlatform>
+    <Platform Condition=" '$(Platform)' != 'x86' ">x86</Platform>
+    <DefineConstants Condition=" '$(ReleasePlatform)' == 'x86' ">PLATFORMX86</DefineConstants>
+    <DefineConstants Condition=" '$(ReleasePlatform)' == 'x64' ">PLATFORMX64</DefineConstants>
+    <DefineConstants Condition=" '$(ReleasePlatform)' == 'ia64' ">PLATFORMIA64</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{70C37F55-2E83-46D0-83C3-D87230F63E53}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DroidExplorer.Bootstrapper</RootNamespace>
+    <AssemblyName>DroidExplorer.Bootstrapper</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ApplicationIcon>setup.ico</ApplicationIcon>
+    <SignAssembly Condition="Exists('..\shared\droidexplorer.pfx')">true</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="Exists('..\shared\droidexplorer.pfx')">..\shared\droidexplorer.pfx</AssemblyOriginatorKeyFile>
+    <StartupObject>DroidExplorer.Bootstrapper.Program</StartupObject>
+    <CCNetLabel Condition=" '$(CCNetLabel)' == '' ">0.5.0.1</CCNetLabel>
+    <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\Setup\$(Configuration)\$(CCNetLabel)\$(ReleaseMode)\$(ReleasePlatform)\</OutputPath>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <SignManifests>false</SignManifests>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <!--OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <SupportUrl>http://de.codeplex.com</SupportUrl>
+    <ErrorReportUrl>http://de.codeplex.com</ErrorReportUrl>
+    <ProductName>Droid Explorer</ProductName>
+    <PublisherName>Ryan Conrad</PublisherName>
+    <SuiteName>Droid Explorer Android Manager</SuiteName>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled-->
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(CCNetLabel)' == '' ">
+    <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <Optimize>true</Optimize>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\3rdParty\log4net.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arguments.cs" />
+    <Compile Include="Authentication\CredentialConfirmForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Authentication\CredentialConfirmForm.designer.cs">
+      <DependentUpon>CredentialConfirmForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Authentication\CredentialsDialog.cs" />
+    <Compile Include="Authentication\DPAPI.cs" />
+    <Compile Include="Authentication\ExtensionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Configuration\WizardConfiguration.cs" />
+    <Compile Include="Configuration\WizardStep.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IWizard.cs" />
+    <Compile Include="Logger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Panels\AndroidLicensePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\CancelPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\ErrorPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\FinishPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\InstallDroidExplorerPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\InstallStartPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\RemoveSdkPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\RunningProcessesPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\StartServicePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\UninstallDroidExplorerPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\UninstallStartPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\UseExistingSdkPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\WizardPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Requirements.cs" />
+    <Compile Include="UI\WizardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WizardForm.Designer.cs">
+      <DependentUpon>WizardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="..\Shared\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyVersionInfo.cs" Condition="Exists('..\Shared\AssemblyVersionInfo.cs')">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Panels\InstallStartPanel.resx">
+      <DependentUpon>InstallStartPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\UseExistingSdkPanel.resx">
+      <DependentUpon>UseExistingSdkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WizardForm.resx">
+      <DependentUpon>WizardForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\setup_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\setup.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Authentication\CredentialConfirmForm.resx">
+      <DependentUpon>CredentialConfirmForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Wizard.config" />
+    <EmbeddedResource Include="DroidExplorer.Bootstrapper.log4net" />
+    <EmbeddedResource Include="Panels\AndroidLicensePanel.resx">
+      <DependentUpon>AndroidLicensePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\CancelPanel.resx">
+      <DependentUpon>CancelPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\ErrorPanel.resx">
+      <DependentUpon>ErrorPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\FinishPanel.resx">
+      <DependentUpon>FinishPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\InstallDroidExplorerPanel.resx">
+      <DependentUpon>InstallDroidExplorerPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\RemoveSdkPanel.resx">
+      <DependentUpon>RemoveSdkPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\RunningProcessesPanel.resx">
+      <DependentUpon>RunningProcessesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\StartServicePanel.resx">
+      <DependentUpon>StartServicePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.manifest" />
+    <None Include="Resources\UIBanner.png" />
+    <None Include="Resources\UIDialog.png" />
+    <None Include="Resources\error.png" />
+    <EmbeddedResource Include="Installs\Setup.msi" Condition="Exists('Installs\Setup.msi')" />
+    <EmbeddedResource Include="Installs\tools_r06-windows.zip" Condition="Exists('Installs\tools_r06-windows.zip')" />
+    <EmbeddedResource Include="Installs\android-2.2_r01-windows.zip" Condition="Exists('Installs\android-2.2_r01-windows.zip')" />
+    <None Include="Resources\security_background.png" />
+    <None Include="Resources\user.png" />
+    <None Include="Resources\AndroidSdkEULA.txt" />
+    <Content Include="setup.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

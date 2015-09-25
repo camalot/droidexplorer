@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:difx="http://schemas.microsoft.com/wix/DifxAppExtension"
+		 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Fragment>
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="DesktopFolder" Name="Desktop">
+				<Component Id="DesktopShortcut" Guid="797010C9-3734-4A34-8BBA-2D2E4C723E86">
+					<!--Condition><![CDATA[&CreateDesktopShortcut <> 0]]></Condition-->
+					<RegistryKey Root="HKCU" Key="$(var.RegistryPath)" Action="createAndRemoveOnUninstall">
+						<RegistryValue Name="CreateDesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
+					</RegistryKey>
+					<Shortcut Id="DesktopShortcut" Directory="DesktopFolder" Name="Droid Explorer" Icon="AppIcon.exe" Target="[DroidExplorer.exe]"/>
+				</Component>
+			</Directory>
+
+			<Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
+				<Directory Id="INSTALLDIR" Name="Droid Explorer">
+					<Component Id="Empty" Guid="" KeyPath="yes" />
+
+					<!--<Directory Id="ANDROIDSDKDIR" Name="SDK"></Directory>-->
+
+					<Component Id="CloudStatsRegistry" Guid="1f49f13c-6053-4241-a056-94a13be32e33" DiskId="1">
+						<RegistryKey Root="HKLM" Key="$(var.RegistryPathCloudStats)" Action="createAndRemoveOnUninstall">
+							<RegistryValue Name="CloudStatistics" Value="1" Type="integer" KeyPath="yes"/>
+						</RegistryKey>
+					</Component>
+
+					<Component Id="ServiceFiles" Guid="AE485F56-6C20-4569-BCEA-99455723AE6E" DiskId="1">
+						<File Source="$(var.OutputPath)DroidExplorer.Service.exe" Id="DroidExplorer.Service.exe" Name="DroidExplorer.Service.exe"/>
+						<ServiceInstall Id="DroidExplorerService"
+							Name="DroidExplorerService"
+							DisplayName="DroidExplorer Service"
+							Type="ownProcess"
+							Start="auto"
+							ErrorControl="normal"
+							Account="LocalSystem"
+							Description="Droid Explorer Device Detection Service">
+						</ServiceInstall>
+						<ServiceControl Id="StartDroidExplorerService"
+														Name="DroidExplorerService" Stop="both" Remove="uninstall" Wait="no" />
+						<!-- Service -->
+						<File Source="$(var.OutputPath)DroidExplorer.Service.pdb" Id="DroidExplorer.Service.pdb" Name="DroidExplorer.Service.pdb" />
+						<File Source="$(var.OutputPath)DroidExplorer.Service.exe.config" Id="DroidExplorer.Service.exe.config" Name="DroidExplorer.Service.exe.config" />
+
+					</Component>
+
+					<Component Id="Runner" Guid="87E3E611-7149-4b64-BFB5-2EF2B88FA88F" DiskId="1">
+						<File Source="$(var.OutputPath)DroidExplorer.Runner.exe" Id="DroidExplorer.Runner.exe" Name="DroidExplorer.Runner.exe">
+
+
+						</File>
+						<File Source="$(var.OutputPath)DroidExplorer.Runner.exe.config" Id="DroidExplorer.Runner.exe.config" Name="DroidExplorer.Runner.exe.config" />
+						<File Source="$(var.OutputPath)DroidExplorer.Runner.pdb" Id="DroidExplorer.Runner.pdb" Name="DroidExplorer.Runner.pdb" />
+					</Component>
+
+					<Directory Id="Assets" Name="Assets">
+						<Component Id="AssetsDir" Guid="59b36c28-3647-4c27-bda0-f08ba9ebdcc3" DiskId="1">
+							<File Source="$(var.OutputPath)Assets\apk.ico" Id="apk.ico" Name="apk.ico" />
+							<File Source="$(var.OutputPath)Assets\backup.ico" Id="backup.ico" Name="backup.ico" />
+							<File Source="$(var.OutputPath)Assets\backupex.ico" Id="backupex.ico" Name="backupex.ico" />
+
+							<File Source="$(var.OutputPath)Assets\[default].ico" Id="default.ico" Name="[default].ico" />
+							<File Source="$(var.OutputPath)Assets\[default].png" Id="default.png" Name="[default].png" />
+
+							<File Source="$(var.OutputPath)Assets\shell.ico" Id="shell.ico" Name="shell.ico" />
+
+						</Component>
+					</Directory>
+
+					<Component Id="Libaries" Guid="0290C15E-1A1D-4d6b-B4CE-EA639AC51649" DiskId="1">
+
+
+						<!-- Resources -->
+						<File Source="$(var.OutputPath)DroidExplorer.Resources.dll" Id="DroidExplorer.Resources.dll" Name="DroidExplorer.Resources.dll" />
+						<File Source="$(var.OutputPath)DroidExplorer.Resources.pdb" Id="DroidExplorer.Resources.pdb" Name="DroidExplorer.Resources.pdb" />
+
+						<!-- Configuration -->
+						<File Source="$(var.OutputPath)DroidExplorer.Configuration.dll" Id="DroidExplorer.Configuration.dll" Name="DroidExplorer.Configuration.dll" />
+						<File Source="$(var.OutputPath)DroidExplorer.Configuration.pdb" Id="DroidExplorer.Configuration.pdb" Name="DroidExplorer.Configuration.pdb" />
+
+						<!-- Core -->
+						<File Source="$(var.OutputPath)DroidExplorer.Core.dll" Id="DroidExplorer.Core.dll" Name="DroidExplorer.Core.dll" />
+						<File Source="$(var.OutputPath)DroidExplorer.Core.pdb" Id="DroidExplorer.Core.pdb" Name="DroidExplorer.Core.pdb" />
+
+						<!-- Core.UI -->
+						<File Source="$(var.OutputPath)DroidExplorer.Core.UI.dll" Id="DroidExplorer.Core.UI.dll" Name="DroidExplorer.Core.UI.dll" />
+						<File Source="$(var.OutputPath)DroidExplorer.Core.UI.pdb" Id="DroidExplorer.Core.UI.pdb" Name="DroidExplorer.Core.UI.pdb" />
+
+						<!-- 3rd Party -->
+						<File Source="$(var.OutputPath)Ionic.Zip.$(var.Platform).dll" Id="Ionic.Zip.dll" Name="Ionic.Zip.$(var.Platform).dll" />
+
+						<File Source="$(var.OutputPath)Microsoft.WindowsAPICodePack.dll" Id="Microsoft.WindowsAPICodePack.dll" Name="Microsoft.WindowsAPICodePack.dll" />
+						<File Source="$(var.OutputPath)Microsoft.WindowsAPICodePack.Shell.dll" Id="Microsoft.WindowsAPICodePack.Shell.dll" Name="Microsoft.WindowsAPICodePack.Shell.dll" />
+
+						<File Source="$(var.OutputPath)Vista.Controls.BreadcrumbBar.dll" Id="Vista.Controls.BreadcrumbBar.dll" Name="Vista.Controls.BreadcrumbBar.dll" />
+						<File Source="$(var.OutputPath)Vista.Controls.BreadcrumbBar.pdb" Id="Vista.Controls.BreadcrumbBar.pdb" Name="Vista.Controls.BreadcrumbBar.pdb" />
+
+						<File Source="$(var.OutputPath)Newtonsoft.Json.dll" Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" />
+						<File Source="$(var.OutputPath)Camalot.Common.dll" Id="Camalot.Common.dll" Name="Camalot.Common.dll" />
+						<File Source="$(var.OutputPath)MoreLinq.dll" Id="MoreLinq.dll" Name="MoreLinq.dll" />
+
+						<File Source="$(var.OutputPath)DroidExplorer.ShellExtension.pdb" Id="DroidExplorer.ShellExtension.pdb" Name="DroidExplorer.ShellExtension.pdb" />
+
+					</Component>
+
+					<Component Id="ICSharpCodeSharpZipLib" Guid="81A2F14C-26B5-4684-B0EF-F5E90A987DEE" DiskId="1">
+						<File
+							Source="$(var.OutputPath)ICSharpCode.SharpZipLib.dll"
+							Id="ICSharpCode.SharpZipLib.dll"
+							Name="ICSharpCode.SharpZipLib.dll"
+						/>
+					</Component>
+
+					<Component Id="Log4NetLib" Guid="484F815F-9747-4ba9-BB64-297BF6AF0C5B" DiskId="1">
+						<File
+							Source="$(var.OutputPath)log4net.dll"
+							Id="log4net.dll"
+							Name="log4net.dll"
+						/>
+					</Component>
+
+					<Component Id="Shortcuts" Guid="75859e90-1d30-4c0b-a320-15ad21dd6b7a" DiskId="1">
+						<Shortcut Id="ShellShortcut.lnk"
+								Name="Shell"
+								Target="[#DroidExplorer.Runner.exe]"
+								Directory="ProductPFMenu"
+								Description="Android Shell"
+								Arguments="/t=DroidExplorer.Plugins.Shell,DroidExplorer.Plugins"
+								WorkingDirectory="INSTALLDIR">
+							<Icon Id="shell.lnk.ico" SourceFile="$(var.OutputPath)Assets\shell.ico" />
+						</Shortcut>
+
+						<Shortcut Id="ApplicationInstaller.lnk"
+								Name="Install Apk"
+								Target="[#DroidExplorer.Runner.exe]"
+								Directory="ProductPFMenu"
+								Description="Install an Apk on your device"
+								Arguments="/t=DroidExplorer.Plugins.Installer,DroidExplorer.Plugins /install"
+								WorkingDirectory="INSTALLDIR">
+							<Icon Id="apk.lnk.ico" SourceFile="$(var.OutputPath)Assets\apk.ico" />
+						</Shortcut>
+						<Shortcut Id="DeviceBackup.lnk"
+								Name="Device Backup"
+								Target="[#DroidExplorer.Runner.exe]"
+								Directory="ProductPFMenu"
+								Description="Backup your device."
+								Arguments="/t=DroidExplorer.Plugins.DeviceBackup,DroidExplorer.Plugins /backup"
+								WorkingDirectory="INSTALLDIR">
+							<Icon Id="backupex.lnk.ico" SourceFile="$(var.OutputPath)Assets\backupex.ico" />
+						</Shortcut>
+						<Shortcut Id="DeviceRestore.lnk"
+								Name="Restore Device from Backup"
+								Target="[#DroidExplorer.Runner.exe]"
+								Directory="ProductPFMenu"
+								Description="Restore your device from a previous backup."
+								Arguments="/t=DroidExplorer.Plugins.DeviceBackup,DroidExplorer.Plugins /restore"
+								WorkingDirectory="INSTALLDIR">
+							<Icon Id="DeviceRestore.lnk.ico" SourceFile="$(var.OutputPath)Assets\abfolder.ico" />
+						</Shortcut>
+						<Shortcut Id="ScreenRecord.lnk"
+								Name="Record Device Screen"
+								Target="[#DroidExplorer.Runner.exe]"
+								Directory="ProductPFMenu"
+								Description="Record a device screen."
+								Arguments="/t=DroidExplorer.Plugins.ScreenRecording,DroidExplorer.Plugins"
+								WorkingDirectory="INSTALLDIR">
+							<Icon Id="ScreenRecording.lnk.ico" SourceFile="$(var.OutputPath)Assets\screenrecording.ico" />
+						</Shortcut>
+						<Shortcut Id="Screencast.lnk"
+								Name="Screen Monitor"
+								Target="[#DroidExplorer.Runner.exe]"
+								Directory="ProductPFMenu"
+								Description="Connect to your device using screencast"
+								Arguments="/t=DroidExplorer.Plugins.Screencast,DroidExplorer.Plugins"
+								WorkingDirectory="INSTALLDIR">
+							<Icon Id="screencast.lnk.ico" SourceFile="$(var.OutputPath)Assets\screencast.ico" />
+						</Shortcut>
+						<Shortcut Id="Screenshot.lnk"
+								Name="Screenshot"
+								Target="[#DroidExplorer.Runner.exe]"
+								Directory="ProductPFMenu"
+								Description="Capture a screenshot of the device"
+								Arguments="/t=DroidExplorer.Plugins.Screenshot,DroidExplorer.Plugins"
+								WorkingDirectory="INSTALLDIR">
+							<Icon Id="screenshot.lnk.ico" SourceFile="$(var.OutputPath)Assets\screenshot.ico" />
+						</Shortcut>
+
+						<util:InternetShortcut Id="AndroidEnthusiastsShortcut"
+							Directory="ProductPFMenu"
+							Type="url"
+							Name="Ask for Help"
+              Target="http://android.stackexchange.com/questions/tagged/droidexplorer"/>
+						<util:InternetShortcut Id="WebsiteShortcut"
+							Directory="ProductPFMenu"
+							Type="url"
+              Name="Droid Explorer Website"
+              Target="http://de.bit13.com"/>
+						<RegistryKey Root="HKCU" Key="$(var.RegistryPath)" Action="createAndRemoveOnUninstall">
+							<RegistryValue Name="PluginShortcuts" Value="1" Type="integer" KeyPath="yes"/>
+						</RegistryKey>
+					</Component>
+
+					<Component Id="InstallDirectoryRegister86" Guid="5049FC04-5096-4b61-B1E7-D53C9A90D833" DiskId="1">
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.RegistryPath)">
+							<RegistryValue Action="write" Value="[INSTALLDIR]" Type="string" />
+						</RegistryKey>
+					</Component>
+
+					<Component Id="ApkExtRegister86" Guid="DAB5A218-7B15-4741-9E6C-244E42ABEA7E" DiskId="1">
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".apk">
+							<RegistryValue Action="write" Value="DroidExplorer.ApkInstaller" Type="string" />
+						</RegistryKey>
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.ApkInstaller">
+							<RegistryValue Action="write" Key="DefaultIcon" Value="[INSTALLDIR]Assets\apk.ico" Type="expandable" />
+							<RegistryValue Action="write" Value="Android Application" Type="string" />
+							<RegistryValue Action="write" Key="shell\open\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.Installer,DroidExplorer.Plugins /apk=%1 /install" Type="expandable" />
+							<RegistryValue Action="write" Key="shell\Install\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.Installer,DroidExplorer.Plugins /apk=%1 /install" Type="expandable" />
+							<RegistryValue Action="write" Key="shell\Uninstall\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.Installer,DroidExplorer.Plugins /apk=%1 /uninstall" Type="expandable" />
+						</RegistryKey>
+					</Component>
+
+					<Component Id="BackupExtRegister86" Guid="112d5120-d4e4-4079-b89e-d2df1f0a1e83" DiskId="1">
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".ab">
+							<RegistryValue Action="write" Value="DroidExplorer.AndroidBackup" Type="string" />
+						</RegistryKey>
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.AndroidBackup">
+							<RegistryValue Action="write" Key="DefaultIcon" Value="[INSTALLDIR]Assets\backup.ico" Type="expandable" />
+							<RegistryValue Action="write" Value="Android Backup File" Type="string" />
+							<RegistryValue Action="write" Key="shell\open" Value="&amp;Restore Backup to Device" Type="string" />
+							<RegistryValue Action="write" Key="shell\open\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.DeviceBackup,DroidExplorer.Plugins /f=%1 /restore /basic /nodevice" Type="expandable" />
+
+							<!-- unpack option -->
+							<RegistryValue Action="write" Key="shell\deunpack" Value="Unpack" Type="string" />
+							<RegistryValue Action="write" Key="shell\deunpack\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.BackupPacker,DroidExplorer.Plugins /b=%1 /unpack /nodevice /basic" Type="expandable" />
+
+							<!-- convert to abex -->
+							<RegistryValue Action="write" Key="shell\convertextended" Value="Convert to Enhanced Android Backup" Type="string" />
+							<RegistryValue Action="write" Key="shell\convertextended\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.BackupConverter,DroidExplorer.Plugins /b=%1 /convert=extended " Type="expandable" />
+
+						</RegistryKey>
+
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".tar">
+							<RegistryValue Action="write" Key="shell\depack" Value="Pack as Android Backup" Type="string" />
+							<RegistryValue Action="write" Key="shell\depack\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.BackupPacker,DroidExplorer.Plugins /tar=%1 /pack /nodevice" Type="expandable" />
+						</RegistryKey>
+
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".abex">
+							<RegistryValue Action="write" Value="DroidExplorer.ExtendedAndroidBackup" Type="string" />
+						</RegistryKey>
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.ExtendedAndroidBackup">
+							<RegistryValue Action="write" Key="DefaultIcon" Value="[INSTALLDIR]Assets\backupex.ico" Type="string" />
+							<RegistryValue Action="write" Value="Enhanced Android Backup File" Type="string" />
+							<RegistryValue Action="write" Key="shell\open" Value="&amp;Restore Backup to Device" Type="string" />
+							<RegistryValue Action="write" Key="shell\open\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.DeviceBackup,DroidExplorer.Plugins /f=%1 /restore /nodevice /extended" Type="string" />
+
+							<!-- unpack option -->
+							<RegistryValue Action="write" Key="shell\deunpack" Value="Unpack" Type="string" />
+							<RegistryValue Action="write" Key="shell\deunpack\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.BackupPacker,DroidExplorer.Plugins /b=%1 /unpack /nodevice /extended" Type="string" />
+
+							<!-- convert to ab -->
+							<RegistryValue Action="write" Key="shell\convertbasic" Value="Convert to Android Backup" Type="string" />
+							<RegistryValue Action="write" Key="shell\convertbasic\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.BackupConverter,DroidExplorer.Plugins /b=%1 /convert=basic /nodevice" Type="string" />
+
+						</RegistryKey>
+
+					</Component>
+
+					<Component Id="ShellExtension" Guid="64876990-B2CF-41a8-9189-D1D7CBE09789" DiskId="1">
+						<!-- ShellExtension -->
+						<File
+									Source="$(var.OutputPath)DroidExplorer.ShellExtension.dll"
+									Id="DroidExplorer.ShellExtension.dll"
+									Name="DroidExplorer.ShellExtension.dll"
+									KeyPath="yes"
+									Assembly=".net" />
+
+					</Component>
+
+					<Component Id="ShellExtRegister86" Guid="2BEFDE86-8D87-4d99-B8E1-4E0F36A19B5D" DiskId="1">
+						<RegistryKey Action="none"
+											Root="HKLM"
+											Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
+							<RegistryValue Action="write"
+														 Name="{2B688A81-C9F8-4b0e-A1F6-1CE9535614DD}"
+														 Value="DroidExplorer File Shell Extension"
+														 Type="string" />
+						</RegistryKey>
+
+						<!-- Uncomment when APK Shell is working correctly -->
+						<!--RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.ApkInstaller">
+							<RegistryValue Action="write" Key="shellex\IconHandler" Value="{2B688A81-C9F8-4b0e-A1F6-1CE9535614DD}" Type="string" />
+							<RegistryValue Action="write" Key="DefaultIcon" Value="&quot;%1&quot;" Type="string" />
+						</RegistryKey-->
+					</Component>
+
+					<Component Id="DroidExplorer" Guid="60002EFB-3A0B-4758-9420-FDECB2C15862" DiskId="1">
+						<File Source="$(var.OutputPath)DroidExplorer.exe" Id="DroidExplorer.exe" Name="DroidExplorer.exe" KeyPath="yes">
+							<Shortcut
+								Advertise="yes"
+								Directory="ProductPFMenu"
+								Icon="AppIcon.exe"
+								Name="Droid Explorer"
+								Id="DroidExplorer.lnk"
+								WorkingDirectory="INSTALLDIR"/>
+						</File>
+						<!--File Source="$(var.OutputPath)DroidExplorer.exe.manifest" Id="DroidExplorer.exe.manifest" Name="DroidExplorer.exe.manifest" /-->
+						<RemoveFolder On="uninstall" Id="ProductPFMenu.remove" Directory="ProductPFMenu" />
+						<File Source="$(var.OutputPath)DroidExplorer.pdb" Id="DroidExplorer.pdb" Name="DroidExplorer.pdb" />
+						<File Source="$(var.OutputPath)DroidExplorer.exe.config" Id="DroidExplorer.exe.config" Name="DroidExplorer.exe.config" />
+
+					</Component>
+
+					<Directory Id="RunnerToolsDirectory" Name="Tools">
+						<Component Id="RunnerToolsRootFiles" Guid="59f04e79-db7e-4afb-91da-60b2a63bbc06" DiskId="1">
+							<!-- used for extracting *.ab files -->
+							<File Source="$(var.OutputPath)Tools\abe.jar" Id="abe.jar" Name="abe.jar" Hidden="no" ReadOnly="no" />
+							<!-- androidscreencast-0.0.5.1S -->
+							<File Source="$(var.OutputPath)Tools\androidscreencast.jar" Id="androidscreencast.jar" Name="androidscreencast.jar" Hidden="no" ReadOnly="no" />
+							<File Source="$(var.OutputPath)Tools\asm.jar" Id="asm.jar" Name="asm.jar" Hidden="no" ReadOnly="no" />
+							<File Source="$(var.OutputPath)Tools\ffmpeg.exe" Id="ffmpeg.exe" Name="ffmpeg.exe" Hidden="no" ReadOnly="no" />
+						</Component>
+
+
+						<!-- SQLITE Browser-->
+						<Directory Id="SqliteBrowserDirectory" Name="sqlitebrowser">
+							<Directory Id="SqliteBrowserPlatformDirectory" Name="platforms">
+								<Component Id="SqliteBrowserPlatformFiles" Guid="2E9523A0-11AE-4EB1-8F51-B1B3FF955338" DiskId="1">
+									<File Source="$(var.OutputPath)Tools\sqlitebrowser\platforms\qwindows.dll" Id="sqlbrowser_platforms_qwindows.dll" Name="qwindows.dll" Hidden="no" ReadOnly="no" />
+								</Component>
+							</Directory>
+
+							<Component Id="SqliteBrowserToolFiles" Guid="F0405327-3E32-45D4-A04C-5B9A5621FDA3" DiskId="1">
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\icudt53.dll" Id="sqlbrowser_icudt53.dll" Name="icudt53.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\icuin53.dll" Id="sqlbrowser_icuin53.dll" Name="icuin53.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\icuuc53.dll" Id="sqlbrowser_icuuc53.dll" Name="icuuc53.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\libeay32.dll" Id="sqlbrowser_libeay32.dll" Name="libeay32.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\msvcp120.dll" Id="sqlbrowser_msvcp120.dll" Name="msvcp120.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\msvcr120.dll" Id="sqlbrowser_msvcr120.dll" Name="msvcr120.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\Qt5Core.dll" Id="sqlbrowser_Qt5Core.dll" Name="Qt5Core.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\Qt5Gui.dll" Id="sqlbrowser_Qt5Gui.dll" Name="Qt5Gui.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\Qt5Network.dll" Id="sqlbrowser_Qt5Network.dll" Name="Qt5Network.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\Qt5PrintSupport.dll" Id="sqlbrowser_Qt5PrintSupport.dll" Name="Qt5PrintSupport.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\Qt5Widgets.dll" Id="sqlbrowser_Qt5Widgets.dll" Name="Qt5Widgets.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\sqlite3.dll" Id="sqlbrowser_sqlite3.dll" Name="sqlite3.dll" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\sqlitebrowser.exe" Id="sqlbrowser_sqlitebrowser.exe" Name="sqlitebrowser.exe" Hidden="no" ReadOnly="no" />
+								<File Source="$(var.OutputPath)Tools\sqlitebrowser\ssleay32.dll" Id="sqlbrowser_ssleay32.dll" Name="ssleay32.dll" Hidden="no" ReadOnly="no" />
+							</Component>
+
+						</Directory>
+					</Directory>
+
+					<Directory Id="PluginsDirectory" Name="Plugins">
+						<Component Id="PluginsFiles" Guid="E8CA8748-F92A-465a-BE78-85BE8D65BA8A" DiskId="1" >
+							<File Source="$(var.OutputPath)Plugins\DroidExplorer.Plugins.dll" Id="DroidExplorer.Plugins.dll" Name="DroidExplorer.Plugins.dll" Hidden="no" ReadOnly="no" />
+							<File Source="$(var.OutputPath)Plugins\DroidExplorer.Plugins.pdb" Id="DroidExplorer.Plugins.pdb" Name="DroidExplorer.Plugins.pdb" Hidden="no" ReadOnly="no" />
+							<File Source="$(var.OutputPath)Plugins\DroidExplorer.Plugins.dll.config" Id="DroidExplorer.Plugins.dll.config" Name="DroidExplorer.Plugins.dll.config" Hidden="no" ReadOnly="no" />
+
+							<File Source="$(var.OutputPath)Plugins\System.Data.SQLite.dll" Id="Plugins_System.Data.SQLite.dll" Name="System.Data.SQLite.dll" Hidden="no" ReadOnly="no" />
+							<File Source="$(var.OutputPath)Plugins\Newtonsoft.Json.dll" Id="Plugins_Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" />
+							<File Source="$(var.OutputPath)Plugins\Camalot.Common.dll" Id="Plugins_Camalot.Common.dll" Name="Camalot.Common.dll" />
+							<File Source="$(var.OutputPath)Plugins\MoreLinq.dll" Id="Plugins_MoreLinq.dll" Name="MoreLinq.dll" />
+
+							<RemoveFolder On="uninstall" Id="PluginsDelete" />
+						</Component>
+					</Directory>
+
+					<Directory Id="LogsDirectory" Name="logs">
+						<Component Id="LogFiles" Guid="54C521E8-52E2-417a-B6A0-5400A3EDA551" DiskId="1">
+							<RemoveFolder On="uninstall" Id="LogsDelete" />
+						</Component>
+					</Directory>
+
+					<Directory Id="DataDirectory" Name="Data">
+						<Component Id="DataFiles" Guid="E3AB688F-99A6-4101-B0FA-4B6FC7CC8FAE" DiskId="1" >
+							<File Source="$(var.OutputPath)Data\speedtest.png" Id="speedtest.png" Name="speedtest.png" Hidden="no" ReadOnly="yes" />
+							<File Source="$(var.OutputPath)Data\OptionsTree.config" Id="OptionsTree.config" Name="OptionsTree.config" Hidden="no" ReadOnly="no" />
+							<RemoveFolder On="uninstall" Id="DataDelete" />
+						</Component>
+						<Component Id="ConfigFiles" Guid="A0B37D83-75C3-4679-A155-19A6707FB4B9" DiskId="1">
+							<File Source="$(var.OutputPath)Data\DroidExplorer.config" Id="DroidExplorer.config" Name="DroidExplorer.config" Hidden="no" ReadOnly="no" />
+						</Component>
+					</Directory>
+				</Directory>
+			</Directory>
+
+			<Directory Id="USERPROFILE" SourceName="UserProfile">
+				<Directory Id="TARGETANDROIDBACKUPDIR" Name="Android Backups">
+					<Component Id="BackupFolderFiles" Guid="548e77c9-09a6-455f-b9e6-057c07361ce2" DiskId="1">
+						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCU" Key="$(var.RegistryPath)">
+							<RegistryValue Name="AndroidBackups" Action="write" Value="[ANDROIDBACKUPDIR]" Type="string" />
+						</RegistryKey>
+
+						<File Source="$(var.OutputPath)Assets\abfolder.ico" Id="abbackupfolder.ico" Name="folder.ico" System="yes" Hidden="yes" ReadOnly="no" />
+						<File Source="$(var.OutputPath)Assets\desktop.txt" Id="ab.desktop.ini" Name="desktop.ini" System="yes" Hidden="yes" ReadOnly="no" />
+
+						<RemoveFolder On="uninstall" Id="AndroidBackupDelete" />
+					</Component>
+				</Directory>
+			</Directory>
+
+			<Directory Id="ProgramMenuFolder" Name="PMenu">
+				<Directory Id="ProductPFMenu" Name="Droid Explorer">
+
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+	</Fragment>
+</Wix>

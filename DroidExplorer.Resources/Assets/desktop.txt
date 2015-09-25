@@ -1,0 +1,6 @@
+﻿[.ShellClassInfo]
+ConfirmFileOp=0
+IconFile=.\folder.ico
+IconIndex=0
+IconResource=.\folder.ico,0
+InfoTip=Android Device Backups

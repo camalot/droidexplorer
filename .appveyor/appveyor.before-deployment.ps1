@@ -31,7 +31,7 @@ if ( !$env:APPVEYOR_PULL_REQUEST_NUMBER -and ($env:APPVEYOR_REPO_BRANCH -eq "mas
   $env:CI_DEPLOY_FTP = $false;
 	$env:CI_DEPLOY_WebHook = $false;
 	$env:CI_DEPLOY_WebDeploy = $false;
-	$env:CI_DEPLOY_CodePlex = $false;
+	$env:CI_DEPLOY_CodePlex = $true;
 	$env:CI_DEPLOY_WEBAPI_RELEASE = $false;
 
 }

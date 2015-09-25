@@ -26,7 +26,6 @@
 
 [Dd]ebug/
 [Rr]elease/
-x64/
 [Bb]in/
 **/node_modules/*/bin/
 [Oo]bj/

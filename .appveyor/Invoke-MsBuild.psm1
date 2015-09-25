@@ -214,8 +214,8 @@ function Invoke-MsBuild
 		try
 		{
 			# Build the arguments to pass to MsBuild.
-			#$buildArguments = """$Path"" $MsBuildParameters /fileLoggerParameters:LogFile=""$buildLogFilePath"""
-			$buildArguments = """$Path"" $MsBuildParameters"
+			$buildArguments = """$Path"" $MsBuildParameters /fileLoggerParameters:LogFile=""$buildLogFilePath"""
+			#$buildArguments = """$Path"" $MsBuildParameters"
 
 			# If a VS Command Prompt was found, call MSBuild from that since it sets environmental variables that may be needed to build some projects.
 			if ($vsCommandPrompt -ne $null)

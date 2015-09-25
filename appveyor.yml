@@ -3,6 +3,9 @@ pull_requests:
   do_not_increment_build_number: true
 skip_tags: true
 os: Visual Studio 2015
+platform:
+- x86
+- x64
 environment:
   CI_CODEPLEX_USER:
     secure: HW7bjsXQTL9wIwYhN8WQpg==
@@ -18,6 +21,7 @@ environment:
     secure: vdbR/9WhTByVcNNg87aBsA==
   ProductionApiDomain: de.bit13.com
   DevelopmentApiDomain: de.bit13.local
+  ReleaseMode: Setup
 hosts:
   de.bit13.local: 69.245.210.157
 install:
@@ -27,8 +31,8 @@ install:
 before_build:
 - ps: .\.appveyor\appveyor.before-build.ps1
 build:
-  project: .\.build\BuildAll.msbuild
-  verbosity: minimal
+  project: .\.build\BuildDroidExplorer.msbuild
+  verbosity: detailed
 after_build:
 - ps: .\.appveyor\appveyor.after-build.ps1
 before_deploy:

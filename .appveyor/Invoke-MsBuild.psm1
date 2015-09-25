@@ -214,7 +214,8 @@ function Invoke-MsBuild
 		try
 		{
 			# Build the arguments to pass to MsBuild.
-			$buildArguments = """$Path"" $MsBuildParameters /fileLoggerParameters:LogFile=""$buildLogFilePath"""
+			#$buildArguments = """$Path"" $MsBuildParameters /fileLoggerParameters:LogFile=""$buildLogFilePath"""
+			$buildArguments = """$Path"" $MsBuildParameters"
 
 			# If a VS Command Prompt was found, call MSBuild from that since it sets environmental variables that may be needed to build some projects.
 			if ($vsCommandPrompt -ne $null)
@@ -283,7 +284,7 @@ function Invoke-MsBuild
 		{
 			# Write the error message as a warning.
 			Write-Warning "FAILED to build ""$Path"". Please check the build log ""$buildLogFilePath"" for details." 
-
+			Get-Content -Path $buildLogFilePath | Write-Host;
 			# If we should show the build log automatically, open it with the default viewer.
 			if($AutoLaunchBuildLogOnFailure)
 			{

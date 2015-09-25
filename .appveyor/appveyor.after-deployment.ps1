@@ -1,4 +1,4 @@
-Import-Module -Name ".\Invoke-MsBuild.psm1";
+Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Invoke-MsBuild.psm1";
 
 # trigger the codeplex deployment script
 if( (Test-Path -Path Env:\CI_DEPLOY_CODEPLEX) -and ((Get-Item -Path Env:\CI_DEPLOY_CODEPLEX).Value) -eq $true ) {

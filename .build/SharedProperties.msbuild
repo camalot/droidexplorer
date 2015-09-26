@@ -8,9 +8,10 @@
 		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == '' AND '$(APPVEYOR)' == 'True' AND '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(APPVEYOR_BUILD_NUMBER)</CI_BUILD_NUMBER>
 		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == ''">0</CI_BUILD_NUMBER>
 		<CI_BUILD_REVISION Condition=" '$(CI_BUILD_REVISION)' == '' AND '$(APPVEYOR)' != 'True' ">0</CI_BUILD_REVISION>
-		<CI_BUILD_REVISION Condition=" '$(CI_BUILD_REVISION)' == ''">0</CI_BUILD_REVISION>
-		<CI_PROJECT_NAME Condition="'$(CI_PROJECT_NAME)' == ''">DroidExplorer</CI_PROJECT_NAME>
-		<CI_PROJECT_FRIENDLY_NAME>Droid Explorer</CI_PROJECT_FRIENDLY_NAME>
+		<CI_BUILD_REVISION Condition =" '$(CI_BUILD_REVISION)' == ''">0</CI_BUILD_REVISION>
+		<CI_PROJECT_NAME Condition="'$(APPVEYOR)' == 'True' ">$(APPVEYOR_PROJECT_NAME)</CI_PROJECT_NAME>
+		<CI_PROJECT_NAME Condition=" '$(CI_PROJECT_NAME)' == '' ">DroidExplorer</CI_PROJECT_NAME>
+		<CI_PROJECT_FRIENDLY_NAME Condition=" '$(CI_PROJECT_FRIENDLY_NAME)' == '' ">Droid Explorer</CI_PROJECT_FRIENDLY_NAME>
 
 		<Major>0</Major>
 		<Minor>10</Minor>
@@ -121,6 +122,35 @@
 		</CreateProperty>
 
 	</Target>
+
+	<UsingTask TaskName="InvokePowerShellFile"
+						 TaskFactory="CodeTaskFactory"
+						 AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<File ParameterType="System.String" Required="true" />
+			<Arguments ParameterType="System.String" Required="true" />
+			<Condition ParameterType="String.String" />
+		</ParameterGroup>
+
+		<Task>
+			<Exec Command="powershell.exe -File $(File) $(Arguments)"  WorkingDirectory="$(MSBuildProjectDirectory)" Condition="$(Condition)" />
+		</Task>
+	</UsingTask>
+
+	<UsingTask TaskName="InvokePowerShell"
+					 TaskFactory="CodeTaskFactory"
+					 AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<Script ParameterType="System.String" Required="true" />
+			<Condition ParameterType="String.String" />
+		</ParameterGroup>
+
+		<Task>
+			<Exec Command="powershell.exe -Command $(Script)"  WorkingDirectory="$(MSBuildProjectDirectory)" Condition="$(Condition)" />
+		</Task>
+	</UsingTask>
+
+
 
 	<!--<UsingTask
 		TaskName="SetEnvironmentVariable"

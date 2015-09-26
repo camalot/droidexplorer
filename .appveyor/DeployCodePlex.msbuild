@@ -41,6 +41,7 @@
 	<Target Name="PublishPrep">
 		<Error Condition=" '$(CI_BUILD_VERSION)' == '' AND '$(CI_BUILD_NUMBER)' == '' " Code="500" Text="'CI_BUILD_NUMBER' property was not set." />
 		<Error Condition=" '$(CI_BUILD_VERSION)' == '' AND '$(CI_BUILD_REVISION)' == '' " Code="500" Text="'CI_BUILD_REVISION' property was not set." />
+		<Error Condition=" '$(CI_PROJECT_FRIENDLY_NAME)' == ''" Code="500" Text="'CI_PROJECT_FRIENDLY_NAME' property was not set." />
 
 		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
 			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
@@ -48,11 +49,11 @@
 		
 		<Message Text="CI_BUILD_VERSION Set to $(CI_BUILD_VERSION)" />
 		
-		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(Platform)\">
+		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(Platform)">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
 		
-		<CreateProperty Value="$(OutputPath)\$(ProjectName).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
+		<CreateProperty Value="$(OutputPath)\$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
 			<Output PropertyName="ZipFile" TaskParameter="Value" />
 		</CreateProperty>
 		
@@ -92,20 +93,18 @@
 			<Output PropertyName="ReleaseUrl" TaskParameter="ReleaseUrl" />
 		</CodePlexCreateRelease>
 
-		<!--<SetEnvironmentVariable Name="CodePlex_ReleaseName" Value="$(ReleaseName)" Condition=" '$(CodePlex_ReleaseName)' == '' "/>
-		<SetEnvironmentVariable Name="CodePlex_ReleaseId" Value="$(ReleaseId)" Condition=" '$(CodePlex_ReleaseId)' == '' "/>
-		<SetEnvironmentVariable Name="CodePlex_ReleaseUrl" Value="$(ReleaseUrl)" Condition=" '$(CodePlex_ReleaseUrl)' == '' "/>
+		<InvokePowerShell 
+			Command="$env.CP_RELEASE_ID=$(ReleaseId);$env.CP_RELEASE_NAME=$(ReleaseName);$env.CP_RELEASE_URL=$(ReleaseUrl)" 
+			Condition=" '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' " />
 
-		<Message Text="Release Name: $(CodePlex_ReleaseName)" />
-		<Message Text="Release Id: $(CodePlex_ReleaseId)" />
-		<Message Text="Release Url: $(CodePlex_ReleaseUrl)" />-->
-		
 		<CreateItem Include="Id=$(ReleaseId);Name=$(ReleaseName);Url=$(ReleaseUrl)">
 			<Output ItemName="CPLines" TaskParameter="Include"/>
 		</CreateItem>
 
 		<WriteLinesToFile File="$(ReleaseInfoFile)" Lines="@(CPLines)" Overwrite="true" Condition=" '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' "/>
 		<Message Text="@(CPLines)" Condition=" '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' "/>
+
+		<Message Text="CP_RELEASE_ID: $(CP_RELEASE_ID)" />
 	</Target>
 
 	<Target Name="Upload" DependsOnTargets="CreateRelease">

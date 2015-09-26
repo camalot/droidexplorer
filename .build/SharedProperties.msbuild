@@ -129,11 +129,10 @@
 		<ParameterGroup>
 			<File ParameterType="System.String" Required="true" />
 			<Arguments ParameterType="System.String" Required="true" />
-			<Condition ParameterType="String.Boolean" />
 		</ParameterGroup>
 
 		<Task>
-			<Exec Command="powershell.exe -File $(File) $(Arguments)"  WorkingDirectory="$(MSBuildProjectDirectory)" Condition="$(Condition)" />
+			<Exec Command="powershell.exe -File $(File) $(Arguments)"  WorkingDirectory="$(MSBuildProjectDirectory)" />
 		</Task>
 	</UsingTask>
 
@@ -146,7 +145,7 @@
 		</ParameterGroup>
 
 		<Task>
-			<Exec Command="powershell.exe -Command $(Script)"  WorkingDirectory="$(MSBuildProjectDirectory)" Condition="$(Condition)" />
+			<Exec Command="powershell.exe -Command $(Script)"  WorkingDirectory="$(MSBuildProjectDirectory)" />
 		</Task>
 	</UsingTask>
 

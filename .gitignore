@@ -5,8 +5,7 @@
 **/.vs/*
 
 # Generated Version File:
-VersionAssemblyInfo.cs
-VersionAssemblyInfo.txt
+AssemblyVersionInfo.txt
 AssemblyVersionInfo.cs
 
 

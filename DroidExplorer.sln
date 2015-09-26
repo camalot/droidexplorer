@@ -39,7 +39,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{10E51F
 		Shared\license.rtf = Shared\license.rtf
 		Shared\License.txt = Shared\License.txt
 		Shared\SharedAssemblyInfo.cs = Shared\SharedAssemblyInfo.cs
-		Shared\VersionAssemblyInfo.txt = Shared\VersionAssemblyInfo.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{59C344CC-4757-4D89-B0EC-7365FFD10B9F}"

@@ -22,7 +22,7 @@
 
 		<CCNetLabel Condition=" '$(CCNetLabel)' == '' ">$(Major).$(Minor).$(Build).$(Revision)</CCNetLabel>
 			
-		<VersionFile>$(MSBuildProjectDirectory)\..\Shared\VersionAssemblyInfo.txt</VersionFile>
+		<VersionFile>$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.txt</VersionFile>
 
 		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 		<Platform Condition="'$(Platform)' == 'AnyCPU' OR '$(Platform)' == ''">x86</Platform>

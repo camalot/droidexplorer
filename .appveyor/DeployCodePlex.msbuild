@@ -54,7 +54,7 @@
 
 	<!-- This should only create the release when it is x86 -->
 	<!-- BUT! When we do x64, we need to know the Release Name -->
-	<Target Name="CreateRelease" Condition=" '$(Platform)' == 'x86' ">
+	<Target Name="CreateRelease">
 
 		<ReadTextFile Files="$(MSBuildProjectDirectory)\publishchangelog.txt">
 			<Output TaskParameter="OutputText" PropertyName="ReleaseDescription" />
@@ -78,29 +78,9 @@
 			<Output PropertyName="ReleaseUrl" TaskParameter="ReleaseUrl" />
 		</CodePlexCreateRelease>
 
-		<SetEnvironmentVariable Name="CodePlex_ReleaseName" Value="$(ReleaseName)" />
-		<SetEnvironmentVariable Name="CodePlex_ReleaseId" Value="$(ReleaseId)" />
-		<SetEnvironmentVariable Name="CodePlex_ReleaseUrl" Value="$(ReleaseUrl)" />
-
-		<Message Text="Release Name: $(CodePlex_ReleaseName)" />
-		<Message Text="Release Id: $(CodePlex_ReleaseId)" />
-		<Message Text="Release Url: $(CodePlex_ReleaseUrl)" />
-	</Target>
-
-	<Target Name="CreateRelease" Condition=" '$(Platform)' == 'x64' ">
-		<Message Text="Running 'CreateRelease' for x64. Release should already exist on CodePlex." Importance="normal" />
-		<!-- All we need here is the Release Name, the Release ID, and the Release URL -->
-
-		<Error Condition=" '$(CodePlex_ReleaseName)' == '' " Text="Unable to get CodePlex_ReleaseName from Environment Variables" Code="500" />
-		<Error Condition=" '$(CodePlex_ReleaseId)' == '' " Text="Unable to get CodePlex_ReleaseId from Environment Variables" Code="500" />
-		<Error Condition=" '$(CodePlex_ReleaseUrl)' == '' " Text="Unable to get CodePlex_ReleaseUrl from Environment Variables" Code="500" />
-		
-		
-		<PropertyGroup>
-			<ReleaseName>$(CodePlex_ReleaseName)</ReleaseName>
-			<ReleaseId>$(CodePlex_ReleaseId)</ReleaseId>
-			<ReleaseUrl>$(CodePlex_ReleaseUrl)</ReleaseUrl>
-		</PropertyGroup>
+		<SetEnvironmentVariable Name="CodePlex_ReleaseName" Value="$(ReleaseName)" Condition=" '$(CodePlex_ReleaseName)' == '' "/>
+		<SetEnvironmentVariable Name="CodePlex_ReleaseId" Value="$(ReleaseId)" Condition=" '$(CodePlex_ReleaseId)' == '' "/>
+		<SetEnvironmentVariable Name="CodePlex_ReleaseUrl" Value="$(ReleaseUrl)" Condition=" '$(CodePlex_ReleaseUrl)' == '' "/>
 
 		<Message Text="Release Name: $(CodePlex_ReleaseName)" />
 		<Message Text="Release Id: $(CodePlex_ReleaseId)" />
@@ -108,14 +88,13 @@
 	</Target>
 
 	<Target Name="Upload" DependsOnTargets="CreateRelease">
-		<CreateItem Include="$(ZipFile)">
-			<Output ItemName="CopyFiles" TaskParameter="Include"/>
-		</CreateItem>
+		<Error Condition=" '$(CodePlex_ReleaseName)' == '' " Text="Unable to get CodePlex_ReleaseName from Environment Variables" Code="500" />
+
 		<CodePlexUpload
 			Project="$(CodePlexProject)"
 			Username="$(CI_CODEPLEX_USER)"
 			Password="$(CI_CODEPLEX_PASSWORD)"
-			ReleaseName="$(ReleaseName)"
+			ReleaseName="$(CodePlex_ReleaseName)"
 			FileType="RuntimeBinary"
 			File="$(ZipFile)"
 			Timeout="$(UploadTimeout)" />

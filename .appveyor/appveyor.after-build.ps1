@@ -1,20 +1,7 @@
-$cachePath = "$env:APPVEYOR_BUILD_FOLDER\.cache\";
-
-$cachedVersionInfo = "$cachePath\VersionAssemblyInfo.cache";
 $sourceVersionInfo = "$env:APPVEYOR_BUILD_FOLDER\Shared\VersionAssemblyInfo.txt";
 
-if(!(Test-Path -Path $cachePath)) {
-	New-Item -Path $cachePath -ItemType Directory -Force | Out-Null;
-}
-
-if( (Test-Path -Path $sourceVersionInfo) -and !(Test-Path -Path $cachedVersionInfo) -and ($env:Platform -eq 'x86') ) {
-	$versionCache = (Get-Content -Path $sourceVersionInfo);
-	Write-Host "Creating version cache: $versionCache";
-	$versionCache | Out-File -FilePath $cachedVersionInfo -Force;
-}
-
-if( Test-Path -Path $cachedVersionInfo ) {
-  $version = (Get-Content -Path $cachedVersionInfo);
+if( (Test-Path -Path $sourceVersionInfo) -and ($env:Platform -eq 'x86') ) {
+  $version = (Get-Content -Path $sourceVersionInfo);
 	$split = $version.split(".");
 	$m1 = $split[0];
 	$m2 = $split[1];
@@ -25,10 +12,4 @@ if( Test-Path -Path $cachedVersionInfo ) {
 	Write-Host "Set CI_BUILD_REVISION : $env:CI_BUILD_REVISION";
 	$env:CI_BUILD_VERSION = "$m1.$m2.$b.$r";
 	Write-Host "Set CI_BUILD_VERSION :$env:CI_BUILD_VERSION";
-}
-
-# on x64, we can clear this cache file out after we set the env:vars.
-if( (Test-Path -Path Env:\Platform) -and ($env:Platform -eq "x64" ) -and (Test-Path -Path $cachedVersionInfo) ) {
-	Write-Host "Deleting '$cachedVersionInfo'";
-	(Remove-Item -Path $cachedVersionInfo) | Out-Null;
 }

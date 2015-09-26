@@ -21,8 +21,6 @@
 		<CCNetLabel Condition=" '$(CCNetLabel)' == '' ">$(Major).$(Minor).$(Build).$(Revision)</CCNetLabel>
 
 		<VersionFile>$(MSBuildProjectDirectory)\..\Shared\VersionAssemblyInfo.txt</VersionFile>
-		<VersionFileCache>$(MSBuildProjectDirectory)\..\.cache\VersionAssemblyInfo.cache</VersionFileCache>
-
 
 		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 		<Platform Condition="'$(Platform)' == 'AnyCPU' OR '$(Platform)' == ''">x86</Platform>
@@ -122,9 +120,9 @@
 			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
 
-		<!--<MakeDir Directories="$(MSBuildProjectDirectory)\..\.cache\" Condition=" !Exists($(MSBuildProjectDirectory)\..\.cache\) " />
-		<WriteLinesToFile File="$(VersionFileCache)" Lines="$(CCNetLabel)" Condition=" $(Platform)' != 'x64' " />-->
 
+		<WriteLinesToFile File="$(VersionFile)" Lines="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' == '' " />
+		
 	</Target>
 	<!--<UsingTask
 		TaskName="SetEnvironmentVariable"

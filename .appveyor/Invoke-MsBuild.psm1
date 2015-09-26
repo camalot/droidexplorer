@@ -269,7 +269,8 @@ function Invoke-MsBuild
 
 		# Get if the build failed or not by looking at the log file.
 		$buildSucceeded = (((Select-String -Path $buildLogFilePath -Pattern "Build FAILED." -SimpleMatch) -eq $null) -and $processExitCode -eq 0)
-
+		# should be able to just write the output here because there is already a check for the log file.
+		Get-Content -Path $buildLogFilePath | Write-Host;
 		# If the build succeeded.
 		if ($buildSucceeded)
 		{
@@ -284,7 +285,6 @@ function Invoke-MsBuild
 		{
 			# Write the error message as a warning.
 			Write-Warning "FAILED to build ""$Path"". Please check the build log ""$buildLogFilePath"" for details." 
-			Get-Content -Path $buildLogFilePath | Write-Host;
 			# If we should show the build log automatically, open it with the default viewer.
 			if($AutoLaunchBuildLogOnFailure)
 			{

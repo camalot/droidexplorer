@@ -36,10 +36,6 @@
 		<CallTarget Targets="Upload" />
 	</Target>
 
-	<Target Name="CreateRelease" Condition=" Exists('$(ZipFile)') AND '$(Platform)' != 'x86'">
-		<Message Text="The platform is '$(Platform)' so creating the release is skipped." />
-	</Target>
-
 	<Target Name="PublishPrep" DependsOnTargets="GetBuildNumber">
 		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(Platform)\">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
@@ -58,7 +54,7 @@
 
 	<!-- This should only create the release when it is x86 -->
 	<!-- BUT! When we do x64, we need to know the Release Name -->
-	<Target Name="CreateRelease" Condition=" Exists('$(ZipFile)') AND '$(Platform)' == 'x86'">
+	<Target Name="CreateRelease" Condition=" '$(Platform)' == 'x86' ">
 
 		<ReadTextFile Files="$(MSBuildProjectDirectory)\publishchangelog.txt">
 			<Output TaskParameter="OutputText" PropertyName="ReleaseDescription" />
@@ -111,7 +107,7 @@
 		<Message Text="Release Url: $(CodePlex_ReleaseUrl)" />
 	</Target>
 
-	<Target Name="Upload" DependsOnTargets="CreateRelease" Condition=" Exists('$(ZipFile)')">
+	<Target Name="Upload" DependsOnTargets="CreateRelease">
 		<CreateItem Include="$(ZipFile)">
 			<Output ItemName="CopyFiles" TaskParameter="Include"/>
 		</CreateItem>

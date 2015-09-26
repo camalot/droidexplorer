@@ -30,31 +30,30 @@
 
 
 	<Target Name="Publish" DependsOnTargets="PublishPrep">
-		<Error Condition=" '$(CI_BUILD_NUMBER)' == '' " Code="500" Text="'CI_BUILD_NUMBER' property was not set." />
-		<Error Condition=" '$(CI_BUILD_REVISION)' == '' " Code="500" Text="'CI_BUILD_REVISION' property was not set." />
 
 		<Error Condition=" '$(CI_CODEPLEX_USER)' == '' " Code="500" Text="'CI_CODEPLEX_USER' property was not set." />
 		<Error Condition=" '$(CI_CODEPLEX_PASSWORD)' == '' " Code="500" Text="'CI_CODEPLEX_PASSWORD' property was not set." />
 		<Error Condition=" '$(CI_DEPLOY_CODEPLEX)' == 'False' " Code="500" Text="'CI_DEPLOY_CODEPLEX' property is set to False" />
 		<Error Condition=" !Exists('$(ZipFile)') " Code="404" Text="Unable to locate '$(ZipFile)'" />
+		
 		<CallTarget Targets="Upload" />
 	</Target>
 
 	<Target Name="PublishPrep">
-		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
-			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
-		</CreateProperty>
+		<Error Condition=" $(CI_BUILD_VERSION)' == '' AND '$(CI_BUILD_NUMBER)' == '' " Code="500" Text="'CI_BUILD_NUMBER' property was not set." />
+		<Error Condition=" $(CI_BUILD_VERSION)' == '' AND '$(CI_BUILD_REVISION)' == '' " Code="500" Text="'CI_BUILD_REVISION' property was not set." />
 
-		<CreateProperty Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' == '' ">
+		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
 			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
 		</CreateProperty>
-		<Message Text="CCNetLabel Set to $(CCNetLabel)" />
+		
+		<Message Text="CI_BUILD_VERSION Set to $(CI_BUILD_VERSION)" />
 		
 		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(Platform)\">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
 		
-		<CreateProperty Value="$(OutputPath)\$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
+		<CreateProperty Value="$(OutputPath)\$(ProjectName).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
 			<Output PropertyName="ZipFile" TaskParameter="Value" />
 		</CreateProperty>
 		

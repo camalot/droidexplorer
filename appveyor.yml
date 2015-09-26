@@ -29,6 +29,7 @@ install:
 - choco install -y wixtoolset
 - choco install -y nuget.commandline
 - set PATH=C:\ProgramData\chocolatey\lib\ilmerge;C:\ProgramData\chocolatey\lib\NuGet.CommandLine\tools;%PATH%
+cache: .\.cache\VersionAssemblyInfo.cache
 before_build:
 - ps: >-
     nuget.exe restore

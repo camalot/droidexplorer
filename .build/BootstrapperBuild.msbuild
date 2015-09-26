@@ -18,7 +18,7 @@
 
 	<Target Name="BootstrapperBuild" DependsOnTargets="AssemblyInfo;">
 
-		<CreateItem Include="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).msi">
+		<CreateItem Include="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).msi">
 			<Output ItemName="InstallFile" TaskParameter="Include"/>
 		</CreateItem>
 
@@ -38,16 +38,16 @@
 			Version="$(CCNetLabel)"
 			TargetKind="Exe"
 			LogFile="$(OutputPath)\ilmerge.log"
-			OutputFile="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).exe"
+			OutputFile="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).exe"
 			DebugInfo="true" />
 
 		<CreateItem Include="$(OutputPath)\*.exe;$(OutputPath)\*.pdb;$(OutputPath)\*.dll" Exclude="$(OutputPath)\*.vshost.exe;$(OutputPath)\*.vshost.pdb;">
 			<Output ItemName="BootstrapperFiles" TaskParameter="Include"/>
 		</CreateItem>
 
-		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CCNetProject) version $(CCNetLabel) Installer"
-			Files="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).exe;$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).pdb" WorkingDirectory="$(OutputPath)"
-			ZipFileName="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).$(ReleaseMode).zip" Flatten="True" ZipLevel="9" />
+		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CI_PROJECT_NAME) version $(CCNetLabel) Installer"
+			Files="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).exe;$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).pdb" WorkingDirectory="$(OutputPath)"
+			ZipFileName="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).$(ReleaseMode).zip" Flatten="True" ZipLevel="9" />
 	</Target>
 
 	<Target Name="BootstrapperCleanup" DependsOnTargets="BootstrapperBuild">

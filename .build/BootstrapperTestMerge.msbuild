@@ -17,7 +17,7 @@
 			<Output ItemName="BootstrapperFiles" TaskParameter="Include"/>
 		</CreateItem>
 
-		<CreateItem Include="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).*">
+		<CreateItem Include="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).*">
 			<Output ItemName="MergedFiles" TaskParameter="Include"/>
 		</CreateItem>
 
@@ -28,7 +28,7 @@
 			Version="$(CCNetLabel)"
 			TargetKind="Exe"
 			LogFile="$(OutputPath)\ilmerge.log"
-			OutputFile="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).exe"
+			OutputFile="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).exe"
 			DebugInfo="true" />
 
 

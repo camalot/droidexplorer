@@ -44,9 +44,9 @@
 			<Output ItemName="ZipFiles" TaskParameter="Include" />
 		</CreateItem>
 
-		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CCNetProject) version $(CCNetLabel)" Files="@(ZipFiles);@(AndroidTools)"
+		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CI_PROJECT_NAME) version $(CCNetLabel)" Files="@(ZipFiles);@(AndroidTools)"
 				 WorkingDirectory="$(OutputPath)"
-				 ZipFileName="$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).zip" ZipLevel="9" Flatten="False" />
+				 ZipFileName="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).zip" ZipLevel="9" Flatten="False" />
 	</Target>
 
 	<Target Name="CopyDrivers">
@@ -59,7 +59,7 @@
 
 	<Target Name="BuildInstall" DependsOnTargets="CopyLicenseFiles;AppConfigUpdate">
 		<MSBuild Projects="@(InstallProjectToBuild)"
-						 Properties="Configuration=$(Configuration);ReleasePlatform=$(ReleasePlatform);Platform=$(Platform);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CCNetProject=$(CCNetProject);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
+						 Properties="Configuration=$(Configuration);ReleasePlatform=$(ReleasePlatform);Platform=$(Platform);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
 			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
 		</MSBuild>
 	</Target>

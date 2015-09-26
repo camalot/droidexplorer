@@ -9,7 +9,7 @@
 		<ProjectGuid>{3d036348-8b1e-4ec3-aa20-d10bab9fecf6}</ProjectGuid>
 		<SchemaVersion>2.0</SchemaVersion>
 		<OutputType>Package</OutputType>
-		<OutputName>$(CCNetProject).$(CCNetLabel).$(ReleasePlatform)</OutputName>
+		<OutputName>$(CI_PROJECT_NAME).$(CCNetLabel).$(ReleasePlatform)</OutputName>
 		<Cultures>en-US</Cultures>
 		<ProjectOutputGroups>Binaries;Symbols</ProjectOutputGroups>
 		<WixPath>$(WIX)</WixPath>
@@ -36,7 +36,7 @@
 		<RegistryPathCloudStats>SOFTWARE\DroidExplorer</RegistryPathCloudStats>
 
 
-		<DefineConstants>RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CCNetProject=$(CCNetProject);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)</DefineConstants>
+		<DefineConstants>RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)</DefineConstants>
 		
 		<GetGUIDCode>
 			<![CDATA[

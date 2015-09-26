@@ -31,14 +31,14 @@
 		<SignAssemblies Condition="'$(SignAssemblies)' == ''">false</SignAssemblies>
 		<CCNetArtifactDirectory Condition="'$(CCNetArtifactDirectory)' == ''">$(MSBuildProjectDirectory)\..\bin\</CCNetArtifactDirectory>
 		<CCNetWorkingDirectory Condition="'$(CCNetWorkingDirectory)' == ''">$(MSBuildProjectDirectory)\..\</CCNetWorkingDirectory>
-		<CCNetProject Condition="'$(CCNetProject)' == ''">DroidExplorer</CCNetProject>
+		<CI_PROJECT_NAME Condition="'$(CI_PROJECT_NAME)' == ''">DroidExplorer</CI_PROJECT_NAME>
 		<CleanBuildOutput>True</CleanBuildOutput>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<BuildAllDependsOn>AssemblyInfo;CleanBuild;PluginBuild;ReleaseCleanup</BuildAllDependsOn>
 		<CompileDependsOn>$(CompileDependsOn)</CompileDependsOn>
 		<ReleaseMode Condition=" '$(ReleaseMode)' != 'Standalone' ">Setup</ReleaseMode>
 		<OutputPath>$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\</OutputPath>
-		<MSBuildProperties>ReleasePlatform=$(ReleasePlatform);ReleaseMode=$(ReleaseMode);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CCNetProject=$(CCNetProject);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)</MSBuildProperties>
+		<MSBuildProperties>ReleasePlatform=$(ReleasePlatform);ReleaseMode=$(ReleaseMode);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)</MSBuildProperties>
 		<PublishMode Condition=" '$(PublishMode)' == '' ">None</PublishMode>
 
 		<ProductionApiDomain Condition=" '$(ProductionApiDomain)' == '' ">de.bit13.com</ProductionApiDomain>
@@ -53,11 +53,11 @@
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
 
-		<CreateProperty Value="DefineConstants=$(DefineConstants) $(PlatformConstant) $(PlatformConstant);OSPlatform=$(OSPlatform);ReleasePlatform=$(ReleasePlatform);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CCNetProject=$(CCNetProject);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
+		<CreateProperty Value="DefineConstants=$(DefineConstants) $(PlatformConstant) $(PlatformConstant);OSPlatform=$(OSPlatform);ReleasePlatform=$(ReleasePlatform);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
 			<Output PropertyName="MSBuildProperties" TaskParameter="Value" />
 		</CreateProperty>
 
-		<CreateProperty Value="SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath)Plugins\;CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CCNetProject=$(CCNetProject);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
+		<CreateProperty Value="SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath)Plugins\;CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
 			<Output PropertyName="PluginMsBuildProperties" TaskParameter="Value" />
 		</CreateProperty>
 	</Target>
@@ -73,9 +73,9 @@
 									/>
 	</Target>
 
-	<Target Name="SetBuildNumber">
+	<Target Name="SetBuildNumber" Condition=" '$(SkipIncrementAssemblyVersion)' != 'True' ">
 		<Attrib Files="$(VersionFile)" ReadOnly="false"/>
-
+		
 		<Version
       Condition=" '$(SkipIncrementAssemblyVersion)' == 'True' "
       VersionFile="$(VersionFile)"
@@ -105,6 +105,18 @@
 		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' == '' ">
 			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
+	</Target>
+
+	<Target Name="SetBuildNumber" Condition=" '$(SkipIncrementAssemblyVersion)' == 'True' ">
+		<Message Importance="high" Text="Using values from Env:Vars for Version" />
+		<!-- If CI provides a build number, we use that, otherwise we take what is in the file -->
+		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
+			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+		</CreateProperty>
+		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' == '' ">
+			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+		</CreateProperty>
+
 	</Target>
 
 	<!--<UsingTask

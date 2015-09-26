@@ -14,7 +14,7 @@
 		<Status>Beta</Status>
 		<ReleaseTimeout>120</ReleaseTimeout>
 		<UploadTimeout>1200</UploadTimeout>
-		<ZipFile>$(OutputPath)$(CCNetProject).$(CCNetLabel).$(Platform).$(ReleaseMode).zip</ZipFile>
+		<ZipFile>$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).$(ReleaseMode).zip</ZipFile>
 		<CanPublish Condition=" Exists('$(MSBuildDeploymentTasksPath)') ">True</CanPublish>
 		<CanPublish Condition=" '$(CanPublish)' == '' ">False</CanPublish>
 		<ReleaseName>$(ProjectFriendlyName) $(CCNetLabel) $(Status)</ReleaseName>

@@ -10,13 +10,16 @@ $commitMessageRegex = "^\[deploy\:(pre-release|draft|release)\]$";
 	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
 		$publishNotes = (Get-Content -Path .\.build\publishchangelog.txt);
 		[Environment]::SetEnvironmentVariable("CI_RELEASE_DESCRIPTION", $publishNotes, "Machine")
+		Write-Host "Set CI_RELEASE_DESCRIPTION : $publishNotes";
 	}
 
-	if( (!(Test-Path -Path Env:\CI_BUILD_VERSION) -or !(Test-Path -Path Env:\CI_BUILD_REVISION)) -and (Test-Path -Path .\VersionAssemblyInfo.txt) ) {
+	if( Test-Path -Path .\VersionAssemblyInfo.txt ) {
     $version = (Get-Content -Path .\VersionAssemblyInfo.txt);
 		$split = $version.split(".");
-		[Environment]::SetEnvironmentVariable("CI_BUILD_VERSION", $version, "Machine")
+		[Environment]::SetEnvironmentVariable("CI_BUILD_VERSION", $version, "Machine");
+		Write-Host "Set CI_BUILD_VERSION : $version";
 		[Environment]::SetEnvironmentVariable("CI_BUILD_REVISION", $split[3], "Machine")
+		Write-Host "Set CI_BUILD_REVISION : $split[3]";
 	}
 
 

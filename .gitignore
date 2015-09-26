@@ -7,7 +7,6 @@
 # Generated Version File:
 VersionAssemblyInfo.cs
 VersionAssemblyInfo.txt
-Installs/Setup.msi
 AssemblyVersionInfo.cs
 
 
@@ -34,6 +33,8 @@ AssemblyVersionInfo.cs
 [Bb]in/
 **/node_modules/*/bin/
 [Oo]bj/
+[Ii]nstalls/[Ss]etup.msi
+
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

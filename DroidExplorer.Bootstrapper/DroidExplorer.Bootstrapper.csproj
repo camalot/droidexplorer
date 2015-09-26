@@ -285,8 +285,6 @@
     <None Include="Resources\UIDialog.png" />
     <None Include="Resources\error.png" />
     <EmbeddedResource Include="Installs\Setup.msi" Condition="Exists('Installs\Setup.msi')" />
-    <EmbeddedResource Include="Installs\tools_r06-windows.zip" Condition="Exists('Installs\tools_r06-windows.zip')" />
-    <EmbeddedResource Include="Installs\android-2.2_r01-windows.zip" Condition="Exists('Installs\android-2.2_r01-windows.zip')" />
     <None Include="Resources\security_background.png" />
     <None Include="Resources\user.png" />
     <None Include="Resources\AndroidSdkEULA.txt" />

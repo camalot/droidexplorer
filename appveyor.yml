@@ -37,7 +37,7 @@ before_build:
     .\.appveyor\appveyor.before-build.ps1
 build:
   project: .\.build\BuildDroidExplorer.msbuild
-  verbosity: detailed
+  verbosity: normal
 after_build:
 - ps: .\.appveyor\appveyor.after-build.ps1
 artifacts:

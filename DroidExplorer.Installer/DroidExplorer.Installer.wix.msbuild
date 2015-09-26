@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5" DefaultTargets="Build"  InitialTargets="Prebuild">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="Build"  InitialTargets="SetBuildNumber;Prebuild">
 	<Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' == ''"/>
 
 	<PropertyGroup>
@@ -33,11 +33,7 @@
 
 		<!--RegistryPathCloudStats Condition=" '$(ReleasePlatform)' == 'x86' ">SOFTWARE\DroidExplorer</RegistryPathCloudStats>
 		<RegistryPathCloudStats Condition=" '$(ReleasePlatform)' == 'x64' ">SOFTWARE\WOW6432Node\DroidExplorer</RegistryPathCloudStats-->
-		<RegistryPathCloudStats>SOFTWARE\DroidExplorer</RegistryPathCloudStats>
-
-
-		<DefineConstants>$(DefineConstants);RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)</DefineConstants>
-		
+		<RegistryPathCloudStats>SOFTWARE\DroidExplorer</RegistryPathCloudStats>		
 		<GetGUIDCode>
 			<![CDATA[
 				public static string ScriptMain() {
@@ -46,14 +42,16 @@
 				]]>
 		</GetGUIDCode>
 
+		<SkipIncrementAssemblyVersion>True</SkipIncrementAssemblyVersion>
+
 	</PropertyGroup>
 
 	<Import Project="$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets" />
 	<Import Project="$(MSBuildProjectDirectory)\..\.build\MSBuild.Community.Tasks.Targets" Condition="'$(MSBuildCommunityTasksPath)' == ''"/>
 
 	<ItemGroup>
-		<SourceFiles Include="*.wxs;*.wxi"/>
-		<EmbeddedResourceFiles Include="*.wxl" />
+		<SourceFiles Include="$(MSBuildProjectDirectory)\**\*.wxs;$(MSBuildProjectDirectory)\**\*.wxi"/>
+		<EmbeddedResourceFiles Include="$(MSBuildProjectDirectory)\**\*.wxl" />
 		<ProjectReference Include="..\DroidExplorer.WixCA\DroidExplorer.WixCA.csproj">
 			<DoNotHarvest>True</DoNotHarvest>
 			<Name>DroidExplorer.WixCA</Name>
@@ -62,7 +60,25 @@
 		</ProjectReference>
 	</ItemGroup>
 
-	<Target Name="Prebuild" DependsOnTargets="AddSourceFiles;AddContentFiles" Condition=" '$(CCNetLabel)' != '' ">
+	<Target Name="Prebuild">
+		<CreateProperty Value="$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\">
+			<Output PropertyName="OutputPath" TaskParameter="Value" />
+		</CreateProperty>
+
+
+		<CreateProperty Value="$(DefineConstants);RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)">
+			<Output PropertyName="DefineConstants" TaskParameter="Value"/>
+		</CreateProperty>
+		
+		<CreateItem Include="@(SourceFiles)" ContinueOnError="false">
+			<Output TaskParameter="Include" ItemName="Compile" />
+		</CreateItem>
+
+		<CreateItem Include="$(OutputPath)\**"
+								ContinueOnError="false">
+			<Output TaskParameter="Include" ItemName="Content" />
+		</CreateItem>
+
 		<MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')" />
 
 		<Script Language="C#" Code="$(GetGUIDCode)">
@@ -74,24 +90,7 @@
 					TaskParameter="Value"
 					PropertyName="DefineConstants" />
 		</CreateProperty>
-		
-	</Target>
 
-	<Target Name="AddSourceFiles">
-		<CreateItem Include="@(SourceFiles)" ContinueOnError="false">
-			<Output TaskParameter="Include" ItemName="Compile" />
-		</CreateItem>
-
-		<!--<CreateItem Include="@(EmbeddedResourceFiles)" ContinueOnError="false">
-			<Output TaskParameter="Include" ItemName="EmbeddedResource" />
-		</CreateItem>-->
-	</Target>
-
-	<Target Name="AddContentFiles">
-		<CreateItem Include="$(OutputPath)**"
-								ContinueOnError="false">
-			<Output TaskParameter="Include" ItemName="Content" />
-		</CreateItem>
 	</Target>
 
 	<ItemGroup>

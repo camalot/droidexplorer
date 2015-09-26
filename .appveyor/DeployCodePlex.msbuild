@@ -8,10 +8,7 @@
 	<PropertyGroup>
 		<DeployCodePlex>DeployCodePlex</DeployCodePlex>
 		<CI_DEPLOY_CODEPLEX Condition=" '$(CI_DEPLOY_CODEPLEX)' == '' ">False</CI_DEPLOY_CODEPLEX>
-		<OutputPath Condition=" '$(OutputPath)' == '' ">$(APPVEYOR_BUILD_FOLDER)\bin\$(Condition)\$(Platform)</OutputPath>
-
 		<CodePlexProject>de</CodePlexProject>
-
 		<ProjectFriendlyName>Droid Explorer</ProjectFriendlyName>
 
 
@@ -44,7 +41,10 @@
 	</Target>
 
 	<Target Name="PublishPrep" DependsOnTargets="GetBuildNumber">
-		<CreateProperty Value="$(OutputPath)$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
+		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Condition)\$(CI_BUILD_VERSION)\$(Platform)\">
+			<Output PropertyName="OutputPath" TaskParameter="Value" />
+		</CreateProperty>
+		<CreateProperty Value="$(OutputPath)\$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
 			<Output PropertyName="ZipFile" TaskParameter="Value" />
 		</CreateProperty>
 		<CreateProperty Value="$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)">

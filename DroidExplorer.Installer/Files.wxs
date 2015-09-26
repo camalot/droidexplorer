@@ -6,7 +6,7 @@
 			<Directory Id="DesktopFolder" Name="Desktop">
 				<Component Id="DesktopShortcut" Guid="797010C9-3734-4A34-8BBA-2D2E4C723E86">
 					<!--Condition><![CDATA[&CreateDesktopShortcut <> 0]]></Condition-->
-					<RegistryKey Root="HKCU" Key="$(var.RegistryPath)" Action="createAndRemoveOnUninstall">
+					<RegistryKey Root="HKCU" Key="$(var.RegistryPath)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 						<RegistryValue Name="CreateDesktopShortcut" Value="1" Type="integer" KeyPath="yes"/>
 					</RegistryKey>
 					<Shortcut Id="DesktopShortcut" Directory="DesktopFolder" Name="Droid Explorer" Icon="AppIcon.exe" Target="[DroidExplorer.exe]"/>
@@ -20,7 +20,7 @@
 					<!--<Directory Id="ANDROIDSDKDIR" Name="SDK"></Directory>-->
 
 					<Component Id="CloudStatsRegistry" Guid="1f49f13c-6053-4241-a056-94a13be32e33" DiskId="1">
-						<RegistryKey Root="HKLM" Key="$(var.RegistryPathCloudStats)" Action="createAndRemoveOnUninstall">
+						<RegistryKey Root="HKLM" Key="$(var.RegistryPathCloudStats)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Name="CloudStatistics" Value="1" Type="integer" KeyPath="yes"/>
 						</RegistryKey>
 					</Component>
@@ -194,22 +194,22 @@
 							Type="url"
               Name="Droid Explorer Website"
               Target="http://de.bit13.com"/>
-						<RegistryKey Root="HKCU" Key="$(var.RegistryPath)" Action="createAndRemoveOnUninstall">
+						<RegistryKey Root="HKCU" Key="$(var.RegistryPath)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Name="PluginShortcuts" Value="1" Type="integer" KeyPath="yes"/>
 						</RegistryKey>
 					</Component>
 
 					<Component Id="InstallDirectoryRegister86" Guid="5049FC04-5096-4b61-B1E7-D53C9A90D833" DiskId="1">
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.RegistryPath)">
+						<RegistryKey Root="HKLM" Key="$(var.RegistryPath)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Value="[INSTALLDIR]" Type="string" />
 						</RegistryKey>
 					</Component>
 
 					<Component Id="ApkExtRegister86" Guid="DAB5A218-7B15-4741-9E6C-244E42ABEA7E" DiskId="1">
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".apk">
+						<RegistryKey Root="HKCR" Key=".apk" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Value="DroidExplorer.ApkInstaller" Type="string" />
 						</RegistryKey>
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.ApkInstaller">
+						<RegistryKey Root="HKCR" Key="DroidExplorer.ApkInstaller" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Key="DefaultIcon" Value="[INSTALLDIR]Assets\apk.ico" Type="expandable" />
 							<RegistryValue Action="write" Value="Android Application" Type="string" />
 							<RegistryValue Action="write" Key="shell\open\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.Installer,DroidExplorer.Plugins /apk=%1 /install" Type="expandable" />
@@ -219,10 +219,10 @@
 					</Component>
 
 					<Component Id="BackupExtRegister86" Guid="112d5120-d4e4-4079-b89e-d2df1f0a1e83" DiskId="1">
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".ab">
+						<RegistryKey Root="HKCR" Key=".ab" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Value="DroidExplorer.AndroidBackup" Type="string" />
 						</RegistryKey>
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.AndroidBackup">
+						<RegistryKey Root="HKCR" Key="DroidExplorer.AndroidBackup" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Key="DefaultIcon" Value="[INSTALLDIR]Assets\backup.ico" Type="expandable" />
 							<RegistryValue Action="write" Value="Android Backup File" Type="string" />
 							<RegistryValue Action="write" Key="shell\open" Value="&amp;Restore Backup to Device" Type="string" />
@@ -238,15 +238,15 @@
 
 						</RegistryKey>
 
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".tar">
+						<RegistryKey Root="HKCR" Key=".tar" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Key="shell\depack" Value="Pack as Android Backup" Type="string" />
 							<RegistryValue Action="write" Key="shell\depack\command" Value="[INSTALLDIR]DroidExplorer.Runner.exe /t=DroidExplorer.Plugins.BackupPacker,DroidExplorer.Plugins /tar=%1 /pack /nodevice" Type="expandable" />
 						</RegistryKey>
 
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key=".abex">
+						<RegistryKey Root="HKCR" Key=".abex" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Value="DroidExplorer.ExtendedAndroidBackup" Type="string" />
 						</RegistryKey>
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.ExtendedAndroidBackup">
+						<RegistryKey Root="HKCR" Key="DroidExplorer.ExtendedAndroidBackup" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Key="DefaultIcon" Value="[INSTALLDIR]Assets\backupex.ico" Type="string" />
 							<RegistryValue Action="write" Value="Enhanced Android Backup File" Type="string" />
 							<RegistryValue Action="write" Key="shell\open" Value="&amp;Restore Backup to Device" Type="string" />
@@ -276,9 +276,7 @@
 					</Component>
 
 					<Component Id="ShellExtRegister86" Guid="2BEFDE86-8D87-4d99-B8E1-4E0F36A19B5D" DiskId="1">
-						<RegistryKey Action="none"
-											Root="HKLM"
-											Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
+						<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write"
 														 Name="{2B688A81-C9F8-4b0e-A1F6-1CE9535614DD}"
 														 Value="DroidExplorer File Shell Extension"
@@ -286,7 +284,7 @@
 						</RegistryKey>
 
 						<!-- Uncomment when APK Shell is working correctly -->
-						<!--RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="DroidExplorer.ApkInstaller">
+						<!--RegistryKey Root="HKCR" Key="DroidExplorer.ApkInstaller" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Action="write" Key="shellex\IconHandler" Value="{2B688A81-C9F8-4b0e-A1F6-1CE9535614DD}" Type="string" />
 							<RegistryValue Action="write" Key="DefaultIcon" Value="&quot;%1&quot;" Type="string" />
 						</RegistryKey-->
@@ -385,7 +383,7 @@
 			<Directory Id="USERPROFILE" SourceName="UserProfile">
 				<Directory Id="TARGETANDROIDBACKUPDIR" Name="Android Backups">
 					<Component Id="BackupFolderFiles" Guid="548e77c9-09a6-455f-b9e6-057c07361ce2" DiskId="1">
-						<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCU" Key="$(var.RegistryPath)">
+						<RegistryKey Root="HKCU" Key="$(var.RegistryPath)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
 							<RegistryValue Name="AndroidBackups" Action="write" Value="[ANDROIDBACKUPDIR]" Type="string" />
 						</RegistryKey>
 

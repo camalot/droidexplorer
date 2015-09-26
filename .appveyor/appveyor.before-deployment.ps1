@@ -19,8 +19,10 @@ if ( !$env:APPVEYOR_PULL_REQUEST_NUMBER -and ($env:APPVEYOR_REPO_BRANCH -eq "mas
 	$env:CI_DEPLOY_WEBAPI_RELEASE = $true;
 
 	# read the publish text file
-	$publishNotes = (Get-Content -Path .\.build\publishchangelog.txt);
-	$env:CI_RELEASE_DESCRIPTION = $publishNotes;
+	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
+		$publishNotes = (Get-Content -Path .\.build\publishchangelog.txt);
+		$env:CI_RELEASE_DESCRIPTION = $publishNotes;
+	}
 
 
 

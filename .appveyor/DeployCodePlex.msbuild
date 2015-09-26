@@ -24,7 +24,7 @@
 		<ReleaseTimeout>120</ReleaseTimeout>
 		<UploadTimeout>1200</UploadTimeout>
 
-
+		<ChangeLogFile>$(MSBuildProjectDirectory)\..\.build\publishchangelog.txt</ChangeLogFile>
 	</PropertyGroup>
 
 
@@ -56,8 +56,9 @@
 	<!-- BUT! When we do x64, we need to know the Release Name -->
 	<Target Name="CreateRelease">
 
-		<ReadTextFile Files="$(MSBuildProjectDirectory)\publishchangelog.txt">
-			<Output TaskParameter="OutputText" PropertyName="ReleaseDescription" />
+		<!-- Read the file if it was not read for some reason and put into ENV:CI_RELEASE_DESCRIPTION-->
+		<ReadTextFile Files="" Condition=" '$(CI_RELEASE_DESCRIPTION)' == '' AND Exists($(ChangeLogFile)) ">
+			<Output TaskParameter="OutputText" PropertyName="CI_RELEASE_DESCRIPTION" />
 		</ReadTextFile>
 
 		<CodePlexCreateRelease
@@ -67,7 +68,7 @@
 			Password="$(CI_CODEPLEX_PASSWORD)"
 			ProjectFriendlyName="$(ProjectFriendlyName)"
 			Version="$(CI_BUILD_VERSION)"
-			Description="$(ReleaseDescription)"
+			Description="$(CI_RELEASE_DESCRIPTION)"
 			IsDefaultRelease="$(IsDefaultRelease)"
 			IsShownToPublic="$(IsShown)"
 			TreatErrorsAsWarnings="True"

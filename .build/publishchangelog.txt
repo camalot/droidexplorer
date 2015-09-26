@@ -1,0 +1,3 @@
+* Build moved to AppVeyor. Big change with the version scheme because of the use of AppVeyor for automated builds.
+* Deployment part of AppVeyor.
+* Source moved to Github: http://github.com/camalot/droidexplorer. Releases will still happen on CodePlex, but source will not be checked in there.

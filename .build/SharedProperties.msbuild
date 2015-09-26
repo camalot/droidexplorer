@@ -129,7 +129,7 @@
 		<ParameterGroup>
 			<File ParameterType="System.String" Required="true" />
 			<Arguments ParameterType="System.String" Required="true" />
-			<Condition ParameterType="String.String" />
+			<Condition ParameterType="String.Boolean" />
 		</ParameterGroup>
 
 		<Task>
@@ -142,7 +142,7 @@
 					 AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
 		<ParameterGroup>
 			<Script ParameterType="System.String" Required="true" />
-			<Condition ParameterType="String.String" />
+			<Condition ParameterType="String.Boolean" />
 		</ParameterGroup>
 
 		<Task>

@@ -29,8 +29,8 @@ hosts:
   de.bit13.local: 69.245.210.157
 install:
 - choco install -y ilmerge
-- choco install -y wixtoolset
 - choco install -y nuget.commandline
+- choco install -y wixtoolset
 - set PATH=C:\ProgramData\chocolatey\lib\ilmerge;C:\ProgramData\chocolatey\lib\NuGet.CommandLine\tools;%PATH%
 cache: .\.cache\VersionAssemblyInfo.cache
 before_build:

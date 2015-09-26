@@ -25,11 +25,12 @@
 		<UploadTimeout>1200</UploadTimeout>
 
 		<ChangeLogFile>$(MSBuildProjectDirectory)\..\.build\publishchangelog.txt</ChangeLogFile>
+		<ReleaseInfoFile>$(MSBuildProjectDirectory)\codeplex-release.txt</ReleaseInfoFile>
 	</PropertyGroup>
 
 
 	<Target Name="Publish" DependsOnTargets="PublishPrep">
-		<Error Condition=" '$(CI_BUILD_VERSION)' == '' " Code="500" Text="'CI_BUILD_VERSION' property was not set." />
+		<Error Condition=" '$(CI_BUILD_NUMBER)' == '' " Code="500" Text="'CI_BUILD_NUMBER' property was not set." />
 		<Error Condition=" '$(CI_BUILD_REVISION)' == '' " Code="500" Text="'CI_BUILD_REVISION' property was not set." />
 
 		<Error Condition=" '$(CI_CODEPLEX_USER)' == '' " Code="500" Text="'CI_CODEPLEX_USER' property was not set." />
@@ -93,14 +94,20 @@
 			<Output PropertyName="ReleaseUrl" TaskParameter="ReleaseUrl" />
 		</CodePlexCreateRelease>
 
-		<SetEnvironmentVariable Name="CodePlex_ReleaseName" Value="$(ReleaseName)" Condition=" '$(CodePlex_ReleaseName)' == '' "/>
+		<!--<SetEnvironmentVariable Name="CodePlex_ReleaseName" Value="$(ReleaseName)" Condition=" '$(CodePlex_ReleaseName)' == '' "/>
 		<SetEnvironmentVariable Name="CodePlex_ReleaseId" Value="$(ReleaseId)" Condition=" '$(CodePlex_ReleaseId)' == '' "/>
 		<SetEnvironmentVariable Name="CodePlex_ReleaseUrl" Value="$(ReleaseUrl)" Condition=" '$(CodePlex_ReleaseUrl)' == '' "/>
 
 		<Message Text="Release Name: $(CodePlex_ReleaseName)" />
 		<Message Text="Release Id: $(CodePlex_ReleaseId)" />
-		<Message Text="Release Url: $(CodePlex_ReleaseUrl)" />
+		<Message Text="Release Url: $(CodePlex_ReleaseUrl)" />-->
+		
+		<CreateItem Include="Id=$(ReleaseId);Name=$(ReleaseName);Url=$(ReleaseUrl)">
+			<Output ItemName="CPLines" TaskParameter="Include"/>
+		</CreateItem>
 
+		<WriteLinesToFile File="$(ReleaseInfoFile)" Lines="@(CPLines)" Overwrite="true" Condition=" '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' "/>
+		<Message Text="@(CPLines)" Condition=" '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' "/>
 	</Target>
 
 	<Target Name="Upload" DependsOnTargets="CreateRelease">

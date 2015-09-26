@@ -5,12 +5,14 @@
 	<PropertyGroup>
 		<SharedProperties>SharedProperties</SharedProperties>
 
-		<CI_BUILD_NUMBER Condition=" '$(APPVEYOR)' == 'True' AND '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(APPVEYOR_BUILD_NUMBER)</CI_BUILD_NUMBER>
+		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == '' AND '$(APPVEYOR)' == 'True' AND '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(APPVEYOR_BUILD_NUMBER)</CI_BUILD_NUMBER>
+		<CI_BUILD_REVISION Condition=" '$(CI_BUILD_REVISION)' == '' AND '$(APPVEYOR)' != 'True' ">0</CI_BUILD_REVISION>
 
 		<Major>0</Major>
 		<Minor>10</Minor>
 		<Build>$(CI_BUILD_NUMBER)</Build>
-		<Revision>0</Revision>
+		<Revision>$(CI_BUILD_REVISION)</Revision>
+		
 		<VersionFile>$(MSBuildProjectDirectory)\..\Shared\VersionAssemblyInfo.txt</VersionFile>
 
 
@@ -103,13 +105,9 @@
 		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' == '' ">
 			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
-
-		<!--<Exec Command=".\set-environment-variable.ps1 -Name MADB_BUILD_VERSION -Value $(CCNetLabel)" WorkingDirectory="$(MSBuildProjectDirectory)" Condition=" '$(APPVEYOR)' == 'True' " />-->
-		<SetEnvironmentVariable Name="CI_BUILD_VERSION" Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_NUMBER)' != '' " />
-		<SetEnvironmentVariable Name="CI_BUILD_REVISION" Value="$(Revision)" Condition=" '$(Revision)' != '' AND '$(Revision)' != '0'" />
 	</Target>
 
-	<UsingTask
+	<!--<UsingTask
 		TaskName="SetEnvironmentVariable"
 		TaskFactory="CodeTaskFactory"
 		AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
@@ -128,7 +126,7 @@
 			</Code>
 		</Task>
 
-	</UsingTask>
+	</UsingTask>-->
 
 
 </Project>

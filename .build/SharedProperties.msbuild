@@ -141,7 +141,6 @@
 					 AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
 		<ParameterGroup>
 			<Script ParameterType="System.String" Required="true" />
-			<Condition ParameterType="String.Boolean" />
 		</ParameterGroup>
 
 		<Task>

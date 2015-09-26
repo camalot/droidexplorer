@@ -5,6 +5,21 @@
 
 $commitMessageRegex = "^\[deploy\:(pre-release|draft|release)\]$";
 
+# THIS SHOULD BE MOVED TO THE MATCH SECTION AFTER TESTING.
+	# read the publish text file
+	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
+		$publishNotes = (Get-Content -Path .\.build\publishchangelog.txt);
+		$env:CI_RELEASE_DESCRIPTION = $publishNotes;
+	}
+
+	if( (!(Test-Path -Path Env:\CI_BUILD_VERSION) -or !(Test-Path -Path Env:\CI_BUILD_REVISION)) -and (Test-Path -Path .\VersionAssemblyInfo.txt) ) {
+    $version = (Get-Content -Path .\VersionAssemblyInfo.txt);
+		$split = $version.split(".");
+    $env:CI_BUILD_VERSION = $version;
+		$env:CI_BUILD_REVISION = $split[3];
+	}
+
+
 # Must come from master branch.
 # Must not have a PULL Request Number
 # Must match regex
@@ -18,12 +33,6 @@ if ( !$env:APPVEYOR_PULL_REQUEST_NUMBER -and ($env:APPVEYOR_REPO_BRANCH -eq "mas
 	$env:CI_DEPLOY_CodePlex = $true;
 	$env:CI_DEPLOY_WEBAPI_RELEASE = $true;
 
-	# read the publish text file
-	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
-		$publishNotes = (Get-Content -Path .\.build\publishchangelog.txt);
-		$env:CI_RELEASE_DESCRIPTION = $publishNotes;
-	}
-
 
 
 } else {
@@ -35,5 +44,7 @@ if ( !$env:APPVEYOR_PULL_REQUEST_NUMBER -and ($env:APPVEYOR_REPO_BRANCH -eq "mas
 	$env:CI_DEPLOY_WebDeploy = $false;
 	$env:CI_DEPLOY_CodePlex = $true;
 	$env:CI_DEPLOY_WEBAPI_RELEASE = $false;
+
+
 
 }

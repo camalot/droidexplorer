@@ -35,7 +35,7 @@
 		<BuildAllDependsOn>AssemblyInfo;CleanBuild;PluginBuild;ReleaseCleanup</BuildAllDependsOn>
 		<CompileDependsOn>$(CompileDependsOn)</CompileDependsOn>
 		<ReleaseMode Condition=" '$(ReleaseMode)' != 'Standalone' ">Setup</ReleaseMode>
-		<OutputPath>$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleaseMode)\$(ReleasePlatform)\</OutputPath>
+		<OutputPath>$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\</OutputPath>
 		<MSBuildProperties>ReleasePlatform=$(ReleasePlatform);ReleaseMode=$(ReleaseMode);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CCNetProject=$(CCNetProject);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)</MSBuildProperties>
 		<PublishMode Condition=" '$(PublishMode)' == '' ">None</PublishMode>
 
@@ -106,6 +106,25 @@
 
 		<!--<Exec Command=".\set-environment-variable.ps1 -Name MADB_BUILD_VERSION -Value $(CCNetLabel)" WorkingDirectory="$(MSBuildProjectDirectory)" Condition=" '$(APPVEYOR)' == 'True' " />-->
 		<SetEnvironmentVariable Name="CI_BUILD_VERSION" Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_NUMBER)' != '' " />
+	</Target>
+
+	<Target Name="GetBuildNumber">
+		<Version
+      VersionFile="$(VersionFile)"
+      BuildType="None"
+      RevisionType="None">
+			<Output TaskParameter="Major" PropertyName="Major" />
+			<Output TaskParameter="Minor" PropertyName="Minor" />
+			<Output TaskParameter="Build" PropertyName="Build" />
+			<Output TaskParameter="Revision" PropertyName="Revision" />
+		</Version>
+		<!-- If CI provides a build number, we use that, otherwise we take what is in the file -->
+		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
+			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+		</CreateProperty>
+		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' == '' ">
+			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+		</CreateProperty>
 	</Target>
 
 	<UsingTask

@@ -27,22 +27,28 @@
 		<ReleaseTimeout>120</ReleaseTimeout>
 		<UploadTimeout>1200</UploadTimeout>
 
-		<ZipFile>$(OutputPath)$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip</ZipFile>
-		<ReleaseName>$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)</ReleaseName>
 
 	</PropertyGroup>
 
 
-	<Target Name="Publish" Condition=" Exists('$(ZipFile)')" >
+	<Target Name="Publish" DependsOnTargets="PublishPrep">
 		<Error Condition=" '$(CPUsername)' == '' " Code="500" Text="'CPUsername' property was not set." />
 		<Error Condition=" '$(CPPassword)' == '' " Code="500" Text="'CPPassword' property was not set." />
 		<Error Condition=" '$(PublishKey)' == '' " Code="500" Text="'PublishKey' property was not set." />
 		<Error Condition=" '$(CI_DEPLOY_CODEPLEX)' == 'False' " Code="500" Text="'CI_DEPLOY_CODEPLEX' property is set to False" />
+		<Error Condition=" !Exists('$(ZipFile)') " Code="404" Text="Unable to locate '$(ZipFile)'" />
 		<CallTarget Targets="Upload" />
 	</Target>
 
 	<Target Name="CreateRelease" Condition=" Exists('$(ZipFile)') AND '$(Platform)' != 'x86'">
 		<Message Text="The platform is '$(Platform)' so creating the release is skipped." />
+	</Target>
+
+	<Target Name="PublishPrep" DependsOnTargets="GetBuildNumber">
+		<PropertyGroup>
+			<ZipFile>$(OutputPath)$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip</ZipFile>
+			<ReleaseName>$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)</ReleaseName>
+		</PropertyGroup>
 	</Target>
 
 

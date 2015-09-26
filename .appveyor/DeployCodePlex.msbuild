@@ -87,20 +87,14 @@
 		<Message Text="Release Id: $(CodePlex_ReleaseId)" />
 		<Message Text="Release Url: $(CodePlex_ReleaseUrl)" />
 
-		<Error Condition=" '$(CodePlex_ReleaseName)' == '' " Text="Unable to get CodePlex_ReleaseName from Environment Variables" Code="500" />
-		<Error Condition=" '$(CodePlex_ReleaseId)' == '' " Text="Unable to get CodePlex_ReleaseId from Environment Variables" Code="500" />
-		<Error Condition=" '$(CodePlex_ReleaseUrl)' == '' " Text="Unable to get CodePlex_ReleaseUrl from Environment Variables" Code="500" />
-
 	</Target>
 
 	<Target Name="Upload" DependsOnTargets="CreateRelease">
-		<Error Condition=" '$(CodePlex_ReleaseName)' == '' " Text="Unable to get CodePlex_ReleaseName from Environment Variables" Code="500" />
-
 		<CodePlexUpload
 			Project="$(CodePlexProject)"
 			Username="$(CI_CODEPLEX_USER)"
 			Password="$(CI_CODEPLEX_PASSWORD)"
-			ReleaseName="$(CodePlex_ReleaseName)"
+			ReleaseName="$(ReleaseName)"
 			FileType="RuntimeBinary"
 			File="$(ZipFile)"
 			Timeout="$(UploadTimeout)" />

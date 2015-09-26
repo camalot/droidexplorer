@@ -10,5 +10,6 @@ $env:PATH = "C:\ProgramData\chocolatey\lib\ilmerge;C:\ProgramData\chocolatey\lib
 $cache = "$env:APPVEYOR_BUILD_FOLDER\cache\";
 if( !(Test-Path -Path $cache) ) {
 	Write-Host "Creating '$cache'";
-	New-Item -Path $cache -ItemType Directory -Force;
+	New-Item -Path $cache -ItemType Directory -Force | Out-Null;
+	"$env:APPVEYOR_BUILD_VERSION.0" | Out-File -FilePath "$cache\AssemblyVersionInfo.txt";
 }

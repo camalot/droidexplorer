@@ -77,7 +77,7 @@
 		<AssemblyInfo CodeLanguage="CS"
 									AssemblyFileVersion="$(CCNetLabel)"
 									AssemblyVersion="$(Major).$(Minor).0.0"
-									OutputFile="$(MSBuildProjectDirectory)\..\Shared\VersionAssemblyInfo.cs"
+									OutputFile="$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.cs"
 									/>
 	</Target>
 

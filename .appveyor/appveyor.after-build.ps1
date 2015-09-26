@@ -1,5 +1,11 @@
-$cachedVersionInfo = "$env:APPVEYOR_BUILD_FOLDER\.cache\VersionAssemblyInfo.cache";
+$cachePath = "$env:APPVEYOR_BUILD_FOLDER\.cache\";
+
+$cachedVersionInfo = "$cachePath\VersionAssemblyInfo.cache";
 $sourceVersionInfo = "$env:APPVEYOR_BUILD_FOLDER\Shared\VersionAssemblyInfo.txt";
+
+if(!(Test-Path -Path $cachePath)) {
+	New-Item -Path $cachePath -ItemType Directory -Force | Out-Null;
+}
 
 if( (Test-Path -Path $sourceVersionInfo) -and !(Test-Path -Path $cachedVersionInfo)) {
 	(Get-Content -Path $sourceVersionInfo) | Out-File -FilePath $cachedVersionInfo -Force;

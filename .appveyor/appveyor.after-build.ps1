@@ -19,4 +19,7 @@ if( (Test-Path -Path $sourceVersionInfo) -and ($env:Platform -eq 'x86') ) {
 
 	Write-Host "Set the CI_BUILD_VERSION to $env:CI_BUILD_VERSION";
 
+	$env:CI_BUILD_VERSION | Out-File -FilePath $sourceVersionInfo -Force;
+
+
 }

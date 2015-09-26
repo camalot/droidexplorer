@@ -41,7 +41,7 @@
 	</Target>
 
 	<Target Name="PublishPrep" DependsOnTargets="GetBuildNumber">
-		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Condition)\$(CI_BUILD_VERSION)\$(Platform)\">
+		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(Platform)\">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
 		<CreateProperty Value="$(OutputPath)\$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">

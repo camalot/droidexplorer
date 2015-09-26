@@ -37,7 +37,7 @@
 
 
 		<DefineConstants>RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)</DefineConstants>
-		
+		<DefineSolutionProperties>false</DefineSolutionProperties>
 		<GetGUIDCode>
 			<![CDATA[
 				public static string ScriptMain() {

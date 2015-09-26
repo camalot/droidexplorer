@@ -57,7 +57,7 @@
 	<Target Name="CreateRelease">
 
 		<!-- Read the file if it was not read for some reason and put into ENV:CI_RELEASE_DESCRIPTION-->
-		<ReadTextFile Files="" Condition=" '$(CI_RELEASE_DESCRIPTION)' == '' AND Exists($(ChangeLogFile)) ">
+		<ReadTextFile Files="$(ChangeLogFile)" Condition=" '$(CI_RELEASE_DESCRIPTION)' == '' AND Exists($(ChangeLogFile)) ">
 			<Output TaskParameter="OutputText" PropertyName="CI_RELEASE_DESCRIPTION" />
 		</ReadTextFile>
 
@@ -86,6 +86,11 @@
 		<Message Text="Release Name: $(CodePlex_ReleaseName)" />
 		<Message Text="Release Id: $(CodePlex_ReleaseId)" />
 		<Message Text="Release Url: $(CodePlex_ReleaseUrl)" />
+
+		<Error Condition=" '$(CodePlex_ReleaseName)' == '' " Text="Unable to get CodePlex_ReleaseName from Environment Variables" Code="500" />
+		<Error Condition=" '$(CodePlex_ReleaseId)' == '' " Text="Unable to get CodePlex_ReleaseId from Environment Variables" Code="500" />
+		<Error Condition=" '$(CodePlex_ReleaseUrl)' == '' " Text="Unable to get CodePlex_ReleaseUrl from Environment Variables" Code="500" />
+
 	</Target>
 
 	<Target Name="Upload" DependsOnTargets="CreateRelease">

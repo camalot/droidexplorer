@@ -44,10 +44,12 @@
 	</Target>
 
 	<Target Name="PublishPrep" DependsOnTargets="GetBuildNumber">
-		<PropertyGroup>
-			<ZipFile>$(OutputPath)$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip</ZipFile>
-			<ReleaseName>$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)</ReleaseName>
-		</PropertyGroup>
+		<CreateProperty Value="$(OutputPath)$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
+			<Output PropertyName="ZipFile" TaskParameter="Value" />
+		</CreateProperty>
+		<CreateProperty Value="$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)">
+			<Output PropertyName="ReleaseName" TaskParameter="Value" />
+		</CreateProperty>
 
 		<Message Text="ZipFile set: '$(ZipFile)'" />
 		<Message Text="ReleaseName set: '$(ReleaseName)'" />

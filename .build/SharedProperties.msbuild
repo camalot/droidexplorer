@@ -126,7 +126,10 @@
 			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
 
-		<SetEnvironmentVariable Name="CI_BUILD_VERSION" Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_NUMBER)' != '' " />
+		<SetEnvironmentVariable Name="CI_BUILD_VERSION" Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' != '' AND '$(CCNetLabel)' != '' " />
+		<CreateProperty Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' == '' ">
+			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
+		</CreateProperty>
 		<Message Text="Version Label Set to $(CCNetLabel)" />
 	</Target>
 

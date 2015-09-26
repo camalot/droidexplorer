@@ -42,7 +42,7 @@
 		<ProductionApiDomain Condition=" '$(ProductionApiDomain)' == '' ">de.bit13.com</ProductionApiDomain>
 		<DevelopmentApiDomain Condition=" '$(DevelopmentApiDomain)' == '' ">de.bit13.local</DevelopmentApiDomain>
 		
-		<SkipIncrementAssemblyVersion Condition=" '$(SkipIncrementAssemblyVersion)' == '' OR '$(Platform)' == 'x64' ">False</SkipIncrementAssemblyVersion>
+		<SkipIncrementAssemblyVersion Condition=" '$(Platform)' == 'x64' ">True</SkipIncrementAssemblyVersion>
 	</PropertyGroup>
 
 
@@ -106,10 +106,12 @@
 
 		<!--<Exec Command=".\set-environment-variable.ps1 -Name MADB_BUILD_VERSION -Value $(CCNetLabel)" WorkingDirectory="$(MSBuildProjectDirectory)" Condition=" '$(APPVEYOR)' == 'True' " />-->
 		<SetEnvironmentVariable Name="CI_BUILD_VERSION" Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_NUMBER)' != '' " />
+		<SetEnvironmentVariable Name="CI_BUILD_REVISION" Value="$(Revision)" Condition=" '$(Revision)' != '' AND '$(Revision)' != '0'" />
 	</Target>
 
 	<Target Name="GetBuildNumber">
 		<Version
+			Condition=" '$(CI_BUILD_VERSION)' == '' "
       VersionFile="$(VersionFile)"
       BuildType="None"
       RevisionType="None">
@@ -118,15 +120,20 @@
 			<Output TaskParameter="Build" PropertyName="Build" />
 			<Output TaskParameter="Revision" PropertyName="Revision" />
 		</Version>
-		<!-- If CI provides a build number, we use that, otherwise we take what is in the file -->
-		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
-			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+
+		<SetEnvironmentVariable Name="CI_BUILD_REVISION" Value="$(Revision)" Condition=" '$(CI_BUILD_REVISION)' == '' " />
+		<CreateProperty Value="$(Revision)" Condition=" '$(Revision)' != '' AND '$(Revision)' != '0' ">
+			<Output PropertyName="CI_BUILD_REVISION" TaskParameter="Value" />
 		</CreateProperty>
-		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' == '' ">
+		
+		
+		<!-- If CI provides a build number, we use that, otherwise we take what is in the file -->
+		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
 			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
 
 		<SetEnvironmentVariable Name="CI_BUILD_VERSION" Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' != '' AND '$(CCNetLabel)' != '' " />
+
 		<CreateProperty Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' == '' ">
 			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
 		</CreateProperty>

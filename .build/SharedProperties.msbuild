@@ -107,11 +107,11 @@
 			<Output TaskParameter="Revision" PropertyName="Revision" />
 		</Version>
 
-		<CreateProperty Value="$(Revision)" Condition=" '$(CI_BUILD_REVISION)' == '0' OR '$(CI_BUILD_REVISION)' != '' ">
+		<CreateProperty Value="$(Revision)" Condition=" '$(CI_BUILD_REVISION)' == '0' OR '$(CI_BUILD_REVISION)' == '' ">
 			<Output PropertyName="CI_BUILD_REVISION" TaskParameter="Value" />
 		</CreateProperty>
 
-		<CreateProperty Value="$(Build)" Condition=" '$(CI_BUILD_NUMBER)' == '0' OR '$(CI_BUILD_NUMBER)' != '' ">
+		<CreateProperty Value="$(Build)" Condition=" '$(CI_BUILD_NUMBER)' == '0' OR '$(CI_BUILD_NUMBER)' == '' ">
 			<Output PropertyName="CI_BUILD_NUMBER" TaskParameter="Value" />
 		</CreateProperty>
 

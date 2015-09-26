@@ -137,8 +137,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{477B5C
 		.build\BuildDroidExplorer.msbuild = .build\BuildDroidExplorer.msbuild
 		.build\OnlyCreateRelease.msbuild = .build\OnlyCreateRelease.msbuild
 		.build\publish-buildX64.msbuild = .build\publish-buildX64.msbuild
-		.build\publish-onlyCreateRelease.bat = .build\publish-onlyCreateRelease.bat
-		.build\Publish.msbuild = .build\Publish.msbuild
 		.build\publishchangelog.txt = .build\publishchangelog.txt
 		.build\SharedProperties.msbuild = .build\SharedProperties.msbuild
 	EndProjectSection

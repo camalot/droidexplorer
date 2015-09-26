@@ -14,7 +14,7 @@ environment:
   CI_PUBLISHAPPID:
     secure: fe++r3+ZTiE0b0TPHw+6hF/dLxYoiDpDogcEJXmt4OAk58QbSqeLnSmP1a3OJcOL
   CI_PUBLISHKEY:
-    secure: fe++r3+ZTiE0b0TPHw+6hF/dLxYoiDpDogcEJXmt4ODgxEvVyuhmXBXL4f8Cy+27
+    secure: 1UdlmNO7NURkAOSxs1nLS7C5PWwY0QyqFSh3Au1aQhZzMWTgUgaW/8ZNdVuMW7Mi
   DE_PFX_KEY:
     secure: p7A0E/BfE4md3QJjC+BsCw==
   VS_PFX_KEY:
@@ -37,7 +37,7 @@ before_build:
     .\.appveyor\appveyor.before-build.ps1
 build:
   project: .\.build\BuildDroidExplorer.msbuild
-  verbosity: normal
+  verbosity: minimal
 after_build:
 - ps: .\.appveyor\appveyor.after-build.ps1
 artifacts:

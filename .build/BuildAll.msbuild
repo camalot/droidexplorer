@@ -13,7 +13,7 @@
 		</MSBuild>
 
 		<MSBuild Projects="$(MSBuildProjectDirectory)\BuildDroidExplorer.msbuild" ContinueOnError="false"
-						 Properties="Platform=x64;ReleaseMode=Setup;SkipIncrementAssemblyVersion=True">
+						 Properties="Platform=x64;ReleaseMode=Setup">
 			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
 		</MSBuild>
 

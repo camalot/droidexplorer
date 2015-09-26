@@ -8,6 +8,7 @@
 		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == '' AND '$(APPVEYOR)' == 'True' AND '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(APPVEYOR_BUILD_NUMBER)</CI_BUILD_NUMBER>
 		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == ''">0</CI_BUILD_NUMBER>
 		<CI_BUILD_REVISION Condition=" '$(CI_BUILD_REVISION)' == '' AND '$(APPVEYOR)' != 'True' ">0</CI_BUILD_REVISION>
+		<CI_BUILD_REVISION Condition=" '$(CI_BUILD_REVISION)' == ''">0</CI_BUILD_REVISION>
 		<CI_PROJECT_NAME Condition="'$(CI_PROJECT_NAME)' == ''">DroidExplorer</CI_PROJECT_NAME>
 		<CI_PROJECT_FRIENDLY_NAME>Droid Explorer</CI_PROJECT_FRIENDLY_NAME>
 
@@ -50,6 +51,8 @@
 		<DevelopmentApiDomain Condition=" '$(DevelopmentApiDomain)' == '' ">de.bit13.local</DevelopmentApiDomain>
 		
 		<SkipIncrementAssemblyVersion Condition=" '$(Platform)' == 'x64' ">True</SkipIncrementAssemblyVersion>
+		<SkipIncrementAssemblyVersion Condition=" '$(Platform)' == 'x86' ">False</SkipIncrementAssemblyVersion>
+
 	</PropertyGroup>
 
 
@@ -57,6 +60,7 @@
 		<CreateProperty Value="$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
+
 
 		<CreateProperty Value="DefineConstants=$(DefineConstants) $(PlatformConstant);OSPlatform=$(OSPlatform);ReleasePlatform=$(ReleasePlatform);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
 			<Output PropertyName="MSBuildProperties" TaskParameter="Value" />
@@ -78,7 +82,7 @@
 									/>
 	</Target>
 
-	<Target Name="SetBuildNumber" Condition=" '$(SkipIncrementAssemblyVersion)' != 'True' ">
+	<Target Name="SetBuildNumber">
 		<Attrib Files="$(VersionFile)" ReadOnly="false"/>
 		
 		<Version
@@ -103,22 +107,16 @@
 			<Output TaskParameter="Revision" PropertyName="Revision" />
 		</Version>
 
-		<!-- If CI provides a build number, we use that, otherwise we take what is in the file -->
-		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
-			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+		<CreateProperty Value="$(Revision)" Condition=" '$(CI_BUILD_REVISION)' == '0' OR '$(CI_BUILD_REVISION)' != '' ">
+			<Output PropertyName="CI_BUILD_REVISION" TaskParameter="Value" />
 		</CreateProperty>
-		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' == '' ">
-			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
-		</CreateProperty>
-	</Target>
 
-	<Target Name="SetBuildNumber" Condition=" '$(SkipIncrementAssemblyVersion)' == 'True' ">
-		<Message Importance="high" Text="Using values from Env:Vars for Version" />
-		<!-- If CI provides a build number, we use that, otherwise we take what is in the file -->
-		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
-			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+		<CreateProperty Value="$(Build)" Condition=" '$(CI_BUILD_NUMBER)' == '0' OR '$(CI_BUILD_NUMBER)' != '' ">
+			<Output PropertyName="CI_BUILD_NUMBER" TaskParameter="Value" />
 		</CreateProperty>
-		<CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)" Condition=" '$(CI_BUILD_NUMBER)' == '' ">
+
+		
+		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)">
 			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
 

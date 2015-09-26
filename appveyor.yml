@@ -28,7 +28,8 @@ environment:
 hosts:
   de.bit13.local: 69.245.210.157
 install:
-- ps: >- .\.appveyor\appveyor.install.ps1
+- ps: >- 
+	.\.appveyor\appveyor.install.ps1
 cache: .\cache\
 before_build:
 - ps: >-

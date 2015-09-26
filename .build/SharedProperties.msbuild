@@ -109,37 +109,6 @@
 		<SetEnvironmentVariable Name="CI_BUILD_REVISION" Value="$(Revision)" Condition=" '$(Revision)' != '' AND '$(Revision)' != '0'" />
 	</Target>
 
-	<Target Name="GetBuildNumber">
-		<Version
-			Condition=" '$(CI_BUILD_VERSION)' == '' "
-      VersionFile="$(VersionFile)"
-      BuildType="None"
-      RevisionType="None">
-			<Output TaskParameter="Major" PropertyName="Major" />
-			<Output TaskParameter="Minor" PropertyName="Minor" />
-			<Output TaskParameter="Build" PropertyName="Build" />
-			<Output TaskParameter="Revision" PropertyName="Revision" />
-		</Version>
-
-		<SetEnvironmentVariable Name="CI_BUILD_REVISION" Value="$(Revision)" Condition=" '$(CI_BUILD_REVISION)' == '' " />
-		<CreateProperty Value="$(Revision)" Condition=" '$(Revision)' != '' AND '$(Revision)' != '0' ">
-			<Output PropertyName="CI_BUILD_REVISION" TaskParameter="Value" />
-		</CreateProperty>
-		
-		
-		<!-- If CI provides a build number, we use that, otherwise we take what is in the file -->
-		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
-			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
-		</CreateProperty>
-
-		<SetEnvironmentVariable Name="CI_BUILD_VERSION" Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' != '' AND '$(CCNetLabel)' != '' " />
-
-		<CreateProperty Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' == '' ">
-			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
-		</CreateProperty>
-		<Message Text="Version Label Set to $(CCNetLabel)" />
-	</Target>
-
 	<UsingTask
 		TaskName="SetEnvironmentVariable"
 		TaskFactory="CodeTaskFactory"

@@ -268,6 +268,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".appveyor", ".appveyor", "{
 		.appveyor\DeployCodePlex.msbuild = .appveyor\DeployCodePlex.msbuild
 		.appveyor\InstallPfx.ps1 = .appveyor\InstallPfx.ps1
 		.appveyor\Invoke-MsBuild.psm1 = .appveyor\Invoke-MsBuild.psm1
+		.appveyor\Send-PushMessage.ps1 = .appveyor\Send-PushMessage.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "targets", "targets", "{79A2AC29-305F-4076-B7A3-3F451004C3EF}"

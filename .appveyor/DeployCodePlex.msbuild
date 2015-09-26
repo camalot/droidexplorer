@@ -29,6 +29,9 @@
 
 
 	<Target Name="Publish" DependsOnTargets="PublishPrep">
+		<Error Condition=" '$(CI_BUILD_VERSION)' == '' " Code="500" Text="'CI_BUILD_VERSION' property was not set." />
+		<Error Condition=" '$(CI_BUILD_REVISION)' == '' " Code="500" Text="'CI_BUILD_REVISION' property was not set." />
+
 		<Error Condition=" '$(CI_CODEPLEX_USER)' == '' " Code="500" Text="'CI_CODEPLEX_USER' property was not set." />
 		<Error Condition=" '$(CI_CODEPLEX_PASSWORD)' == '' " Code="500" Text="'CI_CODEPLEX_PASSWORD' property was not set." />
 		<Error Condition=" '$(CI_DEPLOY_CODEPLEX)' == 'False' " Code="500" Text="'CI_DEPLOY_CODEPLEX' property is set to False" />
@@ -36,13 +39,24 @@
 		<CallTarget Targets="Upload" />
 	</Target>
 
-	<Target Name="PublishPrep" DependsOnTargets="GetBuildNumber">
+	<Target Name="PublishPrep">
+		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_NUMBER)' != '' ">
+			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
+		</CreateProperty>
+
+		<CreateProperty Value="$(CCNetLabel)" Condition=" '$(CI_BUILD_VERSION)' == '' ">
+			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
+		</CreateProperty>
+		<Message Text="CCNetLabel Set to $(CCNetLabel)" />
+		
 		<CreateProperty Value="$(APPVEYOR_BUILD_FOLDER)\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(Platform)\">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
+		
 		<CreateProperty Value="$(OutputPath)\$(CCNetProject).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip">
 			<Output PropertyName="ZipFile" TaskParameter="Value" />
 		</CreateProperty>
+		
 		<CreateProperty Value="$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)">
 			<Output PropertyName="ReleaseName" TaskParameter="Value" />
 		</CreateProperty>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5" DefaultTargets="Build"  InitialTargets="Prebuild">
-	<Import Project="$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\..\Build\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+	<Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' == ''"/>
 
 	<PropertyGroup>
 		<!-- Always build the installer as x86 -->
@@ -23,7 +23,7 @@
 		<LinkerAdditionalOptions>&quot;$(WixToolPath)difxapp_$(Platform).wixlib&quot; -loc custom_en-us.wxl</LinkerAdditionalOptions>
 		<IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
 
-		<ProductName>Droid Explorer $(CCNetLabel) ($(ReleasePlatform))</ProductName>
+		<ProductName>$(CI_PROJECT_FRIENDLY_NAME) $(CCNetLabel) ($(ReleasePlatform))</ProductName>
 		<PlatformProgramFilesFolder Condition=" '$(ReleasePlatform)' == 'x64' ">ProgramFiles64Folder</PlatformProgramFilesFolder>
 		<PlatformProgramFilesFolder Condition=" '$(ReleasePlatform)' == 'x86' ">ProgramFilesFolder</PlatformProgramFilesFolder>
 
@@ -36,8 +36,8 @@
 		<RegistryPathCloudStats>SOFTWARE\DroidExplorer</RegistryPathCloudStats>
 
 
-		<DefineConstants>RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)</DefineConstants>
-		<DefineSolutionProperties>false</DefineSolutionProperties>
+		<DefineConstants>$(DefineConstants);RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)</DefineConstants>
+		
 		<GetGUIDCode>
 			<![CDATA[
 				public static string ScriptMain() {

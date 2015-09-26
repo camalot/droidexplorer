@@ -7,6 +7,8 @@
 
 		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == '' AND '$(APPVEYOR)' == 'True' AND '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(APPVEYOR_BUILD_NUMBER)</CI_BUILD_NUMBER>
 		<CI_BUILD_REVISION Condition=" '$(CI_BUILD_REVISION)' == '' AND '$(APPVEYOR)' != 'True' ">0</CI_BUILD_REVISION>
+		<CI_PROJECT_NAME Condition="'$(CI_PROJECT_NAME)' == ''">DroidExplorer</CI_PROJECT_NAME>
+		<CI_PROJECT_FRIENDLY_NAME>Droid Explorer</CI_PROJECT_FRIENDLY_NAME>
 
 		<Major>0</Major>
 		<Minor>10</Minor>
@@ -29,9 +31,10 @@
 		<OSPlatform Condition=" '$(OSPlatform)' == '' ">PLATFORM_WINDOWS</OSPlatform>
 
 		<SignAssemblies Condition="'$(SignAssemblies)' == ''">false</SignAssemblies>
+		
 		<CCNetArtifactDirectory Condition="'$(CCNetArtifactDirectory)' == ''">$(MSBuildProjectDirectory)\..\bin\</CCNetArtifactDirectory>
 		<CCNetWorkingDirectory Condition="'$(CCNetWorkingDirectory)' == ''">$(MSBuildProjectDirectory)\..\</CCNetWorkingDirectory>
-		<CI_PROJECT_NAME Condition="'$(CI_PROJECT_NAME)' == ''">DroidExplorer</CI_PROJECT_NAME>
+
 		<CleanBuildOutput>True</CleanBuildOutput>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<BuildAllDependsOn>AssemblyInfo;CleanBuild;PluginBuild;ReleaseCleanup</BuildAllDependsOn>

@@ -9,7 +9,6 @@
 		<DeployCodePlex>DeployCodePlex</DeployCodePlex>
 		<CI_DEPLOY_CODEPLEX Condition=" '$(CI_DEPLOY_CODEPLEX)' == '' ">False</CI_DEPLOY_CODEPLEX>
 		<CodePlexProject>de</CodePlexProject>
-		<ProjectFriendlyName>Droid Explorer</ProjectFriendlyName>
 
 
 		<!--<IsDefaultRelease>$(CI_DEPLOY_CODEPLEX)</IsDefaultRelease>
@@ -57,7 +56,7 @@
 			<Output PropertyName="ZipFile" TaskParameter="Value" />
 		</CreateProperty>
 		
-		<CreateProperty Value="$(ProjectFriendlyName) $(CI_BUILD_VERSION) $(Status)">
+		<CreateProperty Value="$(CI_PROJECT_FRIENDLY_NAME) $(CI_BUILD_VERSION) $(Status)">
 			<Output PropertyName="ReleaseName" TaskParameter="Value" />
 		</CreateProperty>
 
@@ -80,7 +79,7 @@
 			Project="$(CodePlexProject)"
 			Username="$(CI_CODEPLEX_USER)"
 			Password="$(CI_CODEPLEX_PASSWORD)"
-			ProjectFriendlyName="$(ProjectFriendlyName)"
+			ProjectFriendlyName="$(CI_PROJECT_FRIENDLY_NAME)"
 			Version="$(CI_BUILD_VERSION)"
 			Description="$(CI_RELEASE_DESCRIPTION)"
 			IsDefaultRelease="$(IsDefaultRelease)"

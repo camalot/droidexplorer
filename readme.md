@@ -1,6 +1,6 @@
 [![Droid Explorer](http://i.imgur.com/AeF9O4q.png)![Droid Explorer](http://i.imgur.com/EMsfFVi.png)](http://de.bit13.com)
 
-[WEBSITE](http://de.bit13.com) | [FAQ](https://github.com/camalot/droidexplorer/wiki/FAQ) | [FEATURES](https://github.com/camalot/droidexplorer/wiki/features) | [RELEASES](https://github.com/camalot/droidexplorer/releases) | [SCREENSHOTS]((https://github.com/camalot/droidexplorer/wiki/screenshots/)) | [ASK FOR HELP](http://android.stackexchange.com/questions/tagged/droidexplorer)
+[WEBSITE](http://de.bit13.com) | [FAQ](https://github.com/camalot/droidexplorer/wiki/FAQ) | [FEATURES](https://github.com/camalot/droidexplorer/wiki/features) | [RELEASES](https://github.com/camalot/droidexplorer/releases) | [SCREENSHOTS](https://github.com/camalot/droidexplorer/wiki/screenshots/) | [ASK FOR HELP](http://android.stackexchange.com/questions/tagged/droidexplorer)
 
 A tool to manage your rooted android device with the simplicity of Windows Explorer.
 

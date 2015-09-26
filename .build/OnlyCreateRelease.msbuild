@@ -7,12 +7,11 @@
 		<PublishTarget>PublishTarget</PublishTarget>
 		<MSBuildDeploymentTasksPath>$(MSBuildProjectDirectory)\..\3rdParty\msbuildtasks\MSBuild.Deployment.Tasks.Targets</MSBuildDeploymentTasksPath>
 		<Project>de</Project>
-		<ProjectFriendlyName>Droid Explorer</ProjectFriendlyName>
 		<Status>Beta</Status>
 		<ReleaseTimeout>120</ReleaseTimeout>
 		<CanPublish Condition=" Exists('$(MSBuildDeploymentTasksPath)') ">True</CanPublish>
 		<CanPublish Condition=" '$(CanPublish)' == '' ">False</CanPublish>
-		<ReleaseName>$(ProjectFriendlyName) $(CCNetLabel) $(Status)</ReleaseName>
+		<ReleaseName>$(CI_PROJECT_FRIENDLY_NAME) $(CCNetLabel) $(Status)</ReleaseName>
 		<DevelopmentPublishVersionInfoUrl>http://de.bit13.local/api/update/create/</DevelopmentPublishVersionInfoUrl>
 		<PublishVersionInfoUrl>http://de.bit13.com/api/update/create/</PublishVersionInfoUrl>
 		<ReleaseId>617264</ReleaseId>

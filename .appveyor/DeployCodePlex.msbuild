@@ -93,10 +93,6 @@
 			<Output PropertyName="ReleaseUrl" TaskParameter="ReleaseUrl" />
 		</CodePlexCreateRelease>
 
-		<InvokePowerShell 
-			Command="$env.CP_RELEASE_ID=$(ReleaseId);$env.CP_RELEASE_NAME=$(ReleaseName);$env.CP_RELEASE_URL=$(ReleaseUrl)" 
-			Condition=" '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' " />
-
 		<CreateItem Include="Id=$(ReleaseId);Name=$(ReleaseName);Url=$(ReleaseUrl)">
 			<Output ItemName="CPLines" TaskParameter="Include"/>
 		</CreateItem>

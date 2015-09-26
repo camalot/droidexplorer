@@ -19,8 +19,9 @@
 		<Revision>$(CI_BUILD_REVISION)</Revision>
 
 		<CCNetLabel Condition=" '$(CCNetLabel)' == '' ">$(Major).$(Minor).$(Build).$(Revision)</CCNetLabel>
-		
+
 		<VersionFile>$(MSBuildProjectDirectory)\..\Shared\VersionAssemblyInfo.txt</VersionFile>
+		<VersionFileCache>$(MSBuildProjectDirectory)\..\.cache\VersionAssemblyInfo.cache</VersionFileCache>
 
 
 		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
@@ -28,7 +29,7 @@
 		<ReleasePlatform>$(Platform)</ReleasePlatform>
 		<ReleasePlatform Condition=" '$(ReleasePlatform)' == '' OR '$(ReleasePlatform)' == 'Any CPU' ">x86</ReleasePlatform>
 
-		
+
 		<PlatformConstant Condition=" '$(Platform)' == 'x86' ">PLATFORMX86</PlatformConstant>
 		<PlatformConstant Condition=" '$(Platform)' == 'x64' ">PLATFORMX64</PlatformConstant>
 		<PlatformConstant Condition=" '$(Platform)' == 'ia64' ">PLATFORMIA64</PlatformConstant>
@@ -36,7 +37,7 @@
 		<OSPlatform Condition=" '$(OSPlatform)' == '' ">PLATFORM_WINDOWS</OSPlatform>
 
 		<SignAssemblies Condition="'$(SignAssemblies)' == ''">false</SignAssemblies>
-		
+
 		<CCNetArtifactDirectory Condition="'$(CCNetArtifactDirectory)' == ''">$(MSBuildProjectDirectory)\..\bin\</CCNetArtifactDirectory>
 		<CCNetWorkingDirectory Condition="'$(CCNetWorkingDirectory)' == ''">$(MSBuildProjectDirectory)\..\</CCNetWorkingDirectory>
 
@@ -50,10 +51,6 @@
 
 		<ProductionApiDomain Condition=" '$(ProductionApiDomain)' == '' ">de.bit13.com</ProductionApiDomain>
 		<DevelopmentApiDomain Condition=" '$(DevelopmentApiDomain)' == '' ">de.bit13.local</DevelopmentApiDomain>
-		
-		<SkipIncrementAssemblyVersion Condition=" '$(Platform)' == 'x64' ">True</SkipIncrementAssemblyVersion>
-		<SkipIncrementAssemblyVersion Condition=" '$(Platform)' == 'x86' ">False</SkipIncrementAssemblyVersion>
-
 	</PropertyGroup>
 
 
@@ -85,9 +82,9 @@
 
 	<Target Name="SetBuildNumber">
 		<Attrib Files="$(VersionFile)" ReadOnly="false"/>
-		
+
 		<Version
-      Condition=" '$(SkipIncrementAssemblyVersion)' == 'True' "
+      Condition=" '$(Platform)' == 'x64' "
       VersionFile="$(VersionFile)"
       BuildType="None"
       RevisionType="None">
@@ -98,7 +95,7 @@
 		</Version>
 
 		<Version
-      Condition=" '$(SkipIncrementAssemblyVersion)' != 'True' "
+      Condition=" '$(Platform)' != 'x64' "
       VersionFile="$(VersionFile)"
       BuildType="Increment"
       RevisionType="Automatic">
@@ -116,40 +113,19 @@
 			<Output PropertyName="CI_BUILD_NUMBER" TaskParameter="Value" />
 		</CreateProperty>
 
-		
+
 		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)">
+			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
+		</CreateProperty>
+
+		<CreateProperty Value="$(CI_BUILD_VERSION)">
 			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
 
+		<!--<MakeDir Directories="$(MSBuildProjectDirectory)\..\.cache\" Condition=" !Exists($(MSBuildProjectDirectory)\..\.cache\) " />
+		<WriteLinesToFile File="$(VersionFileCache)" Lines="$(CCNetLabel)" Condition=" $(Platform)' != 'x64' " />-->
+
 	</Target>
-
-	<UsingTask TaskName="InvokePowerShellFile"
-						 TaskFactory="CodeTaskFactory"
-						 AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-		<ParameterGroup>
-			<File ParameterType="System.String" Required="true" />
-			<Arguments ParameterType="System.String" Required="true" />
-		</ParameterGroup>
-
-		<Task>
-			<Exec Command="powershell.exe -File $(File) $(Arguments)"  WorkingDirectory="$(MSBuildProjectDirectory)" />
-		</Task>
-	</UsingTask>
-
-	<UsingTask TaskName="InvokePowerShell"
-					 TaskFactory="CodeTaskFactory"
-					 AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-		<ParameterGroup>
-			<Script ParameterType="System.String" Required="true" />
-		</ParameterGroup>
-
-		<Task>
-			<Exec Command="powershell.exe -Command $(Script)"  WorkingDirectory="$(MSBuildProjectDirectory)" />
-		</Task>
-	</UsingTask>
-
-
-
 	<!--<UsingTask
 		TaskName="SetEnvironmentVariable"
 		TaskFactory="CodeTaskFactory"

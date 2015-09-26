@@ -7,8 +7,10 @@ if(!(Test-Path -Path $cachePath)) {
 	New-Item -Path $cachePath -ItemType Directory -Force | Out-Null;
 }
 
-if( (Test-Path -Path $sourceVersionInfo) -and !(Test-Path -Path $cachedVersionInfo)) {
-	(Get-Content -Path $sourceVersionInfo) | Out-File -FilePath $cachedVersionInfo -Force;
+if( (Test-Path -Path $sourceVersionInfo) -and !(Test-Path -Path $cachedVersionInfo) -and ($env:Platform -eq 'x86') ) {
+	$versionCache = (Get-Content -Path $sourceVersionInfo);
+	Write-Host "Creating version cache: $versionCache";
+	$versionCache | Out-File -FilePath $cachedVersionInfo -Force;
 }
 
 if( Test-Path -Path $cachedVersionInfo ) {
@@ -27,5 +29,6 @@ if( Test-Path -Path $cachedVersionInfo ) {
 
 # on x64, we can clear this cache file out after we set the env:vars.
 if( (Test-Path -Path Env:\Platform) -and ($env:Platform -eq "x64" ) -and (Test-Path -Path $cachedVersionInfo) ) {
+	Write-Host "Deleting '$cachedVersionInfo'";
 	(Remove-Item -Path $cachedVersionInfo) | Out-Null;
 }

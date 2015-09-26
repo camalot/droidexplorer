@@ -3,9 +3,12 @@
 
 */.localhistory/*
 **/.vs/*
+
 # Generated Version File:
-*/VersionAssemblyInfo.cs
-*/AssemblyVersionInfo.cs
+VersionAssemblyInfo.cs
+VersionAssemblyInfo.txt
+Installs/Setup.msi
+AssemblyVersionInfo.cs
 
 
 #nuget

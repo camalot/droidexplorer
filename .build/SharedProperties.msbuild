@@ -82,7 +82,7 @@
 		<Attrib Files="$(VersionFile)" ReadOnly="false"/>
 
 		<Version
-      Condition=" '$(Platform)' == 'x64' "
+      Condition=" '$(Platform)' == 'x64' OR '$(WixPath)' != '' "
       VersionFile="$(VersionFile)"
       BuildType="None"
       RevisionType="None">
@@ -93,7 +93,7 @@
 		</Version>
 
 		<Version
-      Condition=" '$(Platform)' != 'x64' "
+      Condition=" '$(Platform)' == 'x86' AND '$(WixPath)' == '' "
       VersionFile="$(VersionFile)"
       BuildType="Increment"
       RevisionType="Automatic">

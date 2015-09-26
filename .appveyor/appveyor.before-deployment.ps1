@@ -8,13 +8,13 @@ $commitMessageRegex = "^\[deploy\:(pre-release|draft|release)\]$";
 # THIS SHOULD BE MOVED TO THE MATCH SECTION AFTER TESTING.
 	# read the publish text file
 	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
-		$publishNotes = (Get-Content -Path .\.build\publishchangelog.txt);
+		$publishNotes = (Get-Content -Path $env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt);
 		[Environment]::SetEnvironmentVariable("CI_RELEASE_DESCRIPTION", $publishNotes, "Machine")
 		Write-Host "Set CI_RELEASE_DESCRIPTION : $publishNotes";
 	}
 
-	if( Test-Path -Path .\VersionAssemblyInfo.txt ) {
-    $version = (Get-Content -Path .\VersionAssemblyInfo.txt);
+	if( Test-Path -Path $env:APPVEYOR_BUILD_FOLDER\Shared\VersionAssemblyInfo.txt ) {
+    $version = (Get-Content -Path $env:APPVEYOR_BUILD_FOLDER\Shared\VersionAssemblyInfo.txt);
 		$split = $version.split(".");
 		[Environment]::SetEnvironmentVariable("CI_BUILD_VERSION", $version, "Machine");
 		Write-Host "Set CI_BUILD_VERSION : $version";

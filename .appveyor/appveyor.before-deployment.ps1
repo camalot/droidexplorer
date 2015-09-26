@@ -9,14 +9,14 @@ $commitMessageRegex = "^\[deploy\:(pre-release|draft|release)\]$";
 	# read the publish text file
 	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
 		$publishNotes = (Get-Content -Path .\.build\publishchangelog.txt);
-		$env:CI_RELEASE_DESCRIPTION = $publishNotes;
+		[Environment]::SetEnvironmentVariable("CI_RELEASE_DESCRIPTION", $publishNotes, "Machine")
 	}
 
 	if( (!(Test-Path -Path Env:\CI_BUILD_VERSION) -or !(Test-Path -Path Env:\CI_BUILD_REVISION)) -and (Test-Path -Path .\VersionAssemblyInfo.txt) ) {
     $version = (Get-Content -Path .\VersionAssemblyInfo.txt);
 		$split = $version.split(".");
-    $env:CI_BUILD_VERSION = $version;
-		$env:CI_BUILD_REVISION = $split[3];
+		[Environment]::SetEnvironmentVariable("CI_BUILD_VERSION", $version, "Machine")
+		[Environment]::SetEnvironmentVariable("CI_BUILD_REVISION", $split[3], "Machine")
 	}
 
 

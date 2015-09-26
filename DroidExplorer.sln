@@ -259,6 +259,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".appveyor", ".appveyor", "{
 		.appveyor\appveyor.after-deployment.ps1 = .appveyor\appveyor.after-deployment.ps1
 		.appveyor\appveyor.before-build.ps1 = .appveyor\appveyor.before-build.ps1
 		.appveyor\appveyor.before-deployment.ps1 = .appveyor\appveyor.before-deployment.ps1
+		.appveyor\appveyor.install.ps1 = .appveyor\appveyor.install.ps1
 		appveyor.yml = appveyor.yml
 		.appveyor\AppVeyorProperties.msbuild = .appveyor\AppVeyorProperties.msbuild
 		.appveyor\DeployCodePlex.msbuild = .appveyor\DeployCodePlex.msbuild

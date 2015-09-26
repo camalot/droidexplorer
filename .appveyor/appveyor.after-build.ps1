@@ -1,6 +1,6 @@
 
 
-$sourceVersionInfo = "$env:APPVEYOR_BUILD_FOLDER\Shared\AssemblyVersionInfo.txt";
+$sourceVersionInfo = "$env:APPVEYOR_BUILD_FOLDER\cache\AssemblyVersionInfo.txt";
 
 if( (Test-Path -Path $sourceVersionInfo) -and ($env:Platform -eq 'x86') ) {
   $version = (Get-Content -Path $sourceVersionInfo);

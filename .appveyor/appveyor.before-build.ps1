@@ -3,7 +3,7 @@
 # If it's an x64 build, and the version info file exists.
 # Load those values for the build version
 
-$sourceVersionInfo = "$env:APPVEYOR_BUILD_FOLDER\Shared\AssemblyVersionInfo.txt";
+$sourceVersionInfo = "$env:APPVEYOR_BUILD_FOLDER\cache\AssemblyVersionInfo.txt";
 if( $env:Platform -eq "x64" -and (Test-Path -Path $sourceVersionInfo) ) {
   $version = (Get-Content -Path $sourceVersionInfo);
 	$split = $version.split(".");

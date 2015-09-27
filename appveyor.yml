@@ -66,7 +66,7 @@ deploy:
   password:
     secure: nkPwqyw5PNWeJbPrHlaTaxuJD3aNlcOtX9ooupg/VIc=
   folder: /
-  artifact: Zip
+  artifact: /\\$(APPVEYOR_PROJECT_NAME).*\.setup\.zip$/
   active_mode: false
   beta: true
   debug: true

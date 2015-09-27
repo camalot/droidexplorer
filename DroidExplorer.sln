@@ -254,7 +254,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "targets", "targets", "{79A2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{2580E627-1092-4C81-A4BA-09D4F9E9FD9F}"
 	ProjectSection(SolutionItems) = preProject
-		.appveyor\modules\Import-PfxCertifcate.psm1 = .appveyor\modules\Import-PfxCertifcate.psm1
+		.appveyor\modules\Import-PfxCertificate.psm1 = .appveyor\modules\Import-PfxCertificate.psm1
 		.appveyor\modules\Invoke-MsBuild.psm1 = .appveyor\modules\Invoke-MsBuild.psm1
 		.appveyor\modules\Send-PushBulletMessage.psm1 = .appveyor\modules\Send-PushBulletMessage.psm1
 		.appveyor\modules\Set-BuildVersion.psm1 = .appveyor\modules\Set-BuildVersion.psm1

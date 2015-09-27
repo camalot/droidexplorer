@@ -6,7 +6,7 @@
 * ALSO SEE: https://github.com/SoftwarePotential/samples/wiki/License
 #>
 
-function Import-PfxCertifcate {
+function Import-PfxCertificate {
 	Param (
 		 [string] $pfx,
 		 [string] $password,
@@ -36,4 +36,4 @@ function Import-PfxCertifcate {
 	}
 }
 
-Export-ModuleMember -Function Import-PfxCertifcate;
+Export-ModuleMember -Function Import-PfxCertificate;

@@ -44,7 +44,7 @@ build:
 after_build:
 - ps: .\.appveyor\appveyor.after-build.ps1
 artifacts:
-- path: /\\$(APPVEYOR_PROJECT_NAME).*\.setup\.zip$/
+- path: '**\DroidExplorer.*.setup.zip'
   name: Zip
 before_deploy:
 - ps: .\.appveyor\appveyor.before-deployment.ps1

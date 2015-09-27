@@ -1,5 +1,5 @@
-Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Invoke-MsBuild.psm1";
-Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Send-PushbulletMessage.psm1";
+Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\modules\Invoke-MsBuild.psm1";
+Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\modules\Send-PushbulletMessage.psm1";
 
 function Publish-Release {
 	Param (

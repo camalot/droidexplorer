@@ -44,7 +44,7 @@ build:
 after_build:
 - ps: .\.appveyor\appveyor.after-build.ps1
 artifacts:
-- path: '**\bin\**\DroidExplorer*.setup.zip'
+- path: /\\$(APPVEYOR_PROJECT_NAME).*\.setup\.zip$/
   name: Zip
 before_deploy:
 - ps: .\.appveyor\appveyor.before-deployment.ps1
@@ -55,7 +55,7 @@ deploy:
   description: $(CI_RELEASE_DESCRIPTION)
   auth_token:
     secure: UEgy2H9zJKLi599QoO3qVf5BKFqloRQ246ez9cEgsfV3vooAUfVopMS9+IjRtArL
-  artifact: ReleaseZips
+  artifact: Zip
   on:
     branch: master
     CI_DEPLOY_GITHUB: True
@@ -66,7 +66,7 @@ deploy:
   password:
     secure: nkPwqyw5PNWeJbPrHlaTaxuJD3aNlcOtX9ooupg/VIc=
   folder: /
-  artifact: /$(APPVEYOR_PROJECT_NAME).*\.setup\.zip$/
+  artifact: Zip
   active_mode: false
   beta: true
   debug: true

@@ -64,7 +64,7 @@ deploy:
   password:
     secure: nkPwqyw5PNWeJbPrHlaTaxuJD3aNlcOtX9ooupg/VIc=
   folder: /de.bit13.com/data/DroidExplorer/Releases/
-  artifact: '**\bin\**\DroidExplorer*.setup.zip'
+  artifact: /.*\.setup\.zip/
   active_mode: false
   beta: true
   debug: true

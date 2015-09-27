@@ -117,7 +117,10 @@
 			<Using Namespace="System" />
 			<Code Type="Fragment" Language="cs">
 				<![CDATA[
-				this.Revision = DateTime.UtcNow.DayOfYear;
+				var yy = DateTime.UtcNow.ToString("yy");
+				var day = DateTime.UtcNow.DayOfYear.ToString() ;
+				// 27015 = 09/26/2015
+				this.Revision = int.Parse(day + yy);
       ]]>
 			</Code>
 			

@@ -3,7 +3,10 @@
 
 
 Write-Host "Setting up build version";
-$revision = (Get-Date).ToUniversalTime().DayOfYear;
+$dt = (Get-Date).ToUniversalTime();
+$doy = $dt.DayOfYear.ToString();
+$yy = $dt.ToString("yy");
+$revision = "$doy$yy";
 $version = "$env:APPVEYOR_BUILD_VERSION.$revision";
 $split = $version.split(".");
 $m1 = $split[0];

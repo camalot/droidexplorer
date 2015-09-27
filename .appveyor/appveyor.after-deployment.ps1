@@ -1,9 +1,9 @@
 Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Invoke-MsBuild.psm1";
 
 function Publish-Release {
-	Params (
+	Param (
 		[Parameter(Mandatory=$true)]
-		[string] $Host
+		[string] $HostName
 	)
 	$appId = $env:CI_PUBLISHAPPID;
 	$appKey = $env:CI_PUBLISHKEY;
@@ -44,9 +44,9 @@ if( $env:CI_DEPLOY_WEBAPI_RELEASE -eq $true -and $env:Platform -eq "x86" ) {
 	}
 	#,$env:ProductionApiDomain
 	@($env:DevelopmentApiDomain) | foreach {
-		$host = $_;
-		Write-Host "Publishing Release Information '$env:CP_RELEASE_NAME' to $host";
-		$resp = Publish-Release -Host $host;
+		$hostname = $_;
+		Write-Host "Publishing Release Information '$env:CP_RELEASE_NAME' to $hostname";
+		$resp = Publish-Release -HostName $hostname;
 		if($resp.StatusCode -ne 200) {
 			Write-Host -BackgroundColor Red -ForegroundColor White $resp.StatusDescription;
 			$host.SetShouldExit($resp.StatusCode);

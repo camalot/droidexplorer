@@ -60,11 +60,11 @@ deploy:
 - provider: FTP
   host: ftp.bit13.com
   protocol: ftp
-  username: $(PUBLISH_BIT13_FTP_USER)
+  username: av-droidexplorer
   password:
     secure: nkPwqyw5PNWeJbPrHlaTaxuJD3aNlcOtX9ooupg/VIc=
   folder: /de.bit13.com/data/DroidExplorer/Releases/
-  artifact: ReleaseZips
+  artifact: '**\bin\**\DroidExplorer*.setup.zip'
   active_mode: false
   beta: true
   debug: true

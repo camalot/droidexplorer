@@ -25,6 +25,8 @@ environment:
   CI_PROJECT_FRIENDLY_NAME: Droid Explorer
   PUSHBULLET_API_TOKEN:
     secure: 2MwCYfQNYPfPjDqNJ1EL8VrIydQNRz3MfhnuI9dzSZag9JwCnqk5k3mMYTFn4ORk
+  PUBLISH_BIT13_FTP_USER:
+    secure: 0Nee1P3hK6TB+BCEcPczQoGBqcRb8lJ3FHnmW6P3s3w=
 hosts:
   de.bit13.local: 69.245.210.157
 install:
@@ -55,5 +57,18 @@ deploy:
   on:
     branch: master
     CI_DEPLOY_GITHUB: True
+- provider: FTP
+  host: ftp.bit13.com
+  protocol: ftp
+  username: $(PUBLISH_BIT13_FTP_USER)
+  password:
+    secure: nkPwqyw5PNWeJbPrHlaTaxuJD3aNlcOtX9ooupg/VIc=
+  folder: /de.bit13.com/data/DroidExplorer/Releases/
+  artifact: ReleaseZips
+  active_mode: false
+  beta: true
+  debug: true
+  on:
+    CI_DEPLOY_FTP: True
 after_deploy:
 - ps: .\.appveyor\appveyor.after-deployment.ps1

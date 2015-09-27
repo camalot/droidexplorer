@@ -29,8 +29,6 @@ hosts:
   de.bit13.local: 69.245.210.157
 install:
 - ps: .\.appveyor\appveyor.install.ps1
-cache: 
-- cache -> appveyor.yml
 before_build:
 - ps: >-
     nuget.exe restore

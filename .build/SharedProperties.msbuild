@@ -82,29 +82,10 @@
 	</Target>
 
 	<Target Name="SetBuildNumber">
-		<Attrib Files="$(VersionFile)" ReadOnly="false"/>
 
-		<Version
-      Condition=" '$(Platform)' == 'x64' OR '$(WixPath)' != '' "
-      VersionFile="$(VersionFile)"
-      BuildType="None"
-      RevisionType="None">
-			<Output TaskParameter="Major" PropertyName="Major" />
-			<Output TaskParameter="Minor" PropertyName="Minor" />
-			<Output TaskParameter="Build" PropertyName="Build" />
-			<Output TaskParameter="Revision" PropertyName="Revision" />
-		</Version>
-
-		<Version
-      Condition=" '$(Platform)' == 'x86' AND '$(WixPath)' == '' "
-      VersionFile="$(VersionFile)"
-      BuildType="Increment"
-      RevisionType="Automatic">
-			<Output TaskParameter="Major" PropertyName="Major" />
-			<Output TaskParameter="Minor" PropertyName="Minor" />
-			<Output TaskParameter="Build" PropertyName="Build" />
-			<Output TaskParameter="Revision" PropertyName="Revision" />
-		</Version>
+		<VersionRevision>
+			<Output PropertyName="Revision" TaskParameter="Revision" />
+		</VersionRevision>
 
 		<CreateProperty Value="$(Revision)" Condition=" '$(CI_BUILD_REVISION)' == '0' ">
 			<Output PropertyName="CI_BUILD_REVISION" TaskParameter="Value" />
@@ -124,6 +105,26 @@
 		</CreateProperty>
 		
 	</Target>
+	
+	<UsingTask
+		TaskName="VersionRevision"
+		TaskFactory="CodeTaskFactory"
+		AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<Revision ParameterType="System.Int32" Output="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
+				this.Revision = DateTime.UtcNow.DayOfYear;
+      ]]>
+			</Code>
+			
+		</Task>
+
+	</UsingTask>
+	
 	<!--<UsingTask
 		TaskName="SetEnvironmentVariable"
 		TaskFactory="CodeTaskFactory"

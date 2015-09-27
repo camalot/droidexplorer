@@ -14,12 +14,18 @@ function Publish-Release {
 	$headers["Authentication-Token"] = $appKey;
 	$headers["Application-Identifier"] = $appId;
 
+	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
+		# read the publish text file
+		$publishNotes = (Get-Content -Path $env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt);
+	}
+
+
 	$post = @{
 		Id = $env:CP_RELEASE_ID;
-		Version = [System.Web.HttpUtility]::UrlEncode($env:CI_BUILD_VERSION);
-		Description = [System.Web.HttpUtility]::UrlEncode($env:CI_RELEASE_DESCRIPTION);
-		Name = [System.Web.HttpUtility]::UrlEncode($env:CP_RELEASE_NAME);
-		Url = [System.Web.HttpUtility]::UrlEncode("http://$env:CP_RELEASE_PROJECT.codeplex.com/releases/view/$env:CP_RELEASE_ID");
+		Version = $env:CI_BUILD_VERSION;
+		Description = $publishNotes;
+		Name = $env:CP_RELEASE_NAME;
+		Url = "http://$env:CP_RELEASE_PROJECT.codeplex.com/releases/view/$env:CP_RELEASE_ID";
 	};
 	$contentType = "application/x-www-form-urlencoded";
 	$method = "POST";

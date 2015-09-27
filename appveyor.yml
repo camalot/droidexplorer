@@ -27,6 +27,8 @@ environment:
     secure: 2MwCYfQNYPfPjDqNJ1EL8VrIydQNRz3MfhnuI9dzSZag9JwCnqk5k3mMYTFn4ORk
   PUBLISH_BIT13_FTP_USER:
     secure: 0Nee1P3hK6TB+BCEcPczQoGBqcRb8lJ3FHnmW6P3s3w=
+  PUBLISH_BIT13_FTP_HOST:
+    secure: KxS2LdlWc3kX+FsmbQLj7A==
 hosts:
   de.bit13.local: 69.245.210.157
 install:
@@ -58,9 +60,9 @@ deploy:
     branch: master
     CI_DEPLOY_GITHUB: True
 - provider: FTP
-  host: ftp.bit13.com
+  host: $(PUBLISH_BIT13_FTP_HOST)
   protocol: ftp
-  username: av-droidexplorer
+  username: $(PUBLISH_BIT13_FTP_USER)
   password:
     secure: nkPwqyw5PNWeJbPrHlaTaxuJD3aNlcOtX9ooupg/VIc=
   folder: /
@@ -69,7 +71,7 @@ deploy:
   beta: true
   debug: true
   on:
-		branch: master
+    branch: master
     CI_DEPLOY_FTP: True
 after_deploy:
 - ps: .\.appveyor\appveyor.after-deployment.ps1

@@ -63,12 +63,13 @@ deploy:
   username: av-droidexplorer
   password:
     secure: nkPwqyw5PNWeJbPrHlaTaxuJD3aNlcOtX9ooupg/VIc=
-  folder: /de.bit13.com/data/DroidExplorer/Releases/
-  artifact: /.*\.setup\.zip/
+  folder: /
+  artifact: /$(APPVEYOR_PROJECT_NAME).*\.setup\.zip$/
   active_mode: false
   beta: true
   debug: true
   on:
+		branch: master
     CI_DEPLOY_FTP: True
 after_deploy:
 - ps: .\.appveyor\appveyor.after-deployment.ps1

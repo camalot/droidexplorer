@@ -101,10 +101,10 @@
 		<WriteLinesToFile File="$(ReleaseInfoFile)" Lines="@(CPLines)" Overwrite="true" Condition=" '$(Platform)' == 'x86' AND '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' "/>
 		<Message Text="@(CPLines)" Condition=" '$(ReleaseId)' != '' AND '$(ReleaseUrl)' != '' AND '$(Platform)' == 'x86' "/>
 
-		<Exec Command="appveyor SetVariable -Name CP_RELEASE_NAME -Value $(ReleaseName)" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(ReleaseName)' != '' " />
-		<Exec Command="appveyor SetVariable -Name CP_RELEASE_ID -Value $(ReleaseId)" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(ReleaseId)' != '' " />
-		<Exec Command="appveyor SetVariable -Name CP_RELEASE_URL -Value $(ReleaseUrl)" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(ReleaseUrl)' != '' " />
-		<Exec Command="appveyor SetVariable -Name CP_RELEASE_PROJECT -Value $(CodePlexProject)" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(CodePlexProject)' != '' " />
+		<Exec Command="appveyor SetVariable -Name CP_RELEASE_NAME -Value &quot;$(ReleaseName)&quot;" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(ReleaseName)' != '' " />
+		<Exec Command="appveyor SetVariable -Name CP_RELEASE_ID -Value &quot;$(ReleaseId)&quot;" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(ReleaseId)' != '' " />
+		<Exec Command="appveyor SetVariable -Name CP_RELEASE_URL -Value &quot;$(ReleaseUrl)&quot;" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(ReleaseUrl)' != '' " />
+		<Exec Command="appveyor SetVariable -Name CP_RELEASE_PROJECT -Value &quot;$(CodePlexProject)&quot;" Condition=" '$(APPVEYOR)' == 'True' AND '$(Platform)' == 'x86' AND '$(CodePlexProject)' != '' " />
 	</Target>
 
 	<Target Name="Upload" DependsOnTargets="CreateRelease">

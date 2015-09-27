@@ -9,7 +9,7 @@ function Publish-Release {
 	$appKey = $env:CI_PUBLISHKEY;
 
 
-	$url = "http://$host/api/update/create/";
+	$url = "http://$HostName/api/update/create/";
 	$headers = @{};
 	$headers["Authentication-Token"] = $appKey;
 	$headers["Application-Identifier"] = $appId;

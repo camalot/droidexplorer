@@ -32,7 +32,6 @@
 				<ComponentRef Id="AssetsDir"/>
 				
 				<ComponentRef Id="InstallDirectoryRegister86" />
-				<!--ComponentRef Id="SdkInstallDirectoryRegister86"/-->
 			</Feature>
 
 			<Feature Id="CreateDesktopShortcut"

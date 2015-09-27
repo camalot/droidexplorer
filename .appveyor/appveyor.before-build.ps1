@@ -1,24 +1,11 @@
-.\.appveyor\InstallPfx.ps1 -pfx "$env:APPVEYOR_BUILD_FOLDER\Shared\droidexplorer.pfx" -password ((Get-Item Env:\DE_PFX_KEY).Value) -containerName ((Get-Item Env:\VS_PFX_KEY).Value);
+Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Import-PfxCertificate.psm1";
+Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Set-BuildVersion.psm1";
 
 
+Import-PfxCertificate -pfx "$env:APPVEYOR_BUILD_FOLDER\Shared\droidexplorer.pfx" -password ((Get-Item Env:\DE_PFX_KEY).Value) -containerName ((Get-Item Env:\VS_PFX_KEY).Value);
 
-Write-Host "Setting up build version";
-$dt = (Get-Date).ToUniversalTime();
-$doy = $dt.DayOfYear.ToString();
-$yy = $dt.ToString("yy");
-$revision = "$doy$yy";
-$version = "$env:APPVEYOR_BUILD_VERSION.$revision";
-$split = $version.split(".");
-$m1 = $split[0];
-$m2 = $split[1];
-$b = $env:APPVEYOR_BUILD_NUMBER;
-$r = $split[3];
+$env:CI_BUILD_DATE = ((Get-Date).ToUniversalTime().ToString("MM-dd-yyyy"));
+$env:CI_BUILD_TIME = ((Get-Date).ToUniversalTime().ToString("hh:mm:ss"));
 
-Set-AppveyorBuildVariable -Name CI_BUILD_MAJOR -Value $m1;
-Set-AppveyorBuildVariable -Name CI_BUILD_MINOR -Value $m2;
+Set-BuildVersion;
 
-Set-AppveyorBuildVariable -Name CI_BUILD_NUMBER -Value $b;
-Set-AppveyorBuildVariable -Name CI_BUILD_REVISION -Value $r;
-Set-AppveyorBuildVariable -Name CI_BUILD_VERSION -Value "$m1.$m2.$b.$r";
-
-Write-Host "Set the CI_BUILD_VERSION to $env:CI_BUILD_VERSION";

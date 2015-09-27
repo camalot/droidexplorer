@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
+	<Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' != 'SharedProperties' " />
+	<PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <ReleasePlatform>$(Platform)</ReleasePlatform>
     <ReleasePlatform Condition=" '$(ReleasePlatform)' == '' OR '$(ReleasePlatform)' == 'Any CPU' ">x86</ReleasePlatform>
@@ -26,9 +27,9 @@
     <SignAssembly Condition="Exists('..\shared\droidexplorer.pfx')">true</SignAssembly>
     <AssemblyOriginatorKeyFile Condition="Exists('..\shared\droidexplorer.pfx')">..\shared\droidexplorer.pfx</AssemblyOriginatorKeyFile>
     <StartupObject>DroidExplorer.Bootstrapper.Program</StartupObject>
-    <CCNetLabel Condition=" '$(CCNetLabel)' == '' ">0.5.0.1</CCNetLabel>
-    <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\Setup\$(Configuration)\$(CCNetLabel)\$(ReleaseMode)\$(ReleasePlatform)\</OutputPath>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+		<CI_BUILD_VERSION Condition=" '$(CI_BUILD_VERSION)' == '' ">0.10.0.0</CI_BUILD_VERSION>
+		<OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\</OutputPath>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
     <SignManifests>false</SignManifests>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -54,8 +55,6 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled-->
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(CCNetLabel)' == '' ">
     <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
     <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
   </PropertyGroup>

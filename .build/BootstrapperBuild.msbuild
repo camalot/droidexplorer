@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="BuildBootStrapper">
-	<ItemGroup>
-		<BootstrapperProjectToBuild Include="$(CCNetWorkingDirectory)**\DroidExplorer.Bootstrapper.csproj" />
-		<InstallResources Include="$(CCNetWorkingDirectory)\DroidExplorer.Bootstrapper\Installs\*.*" />
-	</ItemGroup>
-	
-	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="'$(SharedProperties)' != 'SharedProperties' " />
 	<Import Project="$(MSBuildExtendedTasksTargets)" Condition="Exists($(MSBuildExtendedTasksTargets))" />
 
+	<ItemGroup>
+		<BootstrapperProjectToBuild Include="$(CI_PROJECT_PATH)**\DroidExplorer.Bootstrapper.csproj" />
+		<InstallResources Include="$(CI_PROJECT_PATH)\DroidExplorer.Bootstrapper\Installs\*.*" />
+	</ItemGroup>
+	
 
 	<Target Name="InstallResourcesCleanup" DependsOnTargets="BootstrapperCleanup">
-		<CreateItem Include="$(CCNetWorkingDirectory)\DroidExplorer.Bootstrapper\Installs\*.*">
+		<CreateItem Include="$(CI_PROJECT_PATH)\DroidExplorer.Bootstrapper\Installs\*.*">
 			<Output ItemName="InstallResources" TaskParameter="Include"/>
 		</CreateItem>
 		<Delete Files="@(InstallResources)" />
@@ -18,11 +18,11 @@
 
 	<Target Name="BootstrapperBuild" DependsOnTargets="AssemblyInfo;">
 
-		<CreateItem Include="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).msi">
+		<CreateItem Include="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).msi">
 			<Output ItemName="InstallFile" TaskParameter="Include"/>
 		</CreateItem>
 
-		<Copy SourceFiles="@(InstallFile)" DestinationFiles="$(CCNetWorkingDirectory)\DroidExplorer.Bootstrapper\Installs\Setup.msi" />
+		<Copy SourceFiles="@(InstallFile)" DestinationFiles="$(CI_PROJECT_PATH)\DroidExplorer.Bootstrapper\Installs\Setup.msi" />
 
 		<MSBuild Projects="@(BootstrapperProjectToBuild)" ContinueOnError="false"
 						 Properties="$(MSBuildProperties)">
@@ -35,19 +35,19 @@
 		
 		<ILMerge
 			InputAssemblies="@(InputAssemblies)"
-			Version="$(CCNetLabel)"
+			Version="$(CI_BUILD_VERSION)"
 			TargetKind="Exe"
 			LogFile="$(OutputPath)\ilmerge.log"
-			OutputFile="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).exe"
+			OutputFile="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).exe"
 			DebugInfo="true" />
 
 		<CreateItem Include="$(OutputPath)\*.exe;$(OutputPath)\*.pdb;$(OutputPath)\*.dll" Exclude="$(OutputPath)\*.vshost.exe;$(OutputPath)\*.vshost.pdb;">
 			<Output ItemName="BootstrapperFiles" TaskParameter="Include"/>
 		</CreateItem>
 
-		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CI_PROJECT_NAME) version $(CCNetLabel) Installer"
-			Files="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).exe;$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).pdb" WorkingDirectory="$(OutputPath)"
-			ZipFileName="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).$(ReleaseMode).zip" Flatten="True" ZipLevel="9" />
+		<Zip Comment="$(CI_BUILD_DATE) $(CI_BUILD_TIME) $(CI_PROJECT_NAME) version $(CI_BUILD_VERSION) Installer"
+			Files="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).exe;$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).pdb" WorkingDirectory="$(OutputPath)"
+			ZipFileName="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).$(ReleaseMode).zip" Flatten="True" ZipLevel="9" />
 	</Target>
 
 	<Target Name="BootstrapperCleanup" DependsOnTargets="BootstrapperBuild">
@@ -64,11 +64,11 @@
 
 	<Target Name="AssemblyInfo"
 					Outputs="$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.cs"
-					Condition=" '$(CCNetLabel)' != '' ">
+					Condition=" '$(CI_BUILD_VERSION)' != '' ">
 
 		<AssemblyInfo CodeLanguage="CS"
-									AssemblyFileVersion="$(CCNetLabel)"
-									AssemblyVersion="$(CCNetLabel)"
+									AssemblyFileVersion="$(CI_BUILD_VERSION)"
+									AssemblyVersion="$(CI_BUILD_VERSION)"
 									OutputFile="$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.cs"
 									/>
 	</Target>

@@ -3,6 +3,7 @@ pull_requests:
   do_not_increment_build_number: true
 skip_tags: true
 os: Visual Studio 2015
+configuration: Release
 platform:
 - x86
 - x64
@@ -40,7 +41,7 @@ before_build:
     .\.appveyor\appveyor.before-build.ps1
 build:
   project: .\.build\BuildDroidExplorer.msbuild
-  verbosity: minimal
+  verbosity: normal
 after_build:
 - ps: .\.appveyor\appveyor.after-build.ps1
 artifacts:

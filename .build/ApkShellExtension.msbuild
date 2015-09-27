@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="ShellExtensionBuild">
-	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition=" '$(SharedProperties)' != 'SharedProperties' " />
 
 	<PropertyGroup>
 		<ApkShellExtension>ApkShellExtension</ApkShellExtension>
@@ -37,7 +37,7 @@
 		
 		<ILMerge
 			InputAssemblies="@(InputAssemblies)"
-			Version="$(CCNetLabel)"
+			Version="$(CI_BUILD_VERSION)"
 			TargetKind="Dll"
 			KeyFile="$(SignKeyFile)"
 			XmlDocumentation="false"

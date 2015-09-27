@@ -4,8 +4,8 @@
 	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
 
 	<PropertyGroup>
-		<CCNetLabel>0.5.0.1</CCNetLabel>
-		<OutputPath>$(MSBuildProjectDirectory)\..\bin\Setup\$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\</OutputPath>
+		<CI_BUILD_VERSION>0.5.0.1</CI_BUILD_VERSION>
+		<OutputPath>$(MSBuildProjectDirectory)\..\bin\Setup\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\</OutputPath>
 	</PropertyGroup>
 
 	<Target Name="BootstrapperMerge">
@@ -17,7 +17,7 @@
 			<Output ItemName="BootstrapperFiles" TaskParameter="Include"/>
 		</CreateItem>
 
-		<CreateItem Include="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).*">
+		<CreateItem Include="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).*">
 			<Output ItemName="MergedFiles" TaskParameter="Include"/>
 		</CreateItem>
 
@@ -25,10 +25,10 @@
 
 		<ILMerge
 			InputAssemblies="@(InputAssemblies)"
-			Version="$(CCNetLabel)"
+			Version="$(CI_BUILD_VERSION)"
 			TargetKind="Exe"
 			LogFile="$(OutputPath)\ilmerge.log"
-			OutputFile="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).exe"
+			OutputFile="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).exe"
 			DebugInfo="true" />
 
 

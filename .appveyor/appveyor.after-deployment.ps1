@@ -1,4 +1,5 @@
 Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Invoke-MsBuild.psm1";
+Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\Send-PushbulletMessage.psm1";
 
 function Publish-Release {
 	Param (
@@ -16,7 +17,7 @@ function Publish-Release {
 
 	if(Test-Path -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") {
 		# read the publish text file
-		$publishNotes = (Get-Content -Path $env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt);
+		$publishNotes = (Get-Content -Path "$env:APPVEYOR_BUILD_FOLDER\.build\publishchangelog.txt") | Out-String;
 	}
 
 
@@ -48,8 +49,7 @@ if( $env:CI_DEPLOY_WEBAPI_RELEASE -eq $true -and $env:Platform -eq "x86" ) {
 		$host.SetShouldExit(500);
 		return;
 	}
-	#,$env:ProductionApiDomain
-	@($env:DevelopmentApiDomain) | foreach {
+	@($env:DevelopmentApiDomain,$env:ProductionApiDomain) | foreach {
 		$hostname = $_;
 		Write-Host "Publishing Release Information '$env:CP_RELEASE_NAME' to $hostname";
 		$resp = Publish-Release -HostName $hostname;
@@ -60,4 +60,10 @@ if( $env:CI_DEPLOY_WEBAPI_RELEASE -eq $true -and $env:Platform -eq "x86" ) {
 		}
 
 	}
+}
+
+if( $env:Platform -eq "x64" -and $env:CI_DEPLOY_PUSHBULLET -eq $true) {
+	Send-PushbulletMessage -apiKey $env:PUSHBULLET_API_TOKEN -Type Message -Title "Droid Explorer v$env:CI_BUILD_VERSION Deployed" -msg ("Deployment completed at " + (Get-Date -Format "MM/dd/yyyy hh:mm:ss"));
+} elseif ( $env:CI_DEPLOY -eq $false ) {
+	Send-PushbulletMessage -apiKey $env:PUSHBULLET_API_TOKEN -Type Message -Title "Droid Explorer $env:Platform v$env:CI_BUILD_VERSION Build Finished" -msg ("Build completed at " + (Get-Date -Format "MM/dd/yyyy hh:mm:ss"));
 }

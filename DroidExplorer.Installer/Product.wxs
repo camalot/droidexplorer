@@ -4,7 +4,7 @@
 					 Id="$(var.ProductGuid)"
 					 Name="$(var.ProductName)"
 					 Language="1033"
-					 Version="$(var.CCNetLabel)"
+					 Version="$(var.CI_BUILD_VERSION)"
 					 Manufacturer="Ryan Conrad"
 					 UpgradeCode="4F8871E6-5E8B-4667-B3A8-2CBB060199E3">
 
@@ -13,12 +13,12 @@
 			InstallerVersion="200"
 			Compressed="yes"
 			InstallPrivileges="elevated"
-			Platform="$(var.Platform)"
+			Platform="$(var.ReleasePlatform)"
 		/>
 
 
 		<Upgrade Id="4F8871E6-5E8B-4667-B3A8-2CBB060199E3">
-			<UpgradeVersion Minimum="$(var.CCNetLabel)"
+			<UpgradeVersion Minimum="$(var.CI_BUILD_VERSION)"
 											OnlyDetect="no"
 											IncludeMinimum="yes"
 											Property="NEWERVERSIONDETECTED" />
@@ -26,18 +26,18 @@
 			<UpgradeVersion Minimum="0.0.0.1"
 											OnlyDetect="no"
 											IncludeMinimum="yes"
-											Maximum="$(var.CCNetLabel)"
+											Maximum="$(var.CI_BUILD_VERSION)"
 											IncludeMaximum="no"
 											Property="OLDERVERSIONBEINGUPGRADED" />
 		</Upgrade>
 
-		<PropertyRef Id="NETFRAMEWORK35" />
-		<PropertyRef Id="NETFRAMEWORK35_SP_LEVEL" />
-		<!--Condition Message="This setup requires the .NET Framework 3.5 SP1 to be installed.">
-			<![CDATA[Installed OR (NETFRAMEWORK35_SP_LEVEL and NOT NETFRAMEWORK35_SP_LEVEL = "#0")]]>
-		</Condition-->
-
-
+		<PropertyRef Id="NETFRAMEWORK40FULL" />
+		<PropertyRef Id="NETFRAMEWORK45" />
+		
+		<Condition Message='This setup requires Microsoft .NET Framework 4.0 Full or 4.5 package or greater needs to be installed for this installation to continue.'>
+			<![CDATA[Installed OR NETFRAMEWORK40FULL OR NETFRAMEWORK45]]>
+		</Condition>
+		
 		<Media Id="1" Cabinet="contents.cab" EmbedCab="yes" />
 		<Directory Id="TARGETDIR" Name="SourceDir"/>
 		<FeatureRef Id="CompleteFeature" />
@@ -74,9 +74,6 @@
 		</UI>
 		<InstallExecuteSequence>
 			<RemoveExistingProducts Before="InstallInitialize" />
-
-			<!--<Custom Action="CA_GETANDROIDUSBDRIVERVERSION" After="InstallInitialize"><![CDATA[NOT VersionNT = 501 AND NOT VersionNT64 = 501]]></Custom>-->
-
 			<Custom Action="RegisterShellExtension.cmd" After="InstallFiles"><![CDATA[NOT Installed AND (&ShellExtensionFeature=3 OR &ShellExtensionFeature=4)]]></Custom>
 			<Custom Action="RegisterShellExtension" After="RegisterShellExtension.cmd"><![CDATA[NOT Installed AND (&ShellExtensionFeature=3 OR &ShellExtensionFeature=4)]]></Custom>
 

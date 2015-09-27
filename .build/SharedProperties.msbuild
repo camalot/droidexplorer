@@ -5,28 +5,43 @@
 	<PropertyGroup>
 		<SharedProperties>SharedProperties</SharedProperties>
 
+
+		<CI Condition=" '$(CI)' == '' ">False</CI>
 		<CI_BUILD_MAJOR Condition=" '$(CI_BUILD_MAJOR)' == '' ">0</CI_BUILD_MAJOR>
 		<CI_BUILD_MINOR Condition=" '$(CI_BUILD_MINOR)' == '' ">10</CI_BUILD_MINOR>
 		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == '' AND '$(APPVEYOR)' == 'True' AND '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(APPVEYOR_BUILD_NUMBER)</CI_BUILD_NUMBER>
 		<CI_BUILD_NUMBER Condition="'$(CI_BUILD_NUMBER)' == ''">0</CI_BUILD_NUMBER>
 		<CI_BUILD_REVISION Condition=" '$(CI_BUILD_REVISION)' == '' AND '$(APPVEYOR)' != 'True' ">0</CI_BUILD_REVISION>
 		<CI_BUILD_REVISION Condition =" '$(CI_BUILD_REVISION)' == ''">0</CI_BUILD_REVISION>
+		
 		<CI_PROJECT_NAME Condition="'$(APPVEYOR)' == 'True' ">$(APPVEYOR_PROJECT_NAME)</CI_PROJECT_NAME>
 		<CI_PROJECT_NAME Condition=" '$(CI_PROJECT_NAME)' == '' ">DroidExplorer</CI_PROJECT_NAME>
 		<CI_PROJECT_FRIENDLY_NAME Condition=" '$(CI_PROJECT_FRIENDLY_NAME)' == '' ">Droid Explorer</CI_PROJECT_FRIENDLY_NAME>
+		<CI_ARTIFACT_PATH Condition=" '$(CI_ARTIFACT_PATH)' == '' ">$(MSBuildProjectDirectory)\..\bin\</CI_ARTIFACT_PATH>
+		<CI_PROJECT_PATH Condition=" '$(CI_PROJECT_PATH)' == '' ">$(MSBuildProjectDirectory)\..\</CI_PROJECT_PATH>
+		
+		<CI_BUILD_DATE Condition=" '$(CI_BUILD_DATE)' == '' ">$([System.DateTime]::UtcNow.ToString("MM-dd-yyyy"))</CI_BUILD_DATE>
+		<CI_BUILD_TIME Condition=" '$(CI_BUILD_TIME)' == '' ">$([System.DateTime]::UtcNow.ToString("hh:mm:ss"))</CI_BUILD_TIME>
 
+		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'False' ">Local</CI_BUILD_CONDITION>
+		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_SCHEDULED_BUILD)' == 'True' ">Scheduled</CI_BUILD_CONDITION>
+		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_FORCED_BUILD)' == 'True' ">Forced</CI_BUILD_CONDITION>
+		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_RE_BUILD)' == 'True' ">Rebuild</CI_BUILD_CONDITION>
+		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_REPO_TAG)' == 'True' ">Tag</CI_BUILD_CONDITION>
+		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)' == 'True' ">PullRequest</CI_BUILD_CONDITION>
+		
 		<Major>$(CI_BUILD_MAJOR)</Major>
 		<Minor>$(CI_BUILD_MINOR)</Minor>
 		<Build>$(CI_BUILD_NUMBER)</Build>
 		<Revision>$(CI_BUILD_REVISION)</Revision>
 
-		<CCNetLabel Condition=" '$(CCNetLabel)' == '' ">$(Major).$(Minor).$(Build).$(Revision)</CCNetLabel>
+		<CI_BUILD_VERSION Condition=" '$(CI_BUILD_VERSION)' == '' ">$(Major).$(Minor).$(Build).$(Revision)</CI_BUILD_VERSION>
 
-		<VersionFile>$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.txt</VersionFile>
-		<VersionFile Condition=" '$(APPVEYOR)' == 'True' ">$(APPVEYOR_BUILD_FOLDER)\cache\AssemblyVersionInfo.txt</VersionFile>
 
-		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-		<Platform Condition="'$(Platform)' == 'AnyCPU' OR '$(Platform)' == ''">x86</Platform>
+		<ProductionApiDomain Condition=" '$(ProductionApiDomain)' == '' ">de.bit13.com</ProductionApiDomain>
+		<DevelopmentApiDomain Condition=" '$(DevelopmentApiDomain)' == '' ">de.bit13.local</DevelopmentApiDomain>
+
+
 		<ReleasePlatform>$(Platform)</ReleasePlatform>
 		<ReleasePlatform Condition=" '$(ReleasePlatform)' == '' OR '$(ReleasePlatform)' == 'Any CPU' ">x86</ReleasePlatform>
 
@@ -37,47 +52,47 @@
 		<PlatformConstant Condition=" '$(PlatformConstant)' == '' ">PLATFORMX86</PlatformConstant>
 		<OSPlatform Condition=" '$(OSPlatform)' == '' ">PLATFORM_WINDOWS</OSPlatform>
 
-		<SignAssemblies Condition="'$(SignAssemblies)' == ''">false</SignAssemblies>
+		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+		<Configuration Condition="'$(CI)' == 'True'">Release</Configuration>
+		
+		<Platform Condition="'$(Platform)' == 'AnyCPU' OR '$(Platform)' == ''">x86</Platform>
 
-		<CCNetArtifactDirectory Condition="'$(CCNetArtifactDirectory)' == ''">$(MSBuildProjectDirectory)\..\bin\</CCNetArtifactDirectory>
-		<CCNetWorkingDirectory Condition="'$(CCNetWorkingDirectory)' == ''">$(MSBuildProjectDirectory)\..\</CCNetWorkingDirectory>
 
-		<CleanBuildOutput>True</CleanBuildOutput>
+		<SignAssemblies Condition="'$(SignAssemblies)' == ''">true</SignAssemblies>
+
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<BuildAllDependsOn>AssemblyInfo;CleanBuild;PluginBuild;ReleaseCleanup</BuildAllDependsOn>
 		<CompileDependsOn>$(CompileDependsOn)</CompileDependsOn>
+		
+		
 		<ReleaseMode Condition=" '$(ReleaseMode)' != 'Standalone' ">Setup</ReleaseMode>
 
-		<PublishMode Condition=" '$(PublishMode)' == '' ">None</PublishMode>
-
-		<ProductionApiDomain Condition=" '$(ProductionApiDomain)' == '' ">de.bit13.com</ProductionApiDomain>
-		<DevelopmentApiDomain Condition=" '$(DevelopmentApiDomain)' == '' ">de.bit13.local</DevelopmentApiDomain>
 	</PropertyGroup>
 
 
 	<Target Name="BuildPrep" DependsOnTargets="SetBuildNumber;AssemblyInfo">
-		<CreateProperty Value="$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\">
+		<CreateProperty Value="$(CI_ARTIFACT_PATH)$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
 
 
-		<CreateProperty Value="DefineConstants=$(DefineConstants) $(PlatformConstant);OSPlatform=$(OSPlatform);ReleasePlatform=$(ReleasePlatform);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
+		<CreateProperty Value="DefineConstants=$(DefineConstants) $(PlatformConstant);OSPlatform=$(OSPlatform);ReleasePlatform=$(ReleasePlatform);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);">
 			<Output PropertyName="MSBuildProperties" TaskParameter="Value" />
 		</CreateProperty>
 
-		<CreateProperty Value="SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath)Plugins\;CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
+		<CreateProperty Value="SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath)Plugins\;CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);">
 			<Output PropertyName="PluginMsBuildProperties" TaskParameter="Value" />
 		</CreateProperty>
 	</Target>
 
 	<Target Name="AssemblyInfo"
-					Outputs="$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.cs" DependsOnTargets="CleanBuild">
+					Outputs="$(CI_PROJECT_PATH)\Shared\AssemblyVersionInfo.cs" DependsOnTargets="CleanBuild">
 
 
 		<AssemblyInfo CodeLanguage="CS"
-									AssemblyFileVersion="$(CCNetLabel)"
+									AssemblyFileVersion="$(CI_BUILD_VERSION)"
 									AssemblyVersion="$(Major).$(Minor).0.0"
-									OutputFile="$(MSBuildProjectDirectory)\..\Shared\AssemblyVersionInfo.cs"
+									OutputFile="$(CI_PROJECT_PATH)\Shared\AssemblyVersionInfo.cs"
 									/>
 	</Target>
 
@@ -87,7 +102,7 @@
 			<Output PropertyName="Revision" TaskParameter="Revision" />
 		</VersionRevision>
 
-		<CreateProperty Value="$(Revision)" Condition=" '$(CI_BUILD_REVISION)' == '0' ">
+		<CreateProperty Value="$(Revision)">
 			<Output PropertyName="CI_BUILD_REVISION" TaskParameter="Value" />
 		</CreateProperty>
 
@@ -96,12 +111,8 @@
 		</CreateProperty>
 
 
-		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)" Condition=" '$(CI_BUILD_VERSION)' == '' ">
+		<CreateProperty Value="$(Major).$(Minor).$(CI_BUILD_NUMBER).$(CI_BUILD_REVISION)">
 			<Output PropertyName="CI_BUILD_VERSION" TaskParameter="Value" />
-		</CreateProperty>
-
-		<CreateProperty Value="$(CI_BUILD_VERSION)" >
-			<Output PropertyName="CCNetLabel" TaskParameter="Value" />
 		</CreateProperty>
 		
 	</Target>
@@ -128,26 +139,4 @@
 
 	</UsingTask>
 	
-	<!--<UsingTask
-		TaskName="SetEnvironmentVariable"
-		TaskFactory="CodeTaskFactory"
-		AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-
-		<ParameterGroup>
-			<Name ParameterType="System.String" Required="true" />
-			<Value ParameterType="System.String" Required="true" />
-		</ParameterGroup>
-
-		<Task>
-			<Using Namespace="System" />
-			<Code Type="Fragment" Language="cs">
-				<![CDATA[
-        Environment.SetEnvironmentVariable(Name, Value, EnvironmentVariableTarget.Machine);
-      ]]>
-			</Code>
-		</Task>
-
-	</UsingTask>-->
-
-
 </Project>

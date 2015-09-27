@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="Build">
-	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\SharedProperties.msbuild') AND '$(SharedProperties)' != 'SharedProperties' " />
+	<Import Project="$(MSBuildProjectDirectory)\SharedProperties.msbuild" Condition=" '$(SharedProperties)' != 'SharedProperties' " />
 	<Import Project="$(MSBuildProjectDirectory)\BootstrapperBuild.msbuild" Condition="Exists('$(MSBuildProjectDirectory)\BootstrapperBuild.msbuild')" />
 	
 	<ItemGroup>
-		<ProjectsToBuild Include="$(CCNetWorkingDirectory)**\*.csproj" Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;$(CCNetWorkingDirectory)**\*Plugins*.csproj;$(CCNetWorkingDirectory)**\DroidExplorer.Bootstrapper.csproj;$(CCNetWorkingDirectory)**\*.Tests\*.csproj" />
-		<PluginProjectsToBuild Include="$(CCNetWorkingDirectory)**\*Plugins*.csproj" Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;" />
-		<BootstrapperProjectToBuild Include="$(CCNetWorkingDirectory)**\DroidExplorer.Bootstrapper.csproj"  Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;"/>
-		<InstallProjectToBuild Include="$(CCNetWorkingDirectory)**\*.wix.msbuild"  Exclude="$(CCNetWorkingDirectory)**\.localhistory\**;"/>
+		<ProjectsToBuild Include="$(CI_PROJECT_PATH)**\*.csproj" Exclude="$(CI_PROJECT_PATH)**\.localhistory\**;$(CI_PROJECT_PATH)**\*Plugins*.csproj;$(CI_PROJECT_PATH)**\DroidExplorer.Bootstrapper.csproj;$(CI_PROJECT_PATH)**\*.Tests\*.csproj" />
+		<PluginProjectsToBuild Include="$(CI_PROJECT_PATH)**\*Plugins*.csproj" Exclude="$(CI_PROJECT_PATH)**\.localhistory\**;" />
+		<BootstrapperProjectToBuild Include="$(CI_PROJECT_PATH)**\DroidExplorer.Bootstrapper.csproj"  Exclude="$(CI_PROJECT_PATH)**\.localhistory\**;"/>
+		<InstallProjectToBuild Include="$(CI_PROJECT_PATH)**\*.wix.msbuild"  Exclude="$(CI_PROJECT_PATH)**\.localhistory\**;"/>
 	</ItemGroup>
 
 	<Target Name="CopyLicenseFiles">
-		<CreateItem Include="$(CCNetWorkingDirectory)Shared\License.*">
+		<CreateItem Include="$(CI_PROJECT_PATH)Shared\License.*">
 			<Output ItemName="LicenseFiles" TaskParameter="Include" />
 		</CreateItem>
 		<Copy SourceFiles="@(LicenseFiles)" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
@@ -44,22 +44,14 @@
 			<Output ItemName="ZipFiles" TaskParameter="Include" />
 		</CreateItem>
 
-		<Zip Comment="$(CCNetBuildDate) $(CCNetBuildTime) $(CI_PROJECT_NAME) version $(CCNetLabel)" Files="@(ZipFiles);@(AndroidTools)"
+		<Zip Comment="$(CI_BUILD_DATE) $(CI_BUILD_TIME) $(CI_PROJECT_NAME) version $(CI_BUILD_VERSION)" Files="@(ZipFiles);@(AndroidTools)"
 				 WorkingDirectory="$(OutputPath)"
-				 ZipFileName="$(OutputPath)$(CI_PROJECT_NAME).$(CCNetLabel).$(Platform).zip" ZipLevel="9" Flatten="False" />
-	</Target>
-
-	<Target Name="CopyDrivers">
-		<MakeDir Condition="!Exists('$(OutputPath)Drivers\')" Directories="$(OutputPath)Drivers\" />
-		<CreateItem Include="$(CCNetWorkingDirectory)3rdParty\driver\*.*;$(CCNetWorkingDirectory)3rdParty\driver\**\*.*">
-			<Output ItemName="DriverFiles" TaskParameter="Include" />
-		</CreateItem>
-		<Copy SourceFiles="@(DriverFiles)" DestinationFolder="$(OutputPath)Drivers\%(RecursiveDir)" ContinueOnError="false" />
+				 ZipFileName="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).zip" ZipLevel="9" Flatten="False" />
 	</Target>
 
 	<Target Name="BuildInstall" DependsOnTargets="CopyLicenseFiles;AppConfigUpdate">
 		<MSBuild Projects="@(InstallProjectToBuild)"
-						 Properties="Configuration=$(Configuration);ReleasePlatform=$(ReleasePlatform);Platform=$(Platform);OutputPath=$(OutputPath);CCNetLabel=$(CCNetLabel);CCNetIntegrationStatus=$(CCNetIntegrationStatus);CCNetBuildCondition=$(CCNetBuildCondition);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CCNetBuildDate=$(CCNetBuildDate);CCNetLastIntegrationStatus=$(CCNetLastIntegrationStatus);CCNetBuildTime=$(CCNetBuildTime);CCNetArtifactDirectory=$(CCNetArtifactDirectory);CCNetWorkingDirectory=$(CCNetWorkingDirectory);CCNetRequestSource=$(CCNetRequestSource)">
+						 Properties="Configuration=$(Configuration);ReleasePlatform=$(ReleasePlatform);Platform=$(Platform);OutputPath=$(OutputPath);CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);">
 			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
 		</MSBuild>
 	</Target>

@@ -11,7 +11,7 @@
 		<ReleaseTimeout>120</ReleaseTimeout>
 		<CanPublish Condition=" Exists('$(MSBuildDeploymentTasksPath)') ">True</CanPublish>
 		<CanPublish Condition=" '$(CanPublish)' == '' ">False</CanPublish>
-		<ReleaseName>$(CI_PROJECT_FRIENDLY_NAME) $(CCNetLabel) $(Status)</ReleaseName>
+		<ReleaseName>$(CI_PROJECT_FRIENDLY_NAME) $(CI_BUILD_VERSION) $(Status)</ReleaseName>
 		<DevelopmentPublishVersionInfoUrl>http://de.bit13.local/api/update/create/</DevelopmentPublishVersionInfoUrl>
 		<PublishVersionInfoUrl>http://de.bit13.com/api/update/create/</PublishVersionInfoUrl>
 		<ReleaseId>617264</ReleaseId>
@@ -27,7 +27,7 @@
 			<Output TaskParameter="OutputText" PropertyName="ReleaseDescription" />
 		</ReadTextFile>
 
-		<CreateProperty Value="Id=$(ReleaseId)&amp;Version=$(CCNetLabel)&amp;Description=$(ReleaseDescription)&amp;Name=$(ReleaseName)&amp;url=http://$(Project).codeplex.com/releases/view/$(ReleaseId)">
+		<CreateProperty Value="Id=$(ReleaseId)&amp;Version=$(CI_BUILD_VERSION)&amp;Description=$(ReleaseDescription)&amp;Name=$(ReleaseName)&amp;url=http://$(Project).codeplex.com/releases/view/$(ReleaseId)">
 			<Output PropertyName="Content" TaskParameter="Value"/>
 		</CreateProperty>
 

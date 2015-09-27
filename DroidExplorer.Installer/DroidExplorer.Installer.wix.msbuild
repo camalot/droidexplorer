@@ -9,7 +9,7 @@
 		<ProjectGuid>{3d036348-8b1e-4ec3-aa20-d10bab9fecf6}</ProjectGuid>
 		<SchemaVersion>2.0</SchemaVersion>
 		<OutputType>Package</OutputType>
-		<OutputName>$(CI_PROJECT_NAME).$(CCNetLabel).$(ReleasePlatform)</OutputName>
+		<OutputName>$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(ReleasePlatform)</OutputName>
 		<Cultures>en-US</Cultures>
 		<ProjectOutputGroups>Binaries;Symbols</ProjectOutputGroups>
 		<WixPath>$(WIX)</WixPath>
@@ -23,7 +23,7 @@
 		<LinkerAdditionalOptions>&quot;$(WixToolPath)difxapp_$(Platform).wixlib&quot; -loc custom_en-us.wxl</LinkerAdditionalOptions>
 		<IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
 
-		<ProductName>$(CI_PROJECT_FRIENDLY_NAME) $(CCNetLabel) ($(ReleasePlatform))</ProductName>
+		<ProductName>$(CI_PROJECT_FRIENDLY_NAME) $(CI_BUILD_VERSION) ($(ReleasePlatform))</ProductName>
 		<PlatformProgramFilesFolder Condition=" '$(ReleasePlatform)' == 'x64' ">ProgramFiles64Folder</PlatformProgramFilesFolder>
 		<PlatformProgramFilesFolder Condition=" '$(ReleasePlatform)' == 'x86' ">ProgramFilesFolder</PlatformProgramFilesFolder>
 
@@ -61,12 +61,12 @@
 	</ItemGroup>
 
 	<Target Name="Prebuild">
-		<CreateProperty Value="$(CCNetArtifactDirectory)$(Configuration)\$(CCNetLabel)\$(ReleasePlatform)\">
+		<CreateProperty Value="$(CI_ARTIFACT_PATH)\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\">
 			<Output PropertyName="OutputPath" TaskParameter="Value" />
 		</CreateProperty>
 
 
-		<CreateProperty Value="$(DefineConstants);RegistryPathCloudStats=$(RegistryPathCloudStats);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CCNetLabel=$(CCNetLabel);OutputPath=$(OutputPath)">
+		<CreateProperty Value="$(DefineConstants);RegistryPathCloudStats=$(RegistryPathCloudStats);ReleasePlatform=$(ReleasePlatform);RegistryPath=$(RegistryPath);ProductName=$(ProductName);PlatformProgramFilesFolder=$(PlatformProgramFilesFolder);CI_BUILD_VERSION=$(CI_BUILD_VERSION);OutputPath=$(OutputPath)">
 			<Output PropertyName="DefineConstants" TaskParameter="Value"/>
 		</CreateProperty>
 		

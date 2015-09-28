@@ -33,7 +33,7 @@ I am now monitoring Questions over on [Android Enthusiasts][8] tagged with [[Dro
 
 
 
-[1]: http://de.codeplex.com/releases
+[1]: http://de.bit13.com/releases/go
 [2]: http://de.bit13.com
 [3]: http://i.imgur.com/AeF9O4q.png
 [4]: http://i.imgur.com/EMsfFVi.png

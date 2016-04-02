@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' != 'SharedProperties' " />
-	<PropertyGroup>
+  <Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' != 'SharedProperties' " />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' OR '$(Platform)' == 'AnyCPU' ">x86</Platform>
     <PlatformTarget>$(Platform)</PlatformTarget>
@@ -45,8 +45,8 @@
     <TargetFrameworkProfile />
     <DefineConstants>$(PlatformConstant);TRACE;DEBUG</DefineConstants>
     <CI_BUILD_VERSION Condition=" '$(CI_BUILD_VERSION)' == '' ">0.10.0.0</CI_BUILD_VERSION>
-		<OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\</OutputPath>
-		<DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
+    <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\</OutputPath>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +92,14 @@
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdParty\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Managed.Adb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=AMD64">
+      <HintPath>..\packages\Managed.Adb.x64.1.0.17.43618\lib\net45\Managed.Adb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
@@ -158,6 +166,7 @@
     </None>
     <None Include="app.manifest" />
     <EmbeddedResource Include="DroidExplorer.Service.log4net" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

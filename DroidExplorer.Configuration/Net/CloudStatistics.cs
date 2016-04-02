@@ -8,7 +8,6 @@ using System.Net;
 using System.Web;
 using DroidExplorer.Core;
 using System.IO;
-using DroidExplorer.Core.Adb;
 using DroidExplorer.Core.Configuration.Handlers;
 using Camalot.Common.Extensions;
 
@@ -94,7 +93,7 @@ namespace DroidExplorer.Configuration.Net {
 			}
 		}
 
-		public void RegisterDevice(Device device, DeviceListItem dli) {
+		public void RegisterDevice( Managed.Adb.Device device, DeviceListItem dli) {
 
 			try {
 				var kvp = new List<KeyValuePair<String, String>>();

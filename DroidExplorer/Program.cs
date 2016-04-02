@@ -237,11 +237,13 @@ namespace DroidExplorer {
 					Program.SplashManager.SplashDialog.IncrementLoadStep(1);
 
 					// minor hackory for getting the device for cloud stats
-					var d = new Core.Adb.Device(selectedDevice, Core.Adb.DeviceState.Online);
+					//var d = new Managed.Adb.Device(selectedDevice, Managed.Adb.DeviceState.Online, "unknown", "unknown", "unknown");
+					var d = Managed.Adb.AdbHelper.Instance.GetDevices ( Managed.Adb.AndroidDebugBridge.SocketAddress ).Single ( m => m.SerialNumber == selectedDevice );
+
 					// get the device properties for registration
-					foreach(var i in CommandRunner.Instance.GetProperties(selectedDevice)) {
-						d.Properties.Add(i.Key, i.Value);
-					}
+					//foreach ( var i in CommandRunner.Instance.GetProperties(selectedDevice)) {
+					//	d.Properties.Add(i.Key, i.Value);
+					//}
 					if(!Settings.Instance.SystemSettings.RecordDeviceInformationToCloud) {
 						Program.SplashManager.SplashDialog.SetStepText(
 							String.Format(DroidExplorer.Resources.Strings.SplashRegisterDevice,

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Camalot.Common.Extensions;
+using Managed.Adb;
 
 namespace DroidExplorer.Core.Adb {
 	/// <summary>

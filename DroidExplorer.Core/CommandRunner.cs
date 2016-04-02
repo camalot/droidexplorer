@@ -17,9 +17,9 @@ using DroidExplorer.Core.Collections;
 using System.Xml.Serialization;
 using System.Drawing.Imaging;
 using DroidExplorer.Core.Configuration;
-using DroidExplorer.Core.Adb;
 using System.Linq;
 using Camalot.Common.Extensions;
+using Managed.Adb;
 
 namespace DroidExplorer.Core {
 	/// <summary>
@@ -325,6 +325,7 @@ namespace DroidExplorer.Core {
 		private DeviceState _deviceState = DeviceState.Unknown;
 		private BatteryInfo lastBatteryInfo = null;
 		private DateTime lastBatteryCheckTime = DateTime.MinValue;
+		private Managed.Adb.AndroidDebugBridge madb;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CommandRunner"/> class.
@@ -333,28 +334,34 @@ namespace DroidExplorer.Core {
 			if ( Settings == null ) {
 				throw new ArgumentNullException ( "Settings not set. Must initialize settings before getting CommandRunner instance." );
 			}
+
 			String tsdk = Settings.SystemSettings.SdkPath;
 			if ( String.IsNullOrEmpty ( tsdk ) || !System.IO.Directory.Exists ( tsdk ) ) {
-				throw new System.IO.FileNotFoundException ( "Unable to locate sdk in path: '{0}'.".With ( tsdk ) );
-      } else {
+				throw new System.IO.FileNotFoundException ( Camalot.Common.Extensions.CamalotCommonExtensions.With ( "Unable to locate sdk in path: '{0}'.", tsdk ) );
+			} else {
 				SdkPath = tsdk;
 			}
+
+			madb = Managed.Adb.AndroidDebugBridge.CreateBridge ( FolderManagement.GetSdkTool ( ADB_COMMAND ), false );
+
 		}
 
 		/// <summary>
 		/// Starts the server.
 		/// </summary>
 		public void StartServer ( ) {
-			var result = CommandRun ( string.Empty, AdbCommand.Start_Server, string.Empty );
-			this.LogDebug ( result.Output.ToString ( ) );
+			//var result = CommandRun ( string.Empty, AdbCommand.Start_Server, string.Empty );
+			madb.Start ( );
+			//this.LogDebug ( result.Output.ToString ( ) );
 		}
 
 		public void StopServer ( ) {
-			var result = CommandRun ( string.Empty, AdbCommand.Kill_Server, string.Empty );
-			this.LogDebug ( result.Output.ToString ( ) );
+			//var result = CommandRun ( string.Empty, AdbCommand.Kill_Server, string.Empty );
+			//this.LogDebug ( result.Output.ToString ( ) );
+			madb.Stop ( );
 		}
 
-		public void RestartServer() {
+		public void RestartServer ( ) {
 			StopServer ( );
 			StartServer ( );
 		}
@@ -371,11 +378,11 @@ namespace DroidExplorer.Core {
 			var rOutput = result.Output.ToString ( );
 			// checks if we were able to launch adb as root.
 
-			if ( rOutput.IsMatch ( DroidExplorer.Resources.Strings.CanAdbRootRegex, regexOptions ) ) {
+			if ( Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( rOutput, DroidExplorer.Resources.Strings.CanAdbRootRegex, regexOptions ) ) {
 				throw new AdbRootException ( );
 			}
 			this.LogDebug ( result.Output.ToString ( ) );
-		}		
+		}
 
 		/// <summary>
 		/// Change file system modes of files and directories. The modes include permissions and special modes.
@@ -384,7 +391,7 @@ namespace DroidExplorer.Core {
 		/// <param name="group">The group.</param>
 		/// <param name="other">The other.</param>
 		/// <param name="file">The file.</param>
-		public void Chmod ( Permission user, Permission group, Permission other, string file ) {
+		public void Chmod ( FilePermission user, FilePermission group, FilePermission other, string file ) {
 			Chmod ( DefaultDevice, user, group, other, file );
 		}
 
@@ -396,11 +403,12 @@ namespace DroidExplorer.Core {
 		/// <param name="group">The group.</param>
 		/// <param name="other">The other.</param>
 		/// <param name="file">The file.</param>
-		public void Chmod ( string device, Permission user, Permission group, Permission other, string file ) {
+		public void Chmod ( string device, FilePermission user, FilePermission group, FilePermission other, string file ) {
 			string command = string.Format ( CultureInfo.InvariantCulture, "chmod {0}{1}{2} \"{3}\"", (int)user.ToChmod ( ),
 				(int)group.ToChmod ( ), (int)other.ToChmod ( ), file );
-			this.LogDebug ( command );
-			ShellRun ( device, command );
+			//this.LogDebug ( command );
+			//ShellRun ( device, command );
+			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Chmod ( file, new FilePermissions ( user, group, other ) );
 		}
 
 		/// <summary>
@@ -413,6 +421,7 @@ namespace DroidExplorer.Core {
 			string command = string.Format ( CultureInfo.InvariantCulture, "chmod {0} \"{1}\"", mode, file );
 			this.LogDebug ( command );
 			ShellRun ( device, command );
+
 		}
 
 		/// <summary>
@@ -463,16 +472,18 @@ namespace DroidExplorer.Core {
 		/// 	<c>true</c> if the specified path is a mount point on the specified device; otherwise, <c>false</c>.
 		/// </returns>
 		public bool IsMountPoint ( string device, string path ) {
-			string data = ReadFile ( device, "/etc/fstab" ).Output.ToString ( );
-			Regex regex = new Regex ( Properties.Resources.FSTabRegexPattern, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline );
-			Match m = regex.Match ( data );
-			while ( m.Success ) {
-				if ( string.Compare ( m.Groups[2].Value, path, false ) == 0 ) {
-					return true;
-				}
-				m = m.NextMatch ( );
-			}
-			return false;
+			//string data = ReadFile ( device, "/etc/fstab" ).Output.ToString ( );
+			//Regex regex = new Regex ( Properties.Resources.FSTabRegexPattern, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline );
+			//Match m = regex.Match ( data );
+			//while ( m.Success ) {
+			//	if ( string.Compare ( m.Groups[2].Value, path, false ) == 0 ) {
+			//		return true;
+			//	}
+			//	m = m.NextMatch ( );
+			//}
+			//return false;
+
+			return madb.Devices.Single ( d => d.SerialNumber == device ).MountPoints.Any ( mp => mp.Value.Name == path );
 		}
 
 		/// <summary>
@@ -482,6 +493,7 @@ namespace DroidExplorer.Core {
 		/// <param name="classFullName">Full name of the class.</param>
 		public void LaunchActivity ( string package, string classFullName ) {
 			LaunchActivity ( this.DefaultDevice, package, classFullName );
+
 		}
 
 		/// <summary>
@@ -491,7 +503,8 @@ namespace DroidExplorer.Core {
 		/// <param name="package">The package.</param>
 		/// <param name="classFullName">Full name of the class.</param>
 		public void LaunchActivity ( string device, string package, string classFullName ) {
-			ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "am start -a android.intent.action.MAIN -n {0}/{1}", package, classFullName ) );
+			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "am start -a android.intent.action.MAIN -n {0}/{1}", package, classFullName ) );
+			madb.Devices.Single ( m => m.SerialNumber == device ).ExecuteShellCommand ( Camalot.Common.Extensions.CamalotCommonExtensions.With ( "am start -a android.intent.action.MAIN -n {0}/{1}", package, classFullName ), NullOutputReceiver.Instance );
 		}
 
 		/// <summary>
@@ -500,10 +513,11 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="mountPoint">The mount point.</param>
 		public void MakeReadWrite ( string device, string mountPoint ) {
-			if ( !mountPoint.StartsWith ( "/" ) ) {
-				throw new AdbException ( "Invalid mount point" );
-			}
-			ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "busybox mount -o rw,remount {0}", mountPoint ) );
+			//if ( !mountPoint.StartsWith ( "/" ) ) {
+			//	throw new AdbException ( "Invalid mount point" );
+			//}
+			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "busybox mount -o rw,remount {0}", mountPoint ) );
+			madb.Devices.Single ( m => m.SerialNumber == device ).RemountMountPoint ( mountPoint, false );
 		}
 
 		/// <summary>
@@ -520,10 +534,11 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="mountPoint">The mount point.</param>
 		public void MakeReadOnly ( string device, string mountPoint ) {
-			if ( !mountPoint.StartsWith ( "/" ) ) {
-				throw new AdbException ( "Invalid mount point" );
-			}
-			ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "busybox mount -o ro,remount {0}", mountPoint ) );
+			//if ( !mountPoint.StartsWith ( "/" ) ) {
+			//	throw new AdbException ( "Invalid mount point" );
+			//}
+			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "busybox mount -o ro,remount {0}", mountPoint ) );
+			madb.Devices.Single ( m => m.SerialNumber == device ).RemountMountPoint ( mountPoint, true );
 		}
 
 		/// <summary>
@@ -544,7 +559,8 @@ namespace DroidExplorer.Core {
 				return;
 			}
 
-			ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "mount {0}", mount ) );
+			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "mount {0}", mount ) );
+			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Mount ( mount );
 		}
 
 		/// <summary>
@@ -595,7 +611,7 @@ namespace DroidExplorer.Core {
 				};
 				DeviceMonitor.Disconnected += ( s, e ) => {
 					Disconnect ( e.Device );
-          if ( this.Disconnected != null ) {
+					if ( this.Disconnected != null ) {
 						this.State = e.State;
 						this.Disconnected ( this, e );
 					}
@@ -608,7 +624,7 @@ namespace DroidExplorer.Core {
 				};
 
 				DeviceMonitor.Start ( );
-      } catch ( Exception ex ) {
+			} catch ( Exception ex ) {
 				this.LogError ( ex.Message, ex );
 				State = DeviceState.Unknown;
 			}
@@ -753,7 +769,7 @@ namespace DroidExplorer.Core {
 				string.Compare ( path, APP_SD_PRIVATE_PATH, false ) == 0;
 		}
 
-		
+
 
 		/// <summary>
 		/// 
@@ -773,15 +789,15 @@ namespace DroidExplorer.Core {
 		public void Forward ( string device, string local, string remote, bool rebind ) {
 			var roptions = RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace;
 			local.Require ( ( i ) => {
-				var match = i.IsMatch ( Resources.Strings.ForwardTypeRegexPattern, roptions );
+				var match = Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( i, Resources.Strings.ForwardTypeRegexPattern, roptions );
 				return !string.IsNullOrWhiteSpace ( i ) && match;
 			}, "local argument must not be null/empty and must have the type:destination", "local" );
 			remote.Require ( ( i ) => {
-				var match = i.IsMatch(Resources.Strings.ForwardTypeRegexPattern,roptions);
+				var match = Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( i, Resources.Strings.ForwardTypeRegexPattern, roptions );
 				return !string.IsNullOrWhiteSpace ( i ) && match;
 			}, "remote argument must not be null/empty and must have the type:destination", "remote" );
 
-			CommandRun ( device, AdbCommand.Forward, "{2}{0} {1}".With ( local, remote, !rebind ? "--no-rebind " : string.Empty ));
+			CommandRun ( device, AdbCommand.Forward, Camalot.Common.Extensions.CamalotCommonExtensions.With ( "{2}{0} {1}", local, remote, !rebind ? "--no-rebind " : string.Empty ) );
 		}
 
 		/// <summary>
@@ -802,10 +818,10 @@ namespace DroidExplorer.Core {
 		public void ForwardRemove ( string device, string local ) {
 			var roptions = RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace;
 			local.Require ( ( i ) => {
-				var match = i.IsMatch ( Resources.Strings.ForwardTypeRegexPattern, roptions );
+				var match = Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( i, Resources.Strings.ForwardTypeRegexPattern, roptions );
 				return !string.IsNullOrWhiteSpace ( i ) && match;
 			}, "local argument must not be null/empty and must have the type:destination", "local" );
-			CommandRun ( device, AdbCommand.Forward, "--remove {0} ".With ( local ) );
+			CommandRun ( device, AdbCommand.Forward, Camalot.Common.Extensions.CamalotCommonExtensions.With ( "--remove {0} ", local ) );
 		}
 
 		/// <summary>
@@ -837,7 +853,7 @@ namespace DroidExplorer.Core {
 		/// </summary>
 		/// <param name="device">The device.</param>
 		public void ForwardList ( string device ) {
-			var result = CommandRun ( device.Require ( ), AdbCommand.Forward, "--list");
+			var result = CommandRun ( device.Require ( ), AdbCommand.Forward, "--list" );
 			this.LogDebug ( result.Output.ToString ( ) );
 		}
 
@@ -861,15 +877,15 @@ namespace DroidExplorer.Core {
 		public void Reverse ( string device, string local, string remote, bool rebind ) {
 			var roptions = RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace;
 			local.Require ( ( i ) => {
-				var match = i.IsMatch ( Resources.Strings.ForwardTypeRegexPattern, roptions );
+				var match = Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( i, Resources.Strings.ForwardTypeRegexPattern, roptions );
 				return !string.IsNullOrWhiteSpace ( i ) && match;
 			}, "local argument must not be null/empty and must have the type:destination", "local" );
 			remote.Require ( ( i ) => {
-				var match = i.IsMatch ( Resources.Strings.ForwardTypeRegexPattern, roptions );
+				var match = Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( i, Resources.Strings.ForwardTypeRegexPattern, roptions );
 				return !string.IsNullOrWhiteSpace ( i ) && match;
 			}, "remote argument must not be null/empty and must have the type:destination", "remote" );
 
-			CommandRun ( device, AdbCommand.Reverse, "{2}{0} {1}".With ( local, remote, !rebind ? "--no-rebind " : string.Empty ) );
+			CommandRun ( device, AdbCommand.Reverse, Camalot.Common.Extensions.CamalotCommonExtensions.With ( "{2}{0} {1}", local, remote, !rebind ? "--no-rebind " : string.Empty ) );
 		}
 
 		/// <summary>
@@ -890,10 +906,10 @@ namespace DroidExplorer.Core {
 		public void ReverseRemove ( string device, string local ) {
 			var roptions = RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace;
 			local.Require ( ( i ) => {
-				var match = i.IsMatch ( Resources.Strings.ForwardTypeRegexPattern, roptions );
+				var match = Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( i, Resources.Strings.ForwardTypeRegexPattern, roptions );
 				return !string.IsNullOrWhiteSpace ( i ) && match;
 			}, "local argument must not be null/empty and must have the type:destination", "local" );
-			CommandRun ( device, AdbCommand.Reverse, "--remove {0} ".With ( local ) );
+			CommandRun ( device, AdbCommand.Reverse, Camalot.Common.Extensions.CamalotCommonExtensions.With ( "--remove {0} ", local ) );
 		}
 
 		/// <summary>
@@ -925,7 +941,7 @@ namespace DroidExplorer.Core {
 		/// </summary>
 		/// <param name="device">The device.</param>
 		public void ReverseList ( string device ) {
-			var result = CommandRun ( device.Require(), AdbCommand.Reverse, "--list" );
+			var result = CommandRun ( device.Require ( ), AdbCommand.Reverse, "--list" );
 			this.LogDebug ( result.Output.ToString ( ) );
 		}
 
@@ -1030,10 +1046,10 @@ namespace DroidExplorer.Core {
 			}
 		}
 
-		public Size GetScreenResolution( string device ) {
-			var result = ShellRun ( device, "dumpsys window | grep \"cur=\"" ).Output.ToString();
-			var m = result.Match ( Resources.Strings.DumpSysWindowScreenResolutionRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline );
-			if(m.Success) {
+		public Size GetScreenResolution ( string device ) {
+			var result = ShellRun ( device, "dumpsys window | grep \"cur=\"" ).Output.ToString ( );
+			var m = Camalot.Common.Extensions.CamalotCommonExtensions.Match ( result, Resources.Strings.DumpSysWindowScreenResolutionRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline );
+			if ( m.Success ) {
 				var w = int.Parse ( m.Groups[1].Value );
 				var h = int.Parse ( m.Groups[2].Value );
 				return new Size ( w, h );
@@ -1046,9 +1062,11 @@ namespace DroidExplorer.Core {
 			return GetScreenResolution ( this.DefaultDevice );
 		}
 
-		public ScreenCaptureCommandResult ScreenCapture(string device, Size resolution, int bitrate, TimeSpan timeLimit, bool rotate, string file) {
-			return CommandRun ( device, AdbCommand.ShellScreenCapture, 
-				"--bit-rate {0} --time-limit {1} --size {2} --verbose {3}{4}".With ( bitrate, timeLimit.TotalSeconds, "{0}x{1}".With ( resolution.Width, resolution.Height ), rotate ? "--rotate " : "", file ) 
+		public ScreenCaptureCommandResult ScreenCapture ( string device, Size resolution, int bitrate, TimeSpan timeLimit, bool rotate, string file ) {
+			return CommandRun ( device, AdbCommand.ShellScreenCapture,
+				Camalot.Common.Extensions.CamalotCommonExtensions.With ( "--bit-rate {0} --time-limit {1} --size {2} --verbose {3}{4}",
+					bitrate, timeLimit.TotalSeconds,
+					Camalot.Common.Extensions.CamalotCommonExtensions.With ( "{0}x{1}", resolution.Width, resolution.Height ), rotate ? "--rotate " : "", file )
 			) as ScreenCaptureCommandResult;
 		}
 
@@ -1279,11 +1297,18 @@ namespace DroidExplorer.Core {
 				echo '--nandroid' >> /cache/recovery/command
 				echo '--update_package=SDCARD:update.zip' >> /cache/recovery/command
 			*/
-			ShellRun ( device, "mkdir -p /cache/recovery/" );
-			ShellRun ( device, "echo 'boot-recovery ' > /cache/recovery/command" );
-			//ShellRun ( device, "echo '--nandroid ' >> /cache/recovery/command" );
-			ShellRun ( device, "echo '--update_package=SDCARD:update.zip' >> /cache/recovery/command" );
-			RebootRecovery ( device );
+
+			var dev = madb.Devices.Single ( m => m.SerialNumber == device );
+			dev.FileSystem.MakeDirectory ( "/cache/recovery/" );
+			dev.ExecuteShellCommand ( "echo 'boot-recovery ' < /cache/recovery/command", NullOutputReceiver.Instance );
+			dev.ExecuteShellCommand ( "echo '--update_package=SDCARD:update.zip' >> /cache/recovery/command", NullOutputReceiver.Instance );
+			dev.Reboot ( "recovery" );
+
+			//ShellRun ( device, "mkdir -p /cache/recovery/" );
+			//ShellRun ( device, "echo 'boot-recovery ' > /cache/recovery/command" );
+			////ShellRun ( device, "echo '--nandroid ' >> /cache/recovery/command" );
+			//ShellRun ( device, "echo '--update_package=SDCARD:update.zip' >> /cache/recovery/command" );
+			//RebootRecovery ( device );
 		}
 
 		/// <summary>
@@ -1301,7 +1326,11 @@ namespace DroidExplorer.Core {
 			if ( string.IsNullOrEmpty ( newName ) ) {
 				return;
 			}
-			ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "rn {0} {1}", path, newName ) );
+			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "rn {0} {1}", path, newName ) );
+			newName.Require ( x => {
+				return x.StartsWith ( "/" );
+			}, "newName must be full path" );
+			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Move ( path, newName );
 		}
 
 		/// <summary>
@@ -1329,7 +1358,8 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="file">The file.</param>
 		public void DeleteFile ( string device, string file ) {
-			ShellRun ( device, string.Format ( "busybox rm -f \"{0}\"", file ) );
+			//ShellRun ( device, string.Format ( "busybox rm -f \"{0}\"", file ) );
+			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Delete ( file );
 		}
 
 		/// <summary>
@@ -1346,7 +1376,8 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="path">The path to delete.</param>
 		public void DeleteDirectory ( string device, string path ) {
-			ShellRun ( device, string.Format ( "busybox rm -rf {0}", path ) );
+			//ShellRun ( device, string.Format ( "busybox rm -rf {0}", path ) );
+			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Delete ( path );
 		}
 
 		/// <summary>
@@ -1466,7 +1497,7 @@ namespace DroidExplorer.Core {
 		/// <param name="remotePath">The remote path.</param>
 		/// <returns></returns>
 		public System.IO.DirectoryInfo PullDirectory ( string remotePath ) {
-			return PullDirectory ( DefaultDevice, remotePath, System.IO.Path.Combine (FolderManagement.TempFolder, Path.GetDirectoryName ( remotePath ) ) );
+			return PullDirectory ( DefaultDevice, remotePath, System.IO.Path.Combine ( FolderManagement.TempFolder, Path.GetDirectoryName ( remotePath ) ) );
 		}
 
 		/// <summary>
@@ -1700,14 +1731,36 @@ namespace DroidExplorer.Core {
 		/// <param name="path">The path.</param>
 		/// <returns></returns>
 		public List<DroidExplorer.Core.IO.FileSystemInfo> ListDirectories ( string device, string path ) {
-			List<DroidExplorer.Core.IO.FileSystemInfo> fsi = GetDirectoryContents ( device, path );
-			List<DroidExplorer.Core.IO.FileSystemInfo> result = new List<DroidExplorer.Core.IO.FileSystemInfo> ( );
-			foreach ( DroidExplorer.Core.IO.FileSystemInfo var in fsi ) {
-				if ( var.IsDirectory ) {
-					result.Add ( var );
+			//List<DroidExplorer.Core.IO.FileSystemInfo> fsi = GetDirectoryContents ( device, path );
+			//List<DroidExplorer.Core.IO.FileSystemInfo> result = new List<DroidExplorer.Core.IO.FileSystemInfo> ( );
+			//foreach ( DroidExplorer.Core.IO.FileSystemInfo var in fsi ) {
+			//	if ( var.IsDirectory ) {
+			//		result.Add ( var );
+			//	}
+			//}
+			//return result;
+
+			var result = new List<DroidExplorer.Core.IO.FileSystemInfo> ( );
+			try {
+				var dev = madb.Devices.Single ( m => m.SerialNumber == device );
+				var item = dev.FileListingService.FindFileEntry ( path );
+				var children = dev.FileListingService.GetChildren ( item, true, null );
+
+				this.LogDebug ( string.Format("Path: {0}", path));
+				foreach ( var fe in children.Where ( d => d.IsDirectory ) ) {
+					try {
+						result.Add ( new DirectoryInfo ( fe.Name, fe.Size, fe.Permissions.User.ToPermission ( ), fe.Permissions.Group.ToPermission ( ),
+							fe.Permissions.Other.ToPermission ( ), fe.Date, fe.FullPath ) );
+						this.LogDebug ( fe.Name );
+					} catch {
+						this.LogWarn ( fe.Name );
+					}
 				}
+			} catch ( Exception ex ) {
+				this.LogWarn ( ex.Message );
 			}
 			return result;
+
 		}
 
 		/// <summary>
@@ -1726,17 +1779,35 @@ namespace DroidExplorer.Core {
 		/// <param name="path">The path.</param>
 		/// <returns></returns>
 		public List<DroidExplorer.Core.IO.FileSystemInfo> GetDirectoryContents ( string device, string path ) {
-			DirectoryListCommandResult result = ShellLSRun ( device, string.Format ( Properties.Resources.ListDirectoryCommand, path ) ) as DirectoryListCommandResult;
-			this.LogDebug ( result.Output.ToString ( ) );
-			result.FileSystemItems.Sort ( new FileSystemInfoComparer ( ) );
-			return result.FileSystemItems;
+			//DirectoryListCommandResult result = ShellLSRun ( device, string.Format ( Properties.Resources.ListDirectoryCommand, path ) ) as DirectoryListCommandResult;
+			//this.LogDebug ( result.Output.ToString ( ) );
+			//result.FileSystemItems.Sort ( new FileSystemInfoComparer ( ) );
+			//return result.FileSystemItems;
+
+			var result = new List<FileSystemInfo> ( );
+			var dev = madb.Devices.Single ( m => m.SerialNumber == device );
+			var item = dev.FileListingService.FindFileEntry ( path );
+			var children = dev.FileListingService.GetChildren ( item, true, null );
+
+			this.LogDebug ( string.Format ( "Path: {0}", path ) );
+			foreach ( var c in children ) {
+				if(c.IsDirectory) {
+					result.Add ( new DirectoryInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
+						c.Permissions.Other.ToPermission ( ), c.Date, c.FullPath ) );
+				} else {
+					result.Add ( new FileInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
+						c.Permissions.Other.ToPermission ( ), c.Date, c.IsExecutable, c.FullPath ) );
+				}
+			}
+			return result;
 		}
 
 		/// <summary>
 		/// Gets or sets the state.
 		/// </summary>
 		/// <value>The state.</value>
-		public DeviceState State {
+		public DeviceState State
+		{
 			get { return this._deviceState; }
 			private set { this._deviceState = value; }
 		}
@@ -1786,7 +1857,7 @@ namespace DroidExplorer.Core {
 
 				var args = AdbCommandArguments ( device, CommandRunner.AdbCommand.Shell );
 				var tool = FolderManagement.GetSdkTool ( CommandRunner.ADB_COMMAND );
-				shellHandler.StartProcess ( tool, "{0} {1}".With ( args, initialCommand ).Trim ( ) );
+				shellHandler.StartProcess ( tool, Camalot.Common.Extensions.CamalotCommonExtensions.With ( "{0} {1}", args, initialCommand ).Trim ( ) );
 			} ) ).Start ( );
 		}
 
@@ -1881,12 +1952,12 @@ namespace DroidExplorer.Core {
 		/// <returns></returns>
 		public IEnumerable<DeviceListItem> GetDevices ( ) {
 			var list = ( CommandRun ( string.Empty, AdbCommand.Devices, string.Empty ) as DeviceListCommandResult ).Devices;
-      return list;
+			return list;
 		}
 
 		public bool TcpConnect ( string connection ) {
 			// check if it is already connected.
-			if ( !this.GetDevices().Any ( x => x.SerialNumber == connection ) ) {
+			if ( !this.GetDevices ( ).Any ( x => x.SerialNumber == connection ) ) {
 				this.LogDebug ( "Connecting to {0} via TCP/IP", connection );
 				var result = ( CommandRun ( string.Empty, AdbCommand.Connect, connection ) as TcpConnectCommandResult ).Successful;
 				if ( result ) {
@@ -2109,7 +2180,8 @@ namespace DroidExplorer.Core {
 
 
 			// we may need to re-tcp connect if adb root fails. so lets do that.
-			if ( device.IsMatch ( DroidExplorer.Resources.Strings.IPDeviceRegex, regexOptions ) || device.IsMatch ( DroidExplorer.Resources.Strings.HostDeviceRegex, regexOptions ) ) {
+			if ( Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( device, DroidExplorer.Resources.Strings.IPDeviceRegex, regexOptions ) ||
+				Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( device, DroidExplorer.Resources.Strings.HostDeviceRegex, regexOptions ) ) {
 				TcpConnect ( device );
 			}
 
@@ -2127,7 +2199,7 @@ namespace DroidExplorer.Core {
 				case AdbCommand.Status_Window:
 					try {
 						return new GenericCommandResult ( RunAdbCommand ( device, AdbCommand.Get_State, args, true, false ) );
-					} catch ( AdbException aex) {
+					} catch ( AdbException aex ) {
 						this.LogWarn ( aex.Message, aex );
 						return new GenericCommandResult ( "Unknown" );
 					}
@@ -2165,7 +2237,7 @@ namespace DroidExplorer.Core {
 					return new GenericCommandResult ( RunAdbCommand ( device, command, args, false, true ) );
 				case AdbCommand.Bugreport:
 				case AdbCommand.Logcat:
-				
+
 				case AdbCommand.Emu:
 				case AdbCommand.Sync:
 				case AdbCommand.PPP:
@@ -2344,8 +2416,10 @@ namespace DroidExplorer.Core {
 		public static ISettings Settings { get; set; }
 
 
-		public static CommandRunner Instance {
-			get {
+		public static CommandRunner Instance
+		{
+			get
+			{
 				if ( _commandRunner == null ) {
 					_commandRunner = new CommandRunner ( );
 				}

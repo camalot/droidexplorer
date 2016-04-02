@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Net;
-using DroidExplorer.Core.Adb;
 using DroidExplorer.Core.IO;
 using DroidExplorer.Core;
 using DroidExplorer.Core.UI;
@@ -92,7 +91,7 @@ namespace DroidExplorer.Plugins.UI {
 		/// </summary>
 		/// <param name="ri">The ri.</param>
 		/// <returns></returns>
-		private Image GetImageFromRawImage ( RawImage ri ) {
+		private Image GetImageFromRawImage ( Managed.Adb.RawImage ri ) {
 			try {
 				this.LogDebug ( "Image Size: {0}", ri.Size.ToString ( ) );
 				if ( ri.Bpp == 16 ) {
@@ -155,8 +154,11 @@ namespace DroidExplorer.Plugins.UI {
 		/// </summary>
 		/// <returns></returns>
 		private Image GetScreenShot ( ) {
-			Device d = new Device ( CommandRunner.Instance.DefaultDevice, DeviceState.Online );
-			RawImage ri = AdbHelper.Instance.GetFrameBuffer ( AndroidDebugBridge.SocketAddress, d );
+
+			var d = Managed.Adb.AdbHelper.Instance.GetDevices ( Managed.Adb.AndroidDebugBridge.SocketAddress ).Single ( m => m.SerialNumber == CommandRunner.Instance.DefaultDevice );
+
+			//Managed.Adb.Device d = new Managed.Adb.Device ( CommandRunner.Instance.DefaultDevice, Managed.Adb.DeviceState.Online );
+			Managed.Adb.RawImage ri = Managed.Adb.AdbHelper.Instance.GetFrameBuffer ( Managed.Adb.AndroidDebugBridge.SocketAddress, d );
 			return GetImageFromRawImage ( ri );
 		}
 

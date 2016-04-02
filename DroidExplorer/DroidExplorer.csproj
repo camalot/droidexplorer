@@ -40,7 +40,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-		<CI_BUILD_VERSION Condition=" '$(CI_BUILD_VERSION)' == ''">0.10.0.0</CI_BUILD_VERSION>
+    <CI_BUILD_VERSION Condition=" '$(CI_BUILD_VERSION)' == ''">0.10.0.0</CI_BUILD_VERSION>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\</OutputPath>
     <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
@@ -57,7 +57,7 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
@@ -119,6 +119,10 @@
       <HintPath>..\3rdParty\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Managed.Adb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Managed.Adb.x64.1.0.12.34726\lib\net45\Managed.Adb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -130,8 +134,9 @@
     <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
       <HintPath>..\packages\WindowsAPICodePack-ShellExtensions.1.1.1\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=1.1.17511.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.1.1.0\lib\net35\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>

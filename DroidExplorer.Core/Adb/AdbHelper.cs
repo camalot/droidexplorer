@@ -326,7 +326,7 @@ namespace DroidExplorer.Core.Adb {
 		}
 
 		public List<Device> GetDevices ( IPEndPoint address ) {
-			byte[] request = FormAdbRequest ( "host:devices" ); //$NON-NLS-1$
+			byte[] request = FormAdbRequest ( "host:devices-l" ); //$NON-NLS-1$
 			byte[] reply;
 			Socket socket = new Socket ( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
 

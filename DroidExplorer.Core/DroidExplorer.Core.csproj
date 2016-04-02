@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-	<Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' != 'SharedProperties' " />
-	<PropertyGroup>
+  <Import Project="$(MSBuildProjectDirectory)\..\.build\SharedProperties.msbuild" Condition="'$(SharedProperties)' != 'SharedProperties' " />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' OR '$(Platform)' == 'AnyCPU' ">x86</Platform>
     <Platform Condition=" '$(Platform)' == 'ia64' ">x64</Platform>
@@ -42,9 +42,9 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
     <DefineConstants>$(PlatformConstant);TRACE;DEBUG</DefineConstants>
-		<CI_BUILD_VERSION Condition=" '$(CI_BUILD_VERSION)' == '' ">0.10.0.0</CI_BUILD_VERSION>
-		<OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\</OutputPath>
-		<DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
+    <CI_BUILD_VERSION Condition=" '$(CI_BUILD_VERSION)' == '' ">0.10.0.0</CI_BUILD_VERSION>
+    <OutputPath Condition=" '$(OutputPath)' == '' ">..\bin\$(Configuration)\$(CI_BUILD_VERSION)\$(ReleasePlatform)\</OutputPath>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -109,8 +109,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdParty\madb\$(Platform)\Managed.AndroidDebugBridge.dll</HintPath>
     </Reference>-->
-    <Reference Include="MoreLinq, Version=1.1.17511.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.1.1.0\lib\net35\MoreLinq.dll</HintPath>
+    <Reference Include="Managed.Adb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=AMD64">
+      <HintPath>..\packages\Managed.Adb.x64.1.0.17.43618\lib\net45\Managed.Adb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.1.4.0\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -137,18 +142,6 @@
     </Compile>
     <Compile Include="AaptBrandingCommandResult.cs" />
     <Compile Include="AaptPermissionsCommandResult.cs" />
-    <Compile Include="Adb\AdbHelper.cs" />
-    <Compile Include="Adb\AndroidDebugBridge.cs" />
-    <Compile Include="Adb\BatteryInfo.cs" />
-    <Compile Include="Adb\ColorData.cs" />
-    <Compile Include="Adb\Device.cs" />
-    <Compile Include="Adb\IDevice.cs" />
-    <Compile Include="Adb\Receivers\InstallReceiver.cs" />
-    <Compile Include="Adb\Receivers\IShellOutputReceiver.cs" />
-    <Compile Include="Adb\Receivers\MultiLineReceiver.cs" />
-    <Compile Include="Adb\Receivers\NullOutputReceiver.cs" />
-    <Compile Include="Adb\RawImage.cs" />
-    <Compile Include="Adb\Receivers\BatteryReceiver.cs" />
     <Compile Include="Architecture.cs" />
     <Compile Include="Arguments.cs">
       <SubType>Code</SubType>
@@ -179,6 +172,7 @@
     <Compile Include="Exceptions\ShellCommandUnresponsiveException.cs" />
     <Compile Include="Exceptions\UnknownOptionException.cs" />
     <Compile Include="Exceptions\UnsupportedAdbVersionException.cs" />
+    <Compile Include="Extensions\FilePermission.cs" />
     <Compile Include="Extensions\FileSystemInfo.cs" />
     <Compile Include="Extensions\Image.cs" />
     <Compile Include="Extensions\ISynchronizeInvoke.cs" />
@@ -286,6 +280,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -222,8 +222,10 @@ namespace DroidExplorer.Service {
 				}
 
 				if(Settings.Instance.SystemSettings.RecordDeviceInformationToCloud) {
-					DroidExplorer.Core.Adb.Device d = new Core.Adb.Device(deviceId, Core.Adb.DeviceState.Online);
-					if(d != null) {
+					var d = Managed.Adb.AdbHelper.Instance.GetDevices ( Managed.Adb.AndroidDebugBridge.SocketAddress ).Single ( m => m.SerialNumber == deviceId );
+
+					//Managed.Adb.Device d = new Managed.Adb.Device(deviceId, Managed.Adb.DeviceState.Online);
+					if ( d != null) {
 						CommandRunner.Instance.GetProperties(deviceId).ToList().ForEach(x => {
 							d.Properties.Add(x.Key, x.Value);
 						});

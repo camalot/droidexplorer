@@ -23,6 +23,8 @@ _Releases will also continue to be available on the [CodePlex Project Site][1]._
 ### [ASK FOR HELP][8]
 I am now monitoring Questions over on [Android Enthusiasts][8] tagged with [[DroidExplorer][8]]. If you have issues, that are not bugs, you should [ask a question][19] there and tag it with [[DroidExplorer][8]]. 
 
+![Ask for Help][25]
+
 -----
 
 
@@ -57,3 +59,4 @@ I am now monitoring Questions over on [Android Enthusiasts][8] tagged with [[Dro
 [22]: http://i.imgur.com/iGwDvpW.png
 [23]: http://twitter.com/abryanconrad
 [24]: https://www.facebook.com/droidexplorer
+[25]: http://i.imgur.com/UEMapVT.png

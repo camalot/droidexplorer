@@ -350,20 +350,21 @@ namespace DroidExplorer.Core {
 		/// Starts the server.
 		/// </summary>
 		public void StartServer ( ) {
-			//var result = CommandRun ( string.Empty, AdbCommand.Start_Server, string.Empty );
 			madb.Start ( );
-			//this.LogDebug ( result.Output.ToString ( ) );
 		}
 
+		/// <summary>
+		/// Stops the server.
+		/// </summary>
 		public void StopServer ( ) {
-			//var result = CommandRun ( string.Empty, AdbCommand.Kill_Server, string.Empty );
-			//this.LogDebug ( result.Output.ToString ( ) );
 			madb.Stop ( );
 		}
 
+		/// <summary>
+		/// Restarts the server.
+		/// </summary>
 		public void RestartServer ( ) {
-			StopServer ( );
-			StartServer ( );
+			madb.Restart ( );
 		}
 
 
@@ -378,7 +379,7 @@ namespace DroidExplorer.Core {
 			var rOutput = result.Output.ToString ( );
 			// checks if we were able to launch adb as root.
 
-			if ( Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( rOutput, DroidExplorer.Resources.Strings.CanAdbRootRegex, regexOptions ) ) {
+			if ( rOutput.IsMatch( DroidExplorer.Resources.Strings.CanAdbRootRegex, regexOptions ) ) {
 				throw new AdbRootException ( );
 			}
 			this.LogDebug ( result.Output.ToString ( ) );
@@ -404,33 +405,11 @@ namespace DroidExplorer.Core {
 		/// <param name="other">The other.</param>
 		/// <param name="file">The file.</param>
 		public void Chmod ( string device, FilePermission user, FilePermission group, FilePermission other, string file ) {
-			string command = string.Format ( CultureInfo.InvariantCulture, "chmod {0}{1}{2} \"{3}\"", (int)user.ToChmod ( ),
-				(int)group.ToChmod ( ), (int)other.ToChmod ( ), file );
+			//string command = string.Format ( CultureInfo.InvariantCulture, "chmod {0}{1}{2} \"{3}\"", (int)user.ToChmod ( ),
+			//	(int)group.ToChmod ( ), (int)other.ToChmod ( ), file );
 			//this.LogDebug ( command );
 			//ShellRun ( device, command );
 			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Chmod ( file, new FilePermissions ( user, group, other ) );
-		}
-
-		/// <summary>
-		/// Change file system modes of files and directories. The modes include permissions and special modes.
-		/// </summary>
-		/// <param name="device">The device.</param>
-		/// <param name="mode">The mode.</param>
-		/// <param name="file">The file.</param>
-		public void Chmod ( string device, int mode, string file ) {
-			string command = string.Format ( CultureInfo.InvariantCulture, "chmod {0} \"{1}\"", mode, file );
-			this.LogDebug ( command );
-			ShellRun ( device, command );
-
-		}
-
-		/// <summary>
-		/// Change file system modes of files and directories. The modes include permissions and special modes.
-		/// </summary>
-		/// <param name="mode">The mode.</param>
-		/// <param name="file">The file.</param>
-		public void Chmod ( int mode, string file ) {
-			Chmod ( DefaultDevice, mode, file );
 		}
 
 		/// <summary>
@@ -472,17 +451,6 @@ namespace DroidExplorer.Core {
 		/// 	<c>true</c> if the specified path is a mount point on the specified device; otherwise, <c>false</c>.
 		/// </returns>
 		public bool IsMountPoint ( string device, string path ) {
-			//string data = ReadFile ( device, "/etc/fstab" ).Output.ToString ( );
-			//Regex regex = new Regex ( Properties.Resources.FSTabRegexPattern, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline );
-			//Match m = regex.Match ( data );
-			//while ( m.Success ) {
-			//	if ( string.Compare ( m.Groups[2].Value, path, false ) == 0 ) {
-			//		return true;
-			//	}
-			//	m = m.NextMatch ( );
-			//}
-			//return false;
-
 			return madb.Devices.Single ( d => d.SerialNumber == device ).MountPoints.Any ( mp => mp.Value.Name == path );
 		}
 
@@ -493,7 +461,6 @@ namespace DroidExplorer.Core {
 		/// <param name="classFullName">Full name of the class.</param>
 		public void LaunchActivity ( string package, string classFullName ) {
 			LaunchActivity ( this.DefaultDevice, package, classFullName );
-
 		}
 
 		/// <summary>
@@ -503,8 +470,8 @@ namespace DroidExplorer.Core {
 		/// <param name="package">The package.</param>
 		/// <param name="classFullName">Full name of the class.</param>
 		public void LaunchActivity ( string device, string package, string classFullName ) {
-			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "am start -a android.intent.action.MAIN -n {0}/{1}", package, classFullName ) );
-			madb.Devices.Single ( m => m.SerialNumber == device ).ExecuteShellCommand ( Camalot.Common.Extensions.CamalotCommonExtensions.With ( "am start -a android.intent.action.MAIN -n {0}/{1}", package, classFullName ), NullOutputReceiver.Instance );
+			madb.Devices.Single ( m => m.SerialNumber == device ).ExecuteShellCommand ( "am start -a android.intent.action.MAIN -n {0}/{1}".With( package, classFullName ), 
+				NullOutputReceiver.Instance );
 		}
 
 		/// <summary>
@@ -513,10 +480,6 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="mountPoint">The mount point.</param>
 		public void MakeReadWrite ( string device, string mountPoint ) {
-			//if ( !mountPoint.StartsWith ( "/" ) ) {
-			//	throw new AdbException ( "Invalid mount point" );
-			//}
-			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "busybox mount -o rw,remount {0}", mountPoint ) );
 			madb.Devices.Single ( m => m.SerialNumber == device ).RemountMountPoint ( mountPoint, false );
 		}
 
@@ -534,10 +497,6 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="mountPoint">The mount point.</param>
 		public void MakeReadOnly ( string device, string mountPoint ) {
-			//if ( !mountPoint.StartsWith ( "/" ) ) {
-			//	throw new AdbException ( "Invalid mount point" );
-			//}
-			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "busybox mount -o ro,remount {0}", mountPoint ) );
 			madb.Devices.Single ( m => m.SerialNumber == device ).RemountMountPoint ( mountPoint, true );
 		}
 
@@ -555,12 +514,7 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="mount">The mount.</param>
 		public void Mount ( string device, string mount ) {
-			if ( string.IsNullOrEmpty ( mount ) ) {
-				return;
-			}
-
-			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "mount {0}", mount ) );
-			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Mount ( mount );
+			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Mount ( mount.Require() );
 		}
 
 		/// <summary>
@@ -596,13 +550,25 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		public void Connect ( string device ) {
 			try {
-
+				
 				if ( DeviceMonitor != null ) {
 					DeviceMonitor.Stop ( );
 					DeviceMonitor = null;
 				}
 
 				DeviceMonitor = new DeviceMonitor ( device );
+				madb.DeviceChanged += (s, e) => {
+					// Managed.Adb.DeviceEventArgs
+					this.LogDebug ( e.Device.State.ToString ( ) );
+				};
+				madb.DeviceDisconnected += ( s, e ) => {
+					// Managed.Adb.DeviceEventArgs
+					this.LogDebug ( e.Device.State.ToString() );
+				};
+				madb.DeviceConnected += ( s, e ) => {
+					// Managed.Adb.DeviceEventArgs
+					this.LogDebug ( e.Device.State.ToString ( ) );
+				};
 				DeviceMonitor.Connected += ( s, e ) => {
 					if ( this.Connected != null ) {
 						this.State = e.State;
@@ -629,6 +595,8 @@ namespace DroidExplorer.Core {
 				State = DeviceState.Unknown;
 			}
 		}
+
+
 
 		/// <summary>
 		/// Connects this instance.
@@ -1745,12 +1713,15 @@ namespace DroidExplorer.Core {
 				var dev = madb.Devices.Single ( m => m.SerialNumber == device );
 				var item = dev.FileListingService.FindFileEntry ( path );
 				var children = dev.FileListingService.GetChildren ( item, true, null );
-
-				this.LogDebug ( string.Format("Path: {0}", path));
 				foreach ( var fe in children.Where ( d => d.IsDirectory ) ) {
 					try {
-						result.Add ( new DirectoryInfo ( fe.Name, fe.Size, fe.Permissions.User.ToPermission ( ), fe.Permissions.Group.ToPermission ( ),
-							fe.Permissions.Other.ToPermission ( ), fe.Date, fe.FullPath ) );
+						if ( fe.IsLink ) {
+							result.Add ( new SymbolicLinkInfo ( fe.Name, fe.LinkName, fe.Size, fe.Permissions.User.ToPermission ( ), fe.Permissions.Group.ToPermission ( ),
+								fe.Permissions.Other.ToPermission ( ), fe.Date, true, false, fe.FullPath ) );
+						} else {
+							result.Add ( new DirectoryInfo ( fe.Name, fe.Size, fe.Permissions.User.ToPermission ( ), fe.Permissions.Group.ToPermission ( ),
+								fe.Permissions.Other.ToPermission ( ), fe.Date, fe.FullPath ) );
+						}
 						this.LogDebug ( fe.Name );
 					} catch {
 						this.LogWarn ( fe.Name );
@@ -1792,13 +1763,26 @@ namespace DroidExplorer.Core {
 			this.LogDebug ( string.Format ( "Path: {0}", path ) );
 			foreach ( var c in children ) {
 				if(c.IsDirectory) {
-					result.Add ( new DirectoryInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
-						c.Permissions.Other.ToPermission ( ), c.Date, c.FullPath ) );
+					if ( c.IsLink ) {
+						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
+							c.Permissions.Other.ToPermission ( ), c.Date, true, false, c.FullPath ) );
+					} else {
+						result.Add ( new DirectoryInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
+							c.Permissions.Other.ToPermission ( ), c.Date, c.FullPath ) );
+					}
 				} else {
-					result.Add ( new FileInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
+					if ( c.IsLink ) {
+						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
+							c.Permissions.Other.ToPermission ( ), c.Date, false, c.IsExecutable, c.FullPath ) );
+					} else { 
+						result.Add ( new FileInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
 						c.Permissions.Other.ToPermission ( ), c.Date, c.IsExecutable, c.FullPath ) );
+					}
 				}
 			}
+
+			result.Sort ( new FileSystemInfoComparer ( ) );
+
 			return result;
 		}
 
@@ -1951,7 +1935,12 @@ namespace DroidExplorer.Core {
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<DeviceListItem> GetDevices ( ) {
-			var list = ( CommandRun ( string.Empty, AdbCommand.Devices, string.Empty ) as DeviceListCommandResult ).Devices;
+			//var list = ( CommandRun ( string.Empty, AdbCommand.Devices, string.Empty ) as DeviceListCommandResult ).Devices;
+			//return list;
+			var list = new List<DeviceListItem> ( );
+			foreach ( var d in madb.Devices ) {
+				list.Add ( new DeviceListItem ( d.SerialNumber, d.State.ToString(), d.Product, d.Model, d.DeviceProperty ) );
+			}
 			return list;
 		}
 
@@ -1992,14 +1981,14 @@ namespace DroidExplorer.Core {
 			return GetBatteryInfo ( DefaultDevice, 5 * 60 * 1000 );
 		}
 
-		public BatteryInfo GetBatteryInfo ( String device ) {
+		public BatteryInfo GetBatteryInfo ( string device ) {
 			return GetBatteryInfo ( device, 5 * 60 * 1000 );
 		}
 		public BatteryInfo GetBatteryInfo ( long freshness ) {
 			return GetBatteryInfo ( DefaultDevice, freshness );
 		}
 
-		public BatteryInfo GetBatteryInfo ( String device, long freshness ) {
+		public BatteryInfo GetBatteryInfo ( string device, long freshness ) {
 			if ( lastBatteryInfo != null
 								&& this.lastBatteryCheckTime > ( DateTime.Now.AddMilliseconds ( -freshness ) ) ) {
 				return lastBatteryInfo;
@@ -2015,35 +2004,35 @@ namespace DroidExplorer.Core {
 			return lastBatteryInfo;
 		}
 
-		public void DeviceBackup ( String device, String output, bool apk, bool system, bool shared ) {
+		public void DeviceBackup ( string device, string output, bool apk, bool system, bool shared ) {
 			var file = new System.IO.FileInfo ( output );
 			if ( !file.Directory.Exists ) {
 				file.Directory.Create ( );
 			}
-			CommandRun ( device, AdbCommand.Backup, String.Format ( " -f {0} -all -{1}apk -{2}system -{3}shared", file.FullName.QuoteIfHasSpace ( ),
-				apk ? String.Empty : "no",
-				system ? String.Empty : "no",
-				shared ? String.Empty : "no" ) );
+			CommandRun ( device, AdbCommand.Backup, string.Format ( " -f {0} -all -{1}apk -{2}system -{3}shared", file.FullName.QuoteIfHasSpace ( ),
+				apk ? string.Empty : "no",
+				system ? string.Empty : "no",
+				shared ? string.Empty : "no" ) );
 			this.LogDebug ( "Backup Completed" );
 		}
 
-		public void DeviceBackup ( String output, bool apk, bool system, bool shared ) {
+		public void DeviceBackup ( string output, bool apk, bool system, bool shared ) {
 			DeviceBackup ( this.DefaultDevice, output, apk, system, shared );
 		}
 
-		public void DeviceBackup ( String output ) {
+		public void DeviceBackup ( string output ) {
 			DeviceBackup ( this.DefaultDevice, output );
 		}
 
-		public void DeviceBackup ( String device, String output ) {
+		public void DeviceBackup ( string device, string output ) {
 			DeviceBackup ( device, output, true, true, false );
 		}
 
-		public void DeviceRestore ( String backupFile ) {
+		public void DeviceRestore ( string backupFile ) {
 			DeviceRestore ( this.DefaultDevice, backupFile );
 		}
 
-		public void DeviceRestore ( String device, String backupFile ) {
+		public void DeviceRestore ( string device, string backupFile ) {
 			var bf = new System.IO.FileInfo ( backupFile );
 			if ( bf.Exists ) {
 				this.LogDebug ( "starting backup restore from '{0}'", bf.FullName );

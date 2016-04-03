@@ -19,7 +19,7 @@ environment:
   DE_PFX_KEY:
     secure: p7A0E/BfE4md3QJjC+BsCw==
   VS_PFX_KEY:
-    secure: DJ/nrcNs85BUM9EiPfPWCr526TUk7WgPnN9PIAiI8lU=
+    secure: JMDnzwvnrk5Px3jLkwENWadFtT2uRQWPfUJ+182a4kU=
   ProductionApiDomain: de.bit13.com
   DevelopmentApiDomain: de.bit13.local
   ReleaseMode: Setup

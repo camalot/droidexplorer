@@ -1,7 +1,10 @@
 
 #### Change log 0.10.0.0
 
-* 
+* Making use of madb over the previous methods of adb communication
+* No longer requires root to work.
+* No longer depends on busybox toolset
+
 
 #### Change log 0.9.0.4
 

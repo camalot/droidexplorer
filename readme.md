@@ -2,9 +2,13 @@
 
 [WEBSITE][2] | [FAQ][5] | [FEATURES][6] | [RELEASES][1] | [SCREENSHOTS][7] | [ASK FOR HELP][8]
 
-A tool to manage your rooted android device with the simplicity of Windows Explorer.
+A tool to manage your android device with the simplicity of Windows Explorer.
 
 _Releases will also continue to be available on the [CodePlex Project Site][1]._
+
+### <div style="text-align:center;">Root No Longer Required</div>
+
+----
 
 [![Build status][9]][10]
 [![Donate][11]][12] 

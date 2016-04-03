@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DroidExplorer.Core.Plugins {
+	/// <summary>
+	/// 
+	/// </summary>
 	public interface IPluginSettings {
 	}
 }

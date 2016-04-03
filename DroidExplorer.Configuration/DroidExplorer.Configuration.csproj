@@ -95,7 +95,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Managed.Adb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=AMD64">
-      <HintPath>..\packages\Managed.Adb.x64.1.0.25.819\lib\net45\Managed.Adb.dll</HintPath>
+      <HintPath>..\packages\Managed.Adb.x64.1.0.27.22787\lib\net45\Managed.Adb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">

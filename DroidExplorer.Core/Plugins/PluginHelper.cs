@@ -10,6 +10,13 @@ using System.Security.Cryptography;
 namespace DroidExplorer.Core.Plugins {
 	public static class PluginHelper {
 
+		/// <summary>
+		/// Gets the paid plugin apk signature.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <param name="apk">The apk.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.FileNotFoundException"></exception>
 		public static string GetPaidPluginApkSignature ( string device, string apk ) {
 			try {
 				MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider ( );
@@ -105,6 +112,11 @@ namespace DroidExplorer.Core.Plugins {
 		}
 
 
+		/// <summary>
+		/// Determines whether this instance can execute the specified plugin.
+		/// </summary>
+		/// <param name="plugin">The plugin.</param>
+		/// <returns></returns>
 		public static bool CanExecute ( IPlugin plugin ) {
 			var minPT = plugin.MinimumSDKPlatformToolsVersion;
 			var minT = plugin.MinimumSDKToolsVersion;

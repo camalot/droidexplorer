@@ -86,6 +86,12 @@ namespace DroidExplorer.Plugins {
 		public override string Name {
       get { return "FlashRecovery"; }
     }
+		/// <summary>
+		/// Gets the group.
+		/// </summary>
+		/// <value>
+		/// The group.
+		/// </value>
 		public override string Group { get { return "Tools"; } }
 
 		/// <summary>
@@ -200,7 +206,19 @@ namespace DroidExplorer.Plugins {
       CommandRunner_DeviceStateChanged ( this, new DeviceEventArgs ( CommandRunner.Instance.DefaultDevice, CommandRunner.Instance.State ) );
       return ToolStripButton;
     }
-    #endregion
+
+		/// <summary>
+		/// Gets a value indicating whether [requires root].
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if [requires root]; otherwise, <c>false</c>.
+		/// </value>
+		public override bool RequiresRoot {
+			get {
+				return true;
+			}
+		}
+		#endregion
 
 		/// <summary>
 		/// Gets or sets the tool strip menu item.
@@ -208,7 +226,7 @@ namespace DroidExplorer.Plugins {
 		/// <value>
 		/// The tool strip menu item.
 		/// </value>
-    private ToolStripMenuItem ToolStripMenuItem { get; set; }
+		private ToolStripMenuItem ToolStripMenuItem { get; set; }
 		/// <summary>
 		/// Gets or sets the tool strip button.
 		/// </summary>

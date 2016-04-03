@@ -233,7 +233,7 @@ namespace DroidExplorer.Core {
 			/// <summary>
 			/// 
 			/// </summary>
-			ShellLS,
+			//ShellLS,
 			/// <summary>
 			/// 
 			/// </summary>
@@ -1182,10 +1182,19 @@ namespace DroidExplorer.Core {
 			FastbootEraseRecovery ( this.DefaultDevice );
 		}
 
+		/// <summary>
+		/// Fastboots the flash image.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <param name="image">The image.</param>
 		public void FastbootFlashImage ( string device, string image ) {
 			ShellRun ( device, string.Format ( "fastboot flash recovery \"{0}\"", image ) );
 		}
 
+		/// <summary>
+		/// Fastboots the flash image.
+		/// </summary>
+		/// <param name="image">The image.</param>
 		public void FastbootFlashImage ( string image ) {
 			FastbootFlashImage ( this.DefaultDevice, image );
 		}
@@ -1273,12 +1282,6 @@ namespace DroidExplorer.Core {
 			dev.ExecuteShellCommand ( "echo 'boot-recovery ' < /cache/recovery/command", NullOutputReceiver.Instance );
 			dev.ExecuteShellCommand ( "echo '--update_package=SDCARD:update.zip' >> /cache/recovery/command", NullOutputReceiver.Instance );
 			dev.Reboot ( "recovery" );
-
-			//ShellRun ( device, "mkdir -p /cache/recovery/" );
-			//ShellRun ( device, "echo 'boot-recovery ' > /cache/recovery/command" );
-			////ShellRun ( device, "echo '--nandroid ' >> /cache/recovery/command" );
-			//ShellRun ( device, "echo '--update_package=SDCARD:update.zip' >> /cache/recovery/command" );
-			//RebootRecovery ( device );
 		}
 
 		/// <summary>
@@ -1288,16 +1291,23 @@ namespace DroidExplorer.Core {
 			ApplyUpdate ( this.DefaultDevice );
 		}
 
+		/// <summary>
+		/// Renames the specified path.
+		/// </summary>
+		/// <param name="path">The path.</param>
+		/// <param name="newName">The new name.</param>
 		public void Rename ( string path, string newName ) {
 			Rename ( DefaultDevice, path, newName );
 		}
 
+		/// <summary>
+		/// Renames the specified device.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <param name="path">The path.</param>
+		/// <param name="newName">The new name.</param>
 		public void Rename ( string device, string path, string newName ) {
-			if ( string.IsNullOrEmpty ( newName ) ) {
-				return;
-			}
-			//ShellRun ( device, string.Format ( CultureInfo.InvariantCulture, "rn {0} {1}", path, newName ) );
-			newName.Require ( x => {
+			newName.Require().Require ( x => {
 				return x.StartsWith ( "/" );
 			}, "newName must be full path" );
 			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Move ( path, newName );
@@ -1328,7 +1338,6 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="file">The file.</param>
 		public void DeleteFile ( string device, string file ) {
-			//ShellRun ( device, string.Format ( "busybox rm -f \"{0}\"", file ) );
 			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Delete ( file );
 		}
 
@@ -1547,6 +1556,12 @@ namespace DroidExplorer.Core {
 			return IsPackageInstalled ( this.DefaultDevice, package );
 		}
 
+		/// <summary>
+		/// Gets the apk information.
+		/// </summary>
+		/// <param name="apkFile">The apk file.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.FileNotFoundException">File was not found on device.</exception>
 		public AaptBrandingCommandResult GetApkInformation ( string apkFile ) {
 			System.IO.FileInfo lApk = PullFile ( apkFile );
 			if ( lApk == null || !lApk.Exists ) {
@@ -1556,6 +1571,13 @@ namespace DroidExplorer.Core {
 			return GetLocalApkInformation ( lApk.FullName );
 		}
 
+		/// <summary>
+		/// Gets the apk information from local cache.
+		/// </summary>
+		/// <param name="apkFile">The apk file.</param>
+		/// <param name="cacheDirectory">The cache directory.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.FileNotFoundException">File was not found on device.</exception>
 		public AaptBrandingCommandResult GetApkInformationFromLocalCache ( String apkFile, String cacheDirectory ) {
 			string keyName = apkFile;
 			if ( keyName.StartsWith ( "/" ) ) {
@@ -1588,6 +1610,12 @@ namespace DroidExplorer.Core {
 			}
 		}
 
+		/// <summary>
+		/// Gets the local apk information.
+		/// </summary>
+		/// <param name="apkFile">The apk file.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.FileNotFoundException">File was not found on device.</exception>
 		public AaptBrandingCommandResult GetLocalApkInformation ( string apkFile ) {
 			if ( string.IsNullOrEmpty ( apkFile ) || !System.IO.File.Exists ( apkFile ) ) {
 				throw new System.IO.FileNotFoundException ( "File was not found on device.", System.IO.Path.GetFileName ( apkFile ) );
@@ -1598,6 +1626,12 @@ namespace DroidExplorer.Core {
 			return result;
 		}
 
+		/// <summary>
+		/// Gets the apk permissions.
+		/// </summary>
+		/// <param name="apkFile">The apk file.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.FileNotFoundException">File was not found on device.</exception>
 		public List<string> GetApkPermissions ( string apkFile ) {
 			System.IO.FileInfo lApk = PullFile ( apkFile );
 			if ( lApk == null || !lApk.Exists ) {
@@ -1607,6 +1641,12 @@ namespace DroidExplorer.Core {
 			return GetLocalApkPermissions ( lApk.FullName );
 		}
 
+		/// <summary>
+		/// Gets the local apk permissions.
+		/// </summary>
+		/// <param name="apkFile">The apk file.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.FileNotFoundException">File was not found on device.</exception>
 		public List<string> GetLocalApkPermissions ( string apkFile ) {
 			System.IO.FileInfo lApk = new System.IO.FileInfo ( apkFile );
 			if ( lApk == null || !lApk.Exists ) {
@@ -1655,6 +1695,12 @@ namespace DroidExplorer.Core {
 			}
 		}
 
+		/// <summary>
+		/// Gets the local apk icon image.
+		/// </summary>
+		/// <param name="apkFile">The apk file.</param>
+		/// <returns></returns>
+		/// <exception cref="System.IO.FileNotFoundException">File was not found on device.</exception>
 		public Image GetLocalApkIconImage ( string apkFile ) {
 			System.IO.FileInfo lApk = new System.IO.FileInfo ( apkFile );
 			if ( lApk == null || !lApk.Exists ) {
@@ -1701,15 +1747,6 @@ namespace DroidExplorer.Core {
 		/// <param name="path">The path.</param>
 		/// <returns></returns>
 		public List<DroidExplorer.Core.IO.FileSystemInfo> ListDirectories ( string device, string path ) {
-			//List<DroidExplorer.Core.IO.FileSystemInfo> fsi = GetDirectoryContents ( device, path );
-			//List<DroidExplorer.Core.IO.FileSystemInfo> result = new List<DroidExplorer.Core.IO.FileSystemInfo> ( );
-			//foreach ( DroidExplorer.Core.IO.FileSystemInfo var in fsi ) {
-			//	if ( var.IsDirectory ) {
-			//		result.Add ( var );
-			//	}
-			//}
-			//return result;
-
 			var result = new List<DroidExplorer.Core.IO.FileSystemInfo> ( );
 			try {
 				var dev = madb.Devices.Single ( m => m.SerialNumber == device );
@@ -1752,11 +1789,6 @@ namespace DroidExplorer.Core {
 		/// <param name="path">The path.</param>
 		/// <returns></returns>
 		public List<DroidExplorer.Core.IO.FileSystemInfo> GetDirectoryContents ( string device, string path ) {
-			//DirectoryListCommandResult result = ShellLSRun ( device, string.Format ( Properties.Resources.ListDirectoryCommand, path ) ) as DirectoryListCommandResult;
-			//this.LogDebug ( result.Output.ToString ( ) );
-			//result.FileSystemItems.Sort ( new FileSystemInfoComparer ( ) );
-			//return result.FileSystemItems;
-
 			var result = new List<FileSystemInfo> ( );
 			var dev = madb.Devices.Single ( m => m.SerialNumber == device );
 			var item = dev.FileListingService.FindFileEntry ( path );
@@ -1840,7 +1872,6 @@ namespace DroidExplorer.Core {
 		/// <param name="shellHandler">The shell handler.</param>
 		public void LaunchRedirectedShellWindow ( string device, string initialCommand, IShellProcess shellHandler ) {
 			new Thread ( new ThreadStart ( delegate ( ) {
-
 				var args = AdbCommandArguments ( device, CommandRunner.AdbCommand.Shell );
 				var tool = FolderManagement.GetSdkTool ( CommandRunner.ADB_COMMAND );
 				shellHandler.StartProcess ( tool, Camalot.Common.Extensions.CamalotCommonExtensions.With ( "{0} {1}", args, initialCommand ).Trim ( ) );
@@ -1872,10 +1903,16 @@ namespace DroidExplorer.Core {
 			LaunchProcessWindow ( FolderManagement.GetSdkTool ( DDMS_COMMAND ), string.Empty, false );
 		}
 
+		/// <summary>
+		/// Launches the SDK manager.
+		/// </summary>
 		public void LaunchSdkManager ( ) {
 			LaunchProcessWindow ( FolderManagement.GetSdkTool ( SDKMANAGER_COMMAND ), string.Empty, false );
 		}
 
+		/// <summary>
+		/// Launches the avd manager.
+		/// </summary>
 		public void LaunchAvdManager ( ) {
 			LaunchProcessWindow ( FolderManagement.GetSdkTool ( AVDMANAGER_COMMAND ), string.Empty, false );
 		}
@@ -1914,31 +1951,12 @@ namespace DroidExplorer.Core {
 		public CommandResult ShellRun ( string device, string command ) {
 			return CommandRun ( device, AdbCommand.Shell, command );
 		}
-		/// <summary>
-		/// Shell runs the LS command.
-		/// </summary>
-		/// <param name="command">The command.</param>
-		/// <returns></returns>
-		private CommandResult ShellLSRun ( string command ) {
-			return ShellLSRun ( this.DefaultDevice, command );
-		}
-		/// <summary>
-		/// Shell runs the LS command.
-		/// </summary>
-		/// <param name="device">The device.</param>
-		/// <param name="command">The command.</param>
-		/// <returns></returns>
-		private CommandResult ShellLSRun ( string device, string command ) {
-			return CommandRun ( device, AdbCommand.ShellLS, command );
-		}
 
 		/// <summary>
 		/// Gets the devices.
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<DeviceListItem> GetDevices ( ) {
-			//var list = ( CommandRun ( string.Empty, AdbCommand.Devices, string.Empty ) as DeviceListCommandResult ).Devices;
-			//return list;
 			var list = new List<DeviceListItem> ( );
 			foreach ( var d in madb.Devices ) {
 				list.Add ( new DeviceListItem ( d.SerialNumber, d.State.ToString(), d.Product, d.Model, d.DeviceProperty ) );
@@ -1946,6 +1964,11 @@ namespace DroidExplorer.Core {
 			return list;
 		}
 
+		/// <summary>
+		/// TCPs the connect.
+		/// </summary>
+		/// <param name="connection">The connection.</param>
+		/// <returns></returns>
 		public bool TcpConnect ( string connection ) {
 			// check if it is already connected.
 			if ( !this.GetDevices ( ).Any ( x => x.SerialNumber == connection ) ) {
@@ -2006,6 +2029,14 @@ namespace DroidExplorer.Core {
 			return lastBatteryInfo;
 		}
 
+		/// <summary>
+		/// Devices the backup.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <param name="output">The output.</param>
+		/// <param name="apk">if set to <c>true</c> [apk].</param>
+		/// <param name="system">if set to <c>true</c> [system].</param>
+		/// <param name="shared">if set to <c>true</c> [shared].</param>
 		public void DeviceBackup ( string device, string output, bool apk, bool system, bool shared ) {
 			var file = new System.IO.FileInfo ( output );
 			if ( !file.Directory.Exists ) {
@@ -2018,22 +2049,47 @@ namespace DroidExplorer.Core {
 			this.LogDebug ( "Backup Completed" );
 		}
 
+		/// <summary>
+		/// Devices the backup.
+		/// </summary>
+		/// <param name="output">The output.</param>
+		/// <param name="apk">if set to <c>true</c> [apk].</param>
+		/// <param name="system">if set to <c>true</c> [system].</param>
+		/// <param name="shared">if set to <c>true</c> [shared].</param>
 		public void DeviceBackup ( string output, bool apk, bool system, bool shared ) {
 			DeviceBackup ( this.DefaultDevice, output, apk, system, shared );
 		}
 
+		/// <summary>
+		/// Devices the backup.
+		/// </summary>
+		/// <param name="output">The output.</param>
 		public void DeviceBackup ( string output ) {
 			DeviceBackup ( this.DefaultDevice, output );
 		}
 
+		/// <summary>
+		/// Devices the backup.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <param name="output">The output.</param>
 		public void DeviceBackup ( string device, string output ) {
 			DeviceBackup ( device, output, true, true, false );
 		}
 
+		/// <summary>
+		/// Devices the restore.
+		/// </summary>
+		/// <param name="backupFile">The backup file.</param>
 		public void DeviceRestore ( string backupFile ) {
 			DeviceRestore ( this.DefaultDevice, backupFile );
 		}
 
+		/// <summary>
+		/// Devices the restore.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <param name="backupFile">The backup file.</param>
 		public void DeviceRestore ( string device, string backupFile ) {
 			var bf = new System.IO.FileInfo ( backupFile );
 			if ( bf.Exists ) {
@@ -2097,6 +2153,11 @@ namespace DroidExplorer.Core {
 			}
 		}
 
+		/// <summary>
+		/// Gets the device status.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <returns></returns>
 		public DeviceState GetDeviceStatus ( string device ) {
 			DeviceState state = StringToDeviceState ( CommandRun ( device, AdbCommand.Status_Window, string.Empty ).Output.ToString ( ).Trim ( ) );
 			if ( state == DeviceState.Unknown ) {
@@ -2106,6 +2167,11 @@ namespace DroidExplorer.Core {
 			}
 		}
 
+		/// <summary>
+		/// Internals the state of the get device.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <returns></returns>
 		internal DeviceState InternalGetDeviceState ( string device ) {
 			DeviceListCommandResult dlcr = CommandRun ( device, AdbCommand.Devices, string.Empty ) as DeviceListCommandResult;
 			var lookup = string.IsNullOrEmpty ( device ) ?
@@ -2171,8 +2237,8 @@ namespace DroidExplorer.Core {
 
 
 			// we may need to re-tcp connect if adb root fails. so lets do that.
-			if ( Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( device, DroidExplorer.Resources.Strings.IPDeviceRegex, regexOptions ) ||
-				Camalot.Common.Extensions.CamalotCommonExtensions.IsMatch ( device, DroidExplorer.Resources.Strings.HostDeviceRegex, regexOptions ) ) {
+			if ( device.IsMatch(DroidExplorer.Resources.Strings.IPDeviceRegex, regexOptions ) ||
+				device.IsMatch(DroidExplorer.Resources.Strings.HostDeviceRegex, regexOptions ) ) {
 				TcpConnect ( device );
 			}
 
@@ -2197,9 +2263,9 @@ namespace DroidExplorer.Core {
 				case AdbCommand.Wait_For_Device:
 					this.LogWarn ( "Wait-For-Device command not supported" );
 					return new GenericCommandResult ( "* wait for device command not supported *" );
-				case AdbCommand.ShellLS:
-					string path = args.Remove ( 0, Properties.Resources.ListDirectoryCommand.Trim ( ).Length - 4 ).Trim ( );
-					return new DirectoryListCommandResult ( RunAdbCommand ( device, AdbCommand.Shell, args ), path );
+				//case AdbCommand.ShellLS:
+				//	string path = args.Remove ( 0, Properties.Resources.ListDirectoryCommand.Trim ( ).Length - 4 ).Trim ( );
+				//	return new DirectoryListCommandResult ( RunAdbCommand ( device, AdbCommand.Shell, args ), path );
 				case AdbCommand.ShellScreenCapture:
 					return new ScreenCaptureCommandResult ( RunAdbCommand ( device, AdbCommand.Shell, "screenrecord " + args ) );
 				case AdbCommand.ShellPackageManager:

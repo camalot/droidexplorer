@@ -158,7 +158,7 @@ namespace DroidExplorer {
 					Application.Run(new MainForm(  ) );
 				} else {
 					// get the attached devices
-					String selectedDevice = null;
+					string selectedDevice = null;
 					if(devices.Count() != 1) {
 						// we have 0 or > 1 so we need to display the "selection dialog"
 						var dsf = new GenericDeviceSelectionForm();

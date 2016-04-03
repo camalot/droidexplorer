@@ -56,7 +56,7 @@ namespace DroidExplorer.Configuration.Net {
 				var items = dli.ToList();
 				var kvp = new List<KeyValuePair<String, String>>();
 
-				var useragent = String.Format("{0}", this.GetType().Assembly.GetName().Version.ToString());
+				var useragent = string.Format("{0}", this.GetType().Assembly.GetName().Version.ToString());
 				var req = HttpWebRequest.Create(CreateUrl("model/add")) as HttpWebRequest;
 				req.UserAgent = useragent;
 				AddAuthenticationHeaders(req);
@@ -74,6 +74,7 @@ namespace DroidExplorer.Configuration.Net {
 				req.Method = "POST";
 
 				var data = CreateFormattedPostRequest(kvp);
+				this.LogDebug ( data );
 
 				var bytes = data.GetBytes();
 				req.ContentLength = bytes.Length;
@@ -145,6 +146,7 @@ namespace DroidExplorer.Configuration.Net {
 				req.Method = "POST";
 
 				var data = CreateFormattedPostRequest(kvp);
+				this.LogDebug ( data );
 
 				var bytes = data.GetBytes();
 				req.ContentLength = bytes.Length;
@@ -154,7 +156,7 @@ namespace DroidExplorer.Configuration.Net {
 				}
 				using(var resp = req.GetResponse() as HttpWebResponse) {
 					if(resp.StatusCode != HttpStatusCode.OK) {
-						this.LogError(String.Format("POST Statistics Failed (Error Code: {1}): {0}", resp.StatusDescription, resp.StatusCode));
+						this.LogError(string.Format("POST Statistics Failed (Error Code: {1}): {0}", resp.StatusDescription, resp.StatusCode));
 					}
 				}
 

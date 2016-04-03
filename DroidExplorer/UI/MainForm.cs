@@ -637,7 +637,7 @@ namespace DroidExplorer.UI {
 
 						// filesize info
 						totalFileSize += item.Size;
-						string sizeString = String.Format ( new DroidExplorer.Core.IO.FileSizeFormatProvider ( ), "{0:fs}", totalFileSize );
+						string sizeString = string.Format ( new DroidExplorer.Core.IO.FileSizeFormatProvider ( ), "{0:fs}", totalFileSize );
 						if ( this.InvokeRequired ) {
 							this.Invoke ( new SetStatusBarLabelTextDelegate ( this.SetStatusBarLabelText ), new object[] { sizeToolStripStatusLabel, sizeString } );
 						} else {

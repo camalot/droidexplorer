@@ -740,10 +740,11 @@ namespace DroidExplorer.Core {
 
 
 		/// <summary>
-		/// 
+		/// Forwards the specified local.
 		/// </summary>
 		/// <param name="local">local arg</param>
 		/// <param name="remote">remote arg</param>
+		/// <param name="rebind">if set to <c>true</c> [rebind].</param>
 		public void Forward ( string local, string remote, bool rebind ) {
 			Forward ( this.DefaultDevice, local, remote, rebind );
 		}
@@ -754,6 +755,7 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="local">The local.</param>
 		/// <param name="remote">The remote.</param>
+		/// <param name="rebind">if set to <c>true</c> [rebind].</param>
 		public void Forward ( string device, string local, string remote, bool rebind ) {
 			var roptions = RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace;
 			local.Require ( ( i ) => {

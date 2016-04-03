@@ -34,6 +34,7 @@ namespace DroidExplorer.Core.UI {
 			this.tcpipConnect = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.adbRestart = new System.Windows.Forms.ToolStripButton();
+			this.wearableConnect = new System.Windows.Forms.ToolStripButton();
 			this.toolStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -76,6 +77,7 @@ namespace DroidExplorer.Core.UI {
             this.refreshToolStripButton,
             this.toolStripSeparator1,
             this.tcpipConnect,
+            this.wearableConnect,
             this.toolStripSeparator2,
             this.adbRestart});
 			this.toolStrip.Location = new System.Drawing.Point(0, 0);
@@ -125,6 +127,16 @@ namespace DroidExplorer.Core.UI {
 			this.adbRestart.Text = "Restart ADB";
 			this.adbRestart.Click += new System.EventHandler(this.adbRestart_Click);
 			// 
+			// wearableConnect
+			// 
+			this.wearableConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.wearableConnect.Image = ((System.Drawing.Image)(resources.GetObject("wearableConnect.Image")));
+			this.wearableConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.wearableConnect.Name = "wearableConnect";
+			this.wearableConnect.Size = new System.Drawing.Size(23, 22);
+			this.wearableConnect.Text = "Connect to wearable device";
+			this.wearableConnect.Click += new System.EventHandler(this.wearableConnect_Click);
+			// 
 			// GenericDeviceSelectionForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,5 +169,6 @@ namespace DroidExplorer.Core.UI {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripButton adbRestart;
+		private System.Windows.Forms.ToolStripButton wearableConnect;
 	}
 }

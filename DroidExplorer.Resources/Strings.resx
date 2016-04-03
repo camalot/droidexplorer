@@ -299,9 +299,9 @@ You can use adbd Insecure by Chainfire to allow adb to run as root.</value>
     <value>https://play.google.com/store/apps/details?id=com.ttxapps.wifiadb</value>
   </data>
   <data name="ForwardListRegexPattern" xml:space="preserve">
-    <value>^([^\s]+)\s+(tcp|local|dev|jdwp)\:([^\s]+)\s(tcp|local|dev|jdwp)\:([^\s]+)$</value>
+    <value>^([^\s]+)\s+(tcp|local|dev|jdwp)\:([^\s]+)\s(localabstract|tcp|local|dev|jdwp)\:([^\s]+)$</value>
   </data>
   <data name="ForwardTypeRegexPattern" xml:space="preserve">
-    <value>^(tcp|local|dev|jdwp)\:(.*?)$</value>
+    <value>^(localabstract|tcp|local|dev|jdwp)\:(.*?)$</value>
   </data>
 </root>

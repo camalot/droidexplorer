@@ -268,7 +268,7 @@ namespace DroidExplorer.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ^([^\s]+)\s+(tcp|local|dev|jdwp)\:([^\s]+)\s(tcp|local|dev|jdwp)\:([^\s]+)$.
+        ///   Looks up a localized string similar to ^([^\s]+)\s+(tcp|local|dev|jdwp)\:([^\s]+)\s(localabstract|tcp|local|dev|jdwp)\:([^\s]+)$.
         /// </summary>
         public static string ForwardListRegexPattern {
             get {
@@ -277,7 +277,7 @@ namespace DroidExplorer.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ^(tcp|local|dev|jdwp)\:(.*?)$.
+        ///   Looks up a localized string similar to ^(localabstract|tcp|local|dev|jdwp)\:(.*?)$.
         /// </summary>
         public static string ForwardTypeRegexPattern {
             get {

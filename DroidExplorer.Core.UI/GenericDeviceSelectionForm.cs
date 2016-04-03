@@ -22,9 +22,10 @@ namespace DroidExplorer.Core.UI {
 			// icon setup for the toolstrip items
 			refreshToolStripButton.Image = Resources.Images.Refresh;
 			tcpipConnect.Image = Resources.Images.wifi;
+			wearableConnect.Image = Resources.Images.watch_import;
 			adbRestart.Image = Resources.Images.WorkflowActivity_16xLG;
 
-			SelectedDevice = String.Empty;
+			SelectedDevice = string.Empty;
 			RefreshDevices ( );
 		}
 
@@ -113,6 +114,12 @@ namespace DroidExplorer.Core.UI {
 
 		private void adbRestart_Click ( object sender, EventArgs e ) {
 			CommandRunner.Instance.RestartServer ( );
+		}
+
+		private void wearableConnect_Click ( object sender, EventArgs e ) {
+			CommandRunner.Instance.Forward ( "tcp:4444", "localabstract:/adb-hub", false );
+			CommandRunner.Instance.TcpConnect ( "localhost:4444" );
+			RefreshDevices ( );
 		}
 	}
 }

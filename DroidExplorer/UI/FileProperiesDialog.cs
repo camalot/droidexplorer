@@ -11,6 +11,7 @@ using DroidExplorer.Core.UI;
 using DroidExplorer.Core;
 using System.Threading;
 using System.Globalization;
+using Managed.Adb;
 
 namespace DroidExplorer.UI {
 	public partial class FileProperiesDialog : Form {
@@ -168,7 +169,7 @@ namespace DroidExplorer.UI {
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		private void permissionTypes_SelectedIndexChanged ( object sender, EventArgs e ) {
 			if ( permissionTypes.SelectedItems.Count > 0 ) {
-				Permission perm = permissionTypes.SelectedItems[ 0 ].Tag as Permission;
+				var perm = permissionTypes.SelectedItems[ 0 ].Tag as FilePermission;
 				if ( perm == null ) {
 					canExecute.Checked = canWrite.Checked = canRead.Checked = false;
 				} else {

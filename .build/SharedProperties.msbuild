@@ -30,6 +30,10 @@
 		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_REPO_TAG)' == 'True' ">Tag</CI_BUILD_CONDITION>
 		<CI_BUILD_CONDITION Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_PULL_REQUEST_NUMBER)' == 'True' ">PullRequest</CI_BUILD_CONDITION>
 		
+		<CI_REPO_BRANCH Condition=" '$(CI)' == 'True' AND '$(APPVEYOR_REPO_BRANCH)' != '' ">$(APPVEYOR_REPO_BRANCH)</CI_REPO_BRANCH>
+		<CI_REPO_BRANCH Condition=" '$(CI_REPO_BRANCH)' == '' ">feature/foo</CI_REPO_BRANCH>
+
+		
 		<Major>$(CI_BUILD_MAJOR)</Major>
 		<Minor>$(CI_BUILD_MINOR)</Minor>
 		<Build>$(CI_BUILD_NUMBER)</Build>
@@ -76,11 +80,11 @@
 		</CreateProperty>
 
 
-		<CreateProperty Value="DefineConstants=$(DefineConstants) $(PlatformConstant);OSPlatform=$(OSPlatform);ReleasePlatform=$(ReleasePlatform);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);">
+		<CreateProperty Value="DefineConstants=$(DefineConstants) $(PlatformConstant);OSPlatform=$(OSPlatform);ReleasePlatform=$(ReleasePlatform);SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath);CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);CI_REPO_BRANCH=$(CI_REPO_BRANCH)">
 			<Output PropertyName="MSBuildProperties" TaskParameter="Value" />
 		</CreateProperty>
 
-		<CreateProperty Value="SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath)Plugins\;CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);">
+		<CreateProperty Value="SignAssemblies=$(SignAssemblies);Configuration=$(Configuration);OutputPath=$(OutputPath)Plugins\;CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);CI_REPO_BRANCH=$(CI_REPO_BRANCH)">
 			<Output PropertyName="PluginMsBuildProperties" TaskParameter="Value" />
 		</CreateProperty>
 	</Target>

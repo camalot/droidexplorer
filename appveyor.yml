@@ -60,6 +60,17 @@ deploy:
   on:
     branch: master
     CI_DEPLOY_GITHUB: True
+- provider: GitHub
+  tag: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)-nightly
+  release: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)-nightly
+  description: $(CI_RELEASE_DESCRIPTION)
+  auth_token:
+    secure: UEgy2H9zJKLi599QoO3qVf5BKFqloRQ246ez9cEgsfV3vooAUfVopMS9+IjRtArL
+  artifact: Zip
+  prerelease: true
+  on:
+    branch: develop
+    CI_DEPLOY_GITHUB_PRE: True
 - provider: FTP
   host: $(PUBLISH_BIT13_FTP_HOST)
   protocol: ftp
@@ -79,8 +90,8 @@ after_deploy:
 notifications:
 - provider: Slack
   auth_token:
-    secure: MnyJiz0W7R/XnTok/Giy/P7J0+rQDTvtfK+J1CEjfvWKWqGyX4zzxDo28PE6eIRdaQTgC1jzvu5kIriwWhepSg==
-  channel: droid-explorer
+    secure: dEyWFeGEKdMmajrfGAYOGhWPEpivj1DiWu1xbbngPVcDW8vucg7JvWtJWTdARJ2bLedEg009P1o0JupLLx69Fg==
+  channel: notifications
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true

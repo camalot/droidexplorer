@@ -5,7 +5,19 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 
 namespace DroidExplorer.Core.IO {
+	/// <summary>
+	/// 
+	/// </summary>
 	public static class ZipHelper {
+		/// <summary>
+		/// Unzips the specified zip file.
+		/// </summary>
+		/// <param name="zipFile">The zip file.</param>
+		/// <param name="outPath">The out path.</param>
+		/// <param name="fileName">Name of the file.</param>
+		/// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+		/// <param name="flat">if set to <c>true</c> [flat].</param>
+		/// <returns></returns>
 		public static bool Unzip ( string zipFile, string outPath, string fileName, bool overwrite, bool flat ) {
 			bool ret = true;
 			try {

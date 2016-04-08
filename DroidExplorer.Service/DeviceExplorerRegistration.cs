@@ -12,6 +12,10 @@ using DroidExplorer.Configuration;
 using DroidExplorer.Configuration.Net;
 
 namespace DroidExplorer.Service {
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <seealso cref="DroidExplorer.Configuration.KnownDeviceManager" />
 	class DeviceExplorerRegistration : KnownDeviceManager {
 		[Flags]
 		public enum SFGAO : uint {
@@ -149,10 +153,17 @@ namespace DroidExplorer.Service {
 			VALIDATE = 0x1000000
 		}
 
+		/// <summary>
+		/// Prevents a default instance of the <see cref="DeviceExplorerRegistration"/> class from being created.
+		/// </summary>
 		private DeviceExplorerRegistration ( ) {
 
 		}
 
+		/// <summary>
+		/// Registers the specified device.
+		/// </summary>
+		/// <param name="device">The device.</param>
 		public void Register ( string device ) {
 			try {
 				string deviceGuid = GetDeviceGuid ( device ).ToString ( "B" );
@@ -192,6 +203,10 @@ namespace DroidExplorer.Service {
 			}
 		}
 
+		/// <summary>
+		/// Unregisters the specified device.
+		/// </summary>
+		/// <param name="device">The device.</param>
 		public void Unregister ( string device ) {
 			try {
 				string deviceGuid = GetDeviceGuid ( device ).ToString ( "B" );
@@ -207,9 +222,14 @@ namespace DroidExplorer.Service {
 			}
 		}
 
+		/// <summary>
+		/// Gets the device icon.
+		/// </summary>
+		/// <param name="device">The device.</param>
+		/// <returns></returns>
 		private string GetDeviceIcon ( string device ) {
 
-			var ico = new System.IO.FileInfo(Path.Combine(Settings.Instance.ProgramDataDirectory, "assets/[DEFAULT].ico"));
+			var ico = new System.IO.FileInfo(System.IO.Path.Combine(Settings.Instance.ProgramDataDirectory, "assets/[DEFAULT].ico"));
 			if ( !ico.Exists ) {
 				ico = CloudImage.Instance.GetIcon ( "[DEFAULT]" );
 			}
@@ -217,8 +237,8 @@ namespace DroidExplorer.Service {
 			var info = CommandRunner.Instance.GetDevices().SingleOrDefault(m => m.SerialNumber == device);
 			if(info != null) {
 				// cache the device icon and images
-				if(!String.IsNullOrEmpty(info.DeviceName)) {
-					var icoPath = Path.Combine(Settings.Instance.ProgramDataDirectory, String.Format("assets/{0}.ico", info.DeviceName));
+				if(!string.IsNullOrWhiteSpace(info.DeviceName)) {
+					var icoPath  =System.IO.Path.Combine(Settings.Instance.ProgramDataDirectory, String.Format("assets/{0}.ico", info.DeviceName));
 					if(!System.IO.File.Exists(icoPath)) {
 						ico = CloudImage.Instance.GetIcon(info.DeviceName);
 						CloudImage.Instance.GetImage(info.DeviceName);
@@ -229,7 +249,16 @@ namespace DroidExplorer.Service {
 		}
 
 
+		/// <summary>
+		/// The _device explorer registration
+		/// </summary>
 		private static DeviceExplorerRegistration _deviceExplorerRegistration;
+		/// <summary>
+		/// Gets the instance.
+		/// </summary>
+		/// <value>
+		/// The instance.
+		/// </value>
 		public new static DeviceExplorerRegistration Instance {
 			get {
 				if ( _deviceExplorerRegistration == null ) {

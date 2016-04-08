@@ -11,31 +11,75 @@ using System.Globalization;
 using System.ComponentModel;
 
 namespace DroidExplorer.Plugins {
-  public class ApplicationBackup : BasePlugin {
-    
-    public ApplicationBackup ( IPluginHost host ) : base(host) {
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <seealso cref="DroidExplorer.Core.Plugins.BasePlugin" />
+	public class ApplicationBackup : BasePlugin {
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ApplicationBackup"/> class.
+		/// </summary>
+		/// <param name="host">The host.</param>
+		public ApplicationBackup ( IPluginHost host ) : base(host) {
 
 		}
 
-    #region IPlugin Members
+		#region IPlugin Members
+		/// <summary>
+		/// Gets the group.
+		/// </summary>
+		/// <value>
+		/// The group.
+		/// </value>
 		public override string Group { get { return "Applications and Data"; } }
 
+		/// <summary>
+		/// Gets the name.
+		/// </summary>
+		/// <value>
+		/// The name.
+		/// </value>
 		public override string Name {
       get { return "ApplicationBackup"; }
     }
 
+		/// <summary>
+		/// Gets the description.
+		/// </summary>
+		/// <value>
+		/// The description.
+		/// </value>
 		public override string Description {
       get { return "Backup device applications to local computer"; }
     }
 
+		/// <summary>
+		/// Gets the image.
+		/// </summary>
+		/// <value>
+		/// The image.
+		/// </value>
 		public override System.Drawing.Image Image {
       get { return Properties.Resources.backup; }
     }
 
+		/// <summary>
+		/// Gets the text.
+		/// </summary>
+		/// <value>
+		/// The text.
+		/// </value>
 		public override string Text {
       get { return "Application Backup"; }
     }
 
+		/// <summary>
+		/// Executes the specified plugin host.
+		/// </summary>
+		/// <param name="pluginHost">The plugin host.</param>
+		/// <param name="currentDirectory">The current directory.</param>
+		/// <param name="args">The arguments.</param>
 		public override void Execute ( IPluginHost pluginHost, DroidExplorer.Core.IO.LinuxDirectoryInfo currentDirectory, string[] args ) {
       string backupPath = System.IO.Path.Combine ( FolderManagement.TempFolder, "Backup" );
 			System.IO.DirectoryInfo appdir = pluginHost.CommandRunner.PullDirectory ( CommandRunner.APP_PUBLIC_PATH, backupPath );
@@ -44,7 +88,7 @@ namespace DroidExplorer.Plugins {
 			System.IO.DirectoryInfo pappdir2 = pluginHost.CommandRunner.PullDirectory ( CommandRunner.APP_SD_PRIVATE_PATH, backupPath );
 
 			FastZip zip = new FastZip ( );
-      string path = Path.Combine ( System.IO.Path.GetDirectoryName ( this.GetType ( ).Assembly.Location ), "AppBackups" );
+      string path = System.IO.Path.Combine ( System.IO.Path.GetDirectoryName ( this.GetType ( ).Assembly.Location ), "AppBackups" );
 
       if ( !System.IO.Directory.Exists ( path ) ) {
         System.IO.Directory.CreateDirectory ( path );
@@ -54,8 +98,20 @@ namespace DroidExplorer.Plugins {
 
 
     }
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="T:DroidExplorer.Core.Plugins.IPlugin" /> is runnable.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if runnable; otherwise, <c>false</c>.
+		/// </value>
 		public override bool Runnable { get { return false; } }
 
+		/// <summary>
+		/// Gets a value indicating whether [create tool button].
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if [create tool button]; otherwise, <c>false</c>.
+		/// </value>
 		public override bool CreateToolButton {
       get { return false; }
     }

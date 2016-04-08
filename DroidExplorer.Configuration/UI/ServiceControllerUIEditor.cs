@@ -9,6 +9,7 @@ using System.Threading;
 using DroidExplorer.Core.IO;
 using System.Diagnostics;
 using System.Globalization;
+using Managed.Adb.IO;
 
 namespace DroidExplorer.Configuration.UI {
   public class ServiceControllerUIEditor : Control, IUIEditor {
@@ -63,8 +64,8 @@ namespace DroidExplorer.Configuration.UI {
     #endregion
 
     private void createService_Click ( object sender, EventArgs e ) {
-      string serviceFile = Path.Combine ( Path.GetDirectoryName ( typeof ( ServiceControllerUIEditor ).Assembly.Location ), "DroidExplorer.Service.exe" );
-      string toolDir = Path.Combine ( Path.Combine ( Environment.GetFolderPath ( Environment.SpecialFolder.System ), ".." ), @"Microsoft.NET\Framework\v2.0.50727" );
+      string serviceFile = System.IO.Path.Combine ( System.IO.Path.GetDirectoryName ( typeof ( ServiceControllerUIEditor ).Assembly.Location ), "DroidExplorer.Service.exe" );
+      string toolDir = System.IO.Path.Combine ( Environment.GetFolderPath ( Environment.SpecialFolder.System ), ".." , @"Microsoft.NET\Framework\v4.0.30319" );
       Process proc = new Process ( );
 
       ProcessStartInfo psi = new ProcessStartInfo ( "installutil.exe", string.Format ( CultureInfo.InvariantCulture, "/i \"{0}\"", serviceFile ) );

@@ -20,6 +20,7 @@ using DroidExplorer.Core.Configuration;
 using System.Linq;
 using Camalot.Common.Extensions;
 using Managed.Adb;
+using Managed.Adb.IO;
 
 namespace DroidExplorer.Core {
 	/// <summary>
@@ -1462,8 +1463,8 @@ namespace DroidExplorer.Core {
 		/// <param name="localPath">The local path.</param>
 		/// <returns></returns>
 		public System.IO.DirectoryInfo PullDirectory ( string device, string remotePath, string localPath ) {
-			if ( !remotePath.EndsWith ( new string ( new char[] { Path.DirectorySeparatorChar } ) ) ) {
-				remotePath = remotePath + Path.DirectorySeparatorChar;
+			if ( !remotePath.EndsWith ( new string ( new char[] { LinuxPath.DirectorySeparatorChar } ) ) ) {
+				remotePath = remotePath + LinuxPath.DirectorySeparatorChar;
 			}
 			TransferCommandResult result = CommandRun ( device, AdbCommand.Pull, string.Format ( "\"{0}\" \"{1}\"", remotePath, localPath ) ) as TransferCommandResult;
 
@@ -1476,7 +1477,7 @@ namespace DroidExplorer.Core {
 		/// <param name="remotePath">The remote path.</param>
 		/// <returns></returns>
 		public System.IO.DirectoryInfo PullDirectory ( string remotePath ) {
-			return PullDirectory ( DefaultDevice, remotePath, System.IO.Path.Combine ( FolderManagement.TempFolder, Path.GetDirectoryName ( remotePath ) ) );
+			return PullDirectory ( DefaultDevice, remotePath, System.IO.Path.Combine ( FolderManagement.TempFolder, LinuxPath.GetDirectoryName ( remotePath ) ) );
 		}
 
 		/// <summary>
@@ -1755,13 +1756,12 @@ namespace DroidExplorer.Core {
 				foreach ( var fe in children.Where ( d => d.IsDirectory ) ) {
 					try {
 						if ( fe.IsLink ) {
-							result.Add ( new SymbolicLinkInfo ( fe.Name, fe.LinkName, fe.Size, fe.Permissions.User.ToPermission ( ), fe.Permissions.Group.ToPermission ( ),
-								fe.Permissions.Other.ToPermission ( ), fe.Date, true, false, fe.FullPath ) );
+							result.Add ( new SymbolicLinkInfo ( fe.Name, fe.LinkName, fe.Size, fe.Permissions.User, fe.Permissions.Group,
+								fe.Permissions.Other, fe.Date, true, false, fe.FullPath ) );
 						} else {
-							result.Add ( new DirectoryInfo ( fe.Name, fe.Size, fe.Permissions.User.ToPermission ( ), fe.Permissions.Group.ToPermission ( ),
-								fe.Permissions.Other.ToPermission ( ), fe.Date, fe.FullPath ) );
+							result.Add ( new DirectoryInfo ( fe.Name, fe.Size, fe.Permissions.User, fe.Permissions.Group,
+								fe.Permissions.Other, fe.Date, fe.FullPath ) );
 						}
-						this.LogDebug ( fe.Name );
 					} catch {
 						this.LogWarn ( fe.Name );
 					}
@@ -1794,23 +1794,22 @@ namespace DroidExplorer.Core {
 			var item = dev.FileListingService.FindFileEntry ( path );
 			var children = dev.FileListingService.GetChildren ( item, true, null );
 
-			this.LogDebug ( string.Format ( "Path: {0}", path ) );
 			foreach ( var c in children ) {
 				if(c.IsDirectory) {
 					if ( c.IsLink ) {
-						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
-							c.Permissions.Other.ToPermission ( ), c.Date, true, false, c.FullPath ) );
+						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User, c.Permissions.Group,
+							c.Permissions.Other, c.Date, true, false, c.FullPath ) );
 					} else {
-						result.Add ( new DirectoryInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
-							c.Permissions.Other.ToPermission ( ), c.Date, c.FullPath ) );
+						result.Add ( new DirectoryInfo ( c.Name, c.Size, c.Permissions.User, c.Permissions.Group,
+							c.Permissions.Other, c.Date, c.FullPath ) );
 					}
 				} else {
 					if ( c.IsLink ) {
-						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
-							c.Permissions.Other.ToPermission ( ), c.Date, false, c.IsExecutable, c.FullPath ) );
+						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User, c.Permissions.Group,
+							c.Permissions.Other, c.Date, false, c.IsExecutable, c.FullPath ) );
 					} else { 
-						result.Add ( new FileInfo ( c.Name, c.Size, c.Permissions.User.ToPermission ( ), c.Permissions.Group.ToPermission ( ),
-						c.Permissions.Other.ToPermission ( ), c.Date, c.IsExecutable, c.FullPath ) );
+						result.Add ( new FileInfo ( c.Name, c.Size, c.Permissions.User, c.Permissions.Group,
+						c.Permissions.Other, c.Date, c.IsExecutable, c.FullPath ) );
 					}
 				}
 			}

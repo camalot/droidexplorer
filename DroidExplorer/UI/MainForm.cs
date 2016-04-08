@@ -31,6 +31,7 @@ using DroidExplorer.Core.UI.Renderers.ToolStrip;
 using System.Threading.Tasks;
 using Camalot.Common.Extensions;
 using DroidExplorer.Core.IO;
+using Managed.Adb.IO;
 
 namespace DroidExplorer.UI {
 	public delegate void AddTreeNodeDelegate ( TreeNodeCollection parent, TreeNode node );
@@ -433,7 +434,7 @@ namespace DroidExplorer.UI {
 						if ( lvi is ApkFileSystemInfoListViewItem ) {
 							// todo : check if is an app dir, if it is, uninstall, otherwise, install?
 						} else {
-							string ext = DroidExplorer.Core.IO.Path.GetExtension ( lvi.FileSystemInfo.Name );
+							string ext = LinuxPath.GetExtension ( lvi.FileSystemInfo.Name );
 							if ( FileTypeActionHandlers.ContainsKey ( ext ) ) {
 								FileTypeActionHandlers[ext].Open ( ( lvi.FileSystemInfo as DroidExplorer.Core.IO.FileInfo ) );
 							} else {
@@ -800,7 +801,7 @@ namespace DroidExplorer.UI {
 
 					this.breadcrumbBar.Nodes.Clear ( );
 
-					string name = DroidExplorer.Core.IO.Path.GetDirectoryName ( path.FullName );
+					string name = LinuxPath.GetDirectoryName ( path.FullName );
 					string device = KnownDeviceManager.Instance.GetDeviceFriendlyName ( string.IsNullOrEmpty ( CommandRunner.Instance.DefaultDevice ) ? CommandRunner.Instance.GetSerialNumber ( ) : CommandRunner.Instance.DefaultDevice );
 					Image itemImage = null;
 					if ( string.IsNullOrEmpty ( name ) ) {
@@ -1288,7 +1289,7 @@ namespace DroidExplorer.UI {
 				fileListContextMenuStrip.Items.Remove ( x );
 			}
 
-			string ext = DroidExplorer.Core.IO.Path.GetExtension ( item.FileSystemInfo.Name );
+			string ext = LinuxPath.GetExtension ( item.FileSystemInfo.Name );
 			if ( FileTypeActionHandlers.ContainsKey ( ext ) ) {
 				IFileTypeHandler ifth = FileTypeActionHandlers[ext];
 				FileTypeHandlerToolStripMenuItem mi = new FileTypeHandlerToolStripMenuItem ( item, ifth );

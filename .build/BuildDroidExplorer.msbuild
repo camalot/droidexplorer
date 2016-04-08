@@ -44,14 +44,24 @@
 			<Output ItemName="ZipFiles" TaskParameter="Include" />
 		</CreateItem>
 
+		<CreateProperty Value="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION)-feature.$(Platform).zip" Condition=" '$(CI_REPO_BRANCH)' != 'develop' AND '$(CI_REPO_BRANCH)' != 'master' ">
+			<Output PropertyName="OutZipFileName" TaskParameter="Value"/>
+		</CreateProperty>
+		<CreateProperty Value="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION)-nightly.$(Platform).zip" Condition=" '$(CI_REPO_BRANCH)' == 'develop' ">
+			<Output PropertyName="OutZipFileName" TaskParameter="Value"/>
+		</CreateProperty>
+		<CreateProperty Value="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).zip" Condition=" '$(CI_REPO_BRANCH)' == 'master' ">
+			<Output PropertyName="OutZipFileName" TaskParameter="Value"/>
+		</CreateProperty>
+
 		<Zip Comment="$(CI_BUILD_DATE) $(CI_BUILD_TIME) $(CI_PROJECT_NAME) version $(CI_BUILD_VERSION)" Files="@(ZipFiles);@(AndroidTools)"
 				 WorkingDirectory="$(OutputPath)"
-				 ZipFileName="$(OutputPath)$(CI_PROJECT_NAME).$(CI_BUILD_VERSION).$(Platform).zip" ZipLevel="9" Flatten="False" />
+				 ZipFileName="$(OutZipFileName)" ZipLevel="9" Flatten="False" />
 	</Target>
 
 	<Target Name="BuildInstall" DependsOnTargets="CopyLicenseFiles;AppConfigUpdate">
 		<MSBuild Projects="@(InstallProjectToBuild)"
-						 Properties="Configuration=$(Configuration);ReleasePlatform=$(ReleasePlatform);Platform=$(Platform);OutputPath=$(OutputPath);CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);">
+						 Properties="Configuration=$(Configuration);ReleasePlatform=$(ReleasePlatform);Platform=$(Platform);OutputPath=$(OutputPath);CI_BUILD_VERSION=$(CI_BUILD_VERSION);CI_BUILD_CONDITION=$(CI_BUILD_CONDITION);CI_PROJECT_NAME=$(CI_PROJECT_NAME);CI_BUILD_DATE=$(CI_BUILD_DATE);CI_BUILD_TIME=$(CI_BUILD_TIME);CI_ARTIFACT_PATH=$(CI_ARTIFACT_PATH);CI_PROJECT_PATH=$(CI_PROJECT_PATH);CI_REPO_BRANCH=$(CI_REPO_BRANCH)">
 			<Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
 		</MSBuild>
 	</Target>

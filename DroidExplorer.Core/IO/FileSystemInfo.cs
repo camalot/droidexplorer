@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Managed.Adb;
 
 namespace DroidExplorer.Core.IO {
 	public abstract class FileSystemInfo {
-		internal FileSystemInfo ( string name, long size, Permission userPermission, Permission groupPermission, Permission otherPermission, DateTime lastMod, bool isExec, string fullPath ) {
+		internal FileSystemInfo ( string name, long size, FilePermission userPermission, FilePermission groupPermission, FilePermission otherPermission, DateTime lastMod, bool isExec, string fullPath ) {
 			this.Name = name;
 			this.Size = size;
 			this.UserPermissions = userPermission;
@@ -17,9 +18,9 @@ namespace DroidExplorer.Core.IO {
 		private long _size;
 		private DateTime _lastModDate;
 		private string _name;
-		private Permission _userPermission;
-		private Permission _otherPermission;
-		private Permission _groupPermission;
+		private FilePermission _userPermission;
+		private FilePermission _otherPermission;
+		private FilePermission _groupPermission;
 		private bool _isLink;
 		private bool _isDirectory;
 		private bool _isExecutable;
@@ -57,17 +58,17 @@ namespace DroidExplorer.Core.IO {
 			protected set { _isLink = value; }
 		}
 		
-		public Permission GroupPermissions {
+		public FilePermission GroupPermissions {
 			get { return _groupPermission; }
 			protected set { _groupPermission = value; }
 		}
 		
-		public Permission OtherPermissions {
+		public FilePermission OtherPermissions {
 			get { return _otherPermission; }
 			protected set { _otherPermission = value; }
 		}
 		
-		public Permission UserPermissions {
+		public FilePermission UserPermissions {
 			get { return _userPermission; }
 			protected set { _userPermission = value; }
 		}

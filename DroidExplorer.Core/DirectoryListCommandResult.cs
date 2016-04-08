@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using DroidExplorer.Core.IO;
 using System.Globalization;
+using Managed.Adb;
 
 namespace DroidExplorer.Core {
 	public class DirectoryListCommandResult : CommandResult {
@@ -35,9 +36,9 @@ namespace DroidExplorer.Core {
 			while ( m.Success ) {
 				FileSystemInfo fsi = null;
 
-				Permission up = new Permission ( m.Groups[2].Captures[0].Value );
-				Permission gp = new Permission ( m.Groups[2].Captures[1].Value );
-				Permission op = new Permission ( m.Groups[2].Captures[2].Value );
+				var up = new FilePermission ( m.Groups[2].Captures[0].Value );
+				var gp = new FilePermission ( m.Groups[2].Captures[1].Value );
+				var op = new FilePermission ( m.Groups[2].Captures[2].Value );
 				long size = 0;
 				long.TryParse ( m.Groups[6].Value, out size );
 

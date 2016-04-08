@@ -12,8 +12,13 @@ using Camalot.Common.Extensions;
 using DroidExplorer.Core;
 using DroidExplorer.Core.Plugins;
 using DroidExplorer.Core.UI;
+using Managed.Adb.IO;
 
 namespace DroidExplorer.Plugins.UI {
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <seealso cref="DroidExplorer.Core.UI.PluginForm" />
 	public partial class ScreenRecordForm : PluginForm {
 
 		private readonly Size SMALL_SIZE = new Size ( 529, 293 );
@@ -21,6 +26,10 @@ namespace DroidExplorer.Plugins.UI {
 		private readonly IList<VideoSize> CommonResolutions;
 
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScreenRecordForm"/> class.
+		/// </summary>
+		/// <param name="pluginHost">The plugin host.</param>
 		public ScreenRecordForm ( IPluginHost pluginHost ) : base ( pluginHost ) {
 			this.StickyWindow = new DroidExplorer.UI.StickyWindow ( this );
 			CommonResolutions = GetCommonResolutions ( );
@@ -54,6 +63,10 @@ namespace DroidExplorer.Plugins.UI {
 			displayTime.Text = ts.ToString ( );
 		}
 
+		/// <summary>
+		/// Gets the common resolutions.
+		/// </summary>
+		/// <returns></returns>
 		private IList<VideoSize> GetCommonResolutions ( ) {
 			return new List<VideoSize> {
 				new VideoSize(new Size(176 ,144)),
@@ -71,6 +84,10 @@ namespace DroidExplorer.Plugins.UI {
 			};
 		}
 
+		/// <summary>
+		/// Gets the rotate arguments list.
+		/// </summary>
+		/// <returns></returns>
 		private IList<RotateArguments> GetRotateArgumentsList ( ) {
 			return new List<RotateArguments> {
 				new RotateArguments("None", "", false),
@@ -81,6 +98,11 @@ namespace DroidExplorer.Plugins.UI {
 		}
 
 
+		/// <summary>
+		/// Handles the ValueChanged event of the timeLimit control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void timeLimit_ValueChanged ( object sender, EventArgs e ) {
 			var ts = new TimeSpan ( 0, 0, 0, timeLimit.Value, 0 );
 			displayTime.Text = ts.ToString ( );
@@ -89,6 +111,11 @@ namespace DroidExplorer.Plugins.UI {
 
 		}
 
+		/// <summary>
+		/// Handles the Click event of the browse control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void browse_Click ( object sender, EventArgs e ) {
 			var sfd = new Core.UI.SaveFileDialog ( "/sdcard/" ) {
 				Title = "Save video capture...",
@@ -97,7 +124,7 @@ namespace DroidExplorer.Plugins.UI {
 				AddExtension = true,
 				FilterIndex = 0,
 				InitialDirectory = "/sdcard/",
-				FileName = Core.IO.Path.GetFileName(location.Text)
+				FileName = LinuxPath.GetFileName(location.Text)
 			};
 			if ( sfd.ShowDialog ( this ) == DialogResult.OK ) {
 				var fn = sfd.FileName;
@@ -108,6 +135,11 @@ namespace DroidExplorer.Plugins.UI {
 			}
 		}
 
+		/// <summary>
+		/// Handles the Click event of the start control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void start_Click ( object sender, EventArgs e ) {
 			this.Size = LARGE_SIZE;
 			this.progress.Value = this.progress.Minimum;
@@ -164,9 +196,15 @@ namespace DroidExplorer.Plugins.UI {
 			thread.Start ( );
 		}
 
+		/// <summary>
+		/// Saves the file.
+		/// </summary>
+		/// <param name="fileLocation">The file location.</param>
+		/// <param name="rotateArguments">The rotate arguments.</param>
+		/// <param name="deleteOffDevice">if set to <c>true</c> [delete off device].</param>
 		private void SaveFile ( string fileLocation, string rotateArguments, bool deleteOffDevice ) {
 
-			var fileName = Core.IO.Path.GetFileName ( fileLocation );
+			var fileName = LinuxPath.GetFileName ( fileLocation );
 
 			var sfd = new System.Windows.Forms.SaveFileDialog {
 				Title = "Copy Capture to PC",
@@ -207,6 +245,12 @@ namespace DroidExplorer.Plugins.UI {
 
 		}
 
+		/// <summary>
+		/// Rotates the video.
+		/// </summary>
+		/// <param name="input">The input.</param>
+		/// <param name="output">The output.</param>
+		/// <param name="rotateArguments">The rotate arguments.</param>
 		private void RotateVideo ( System.IO.FileInfo input, System.IO.FileInfo output, string rotateArguments ) {
 			this.LogDebug ( "Getting FFMpeg tool path." );
 			var ffmpeg = FolderManagement.GetBundledTool ( "ffmpeg.exe" );
@@ -220,6 +264,10 @@ namespace DroidExplorer.Plugins.UI {
 			process.Start ( );
 		}
 
+		/// <summary>
+		/// Toggles the controls enabled.
+		/// </summary>
+		/// <param name="enabled">if set to <c>true</c> [enabled].</param>
 		private void ToggleControlsEnabled ( bool enabled ) {
 			start.InvokeIfRequired ( ( ) => start.Enabled = enabled );
 			resolutionList.InvokeIfRequired ( ( ) => resolutionList.Enabled = enabled );
@@ -231,11 +279,21 @@ namespace DroidExplorer.Plugins.UI {
 			deleteAfterCopy.InvokeIfRequired ( ( ) => deleteAfterCopy.Enabled = enabled && copyToPC.Checked );
 		}
 
+		/// <summary>
+		/// Handles the TextChanged event of the location control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void location_TextChanged ( object sender, EventArgs e ) {
 			start.Enabled = !string.IsNullOrWhiteSpace ( location.Text );
 		}
 
 
+		/// <summary>
+		/// Handles the CheckedChanged event of the copyToPC control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void copyToPC_CheckedChanged ( object sender, EventArgs e ) {
 			rotateList.Enabled = copyToPC.Checked;
 			deleteAfterCopy.Enabled = copyToPC.Checked;
@@ -245,18 +303,39 @@ namespace DroidExplorer.Plugins.UI {
 		/// 
 		/// </summary>
 		public class BitRate {
+			/// <summary>
+			/// Initializes a new instance of the <see cref="BitRate"/> class.
+			/// </summary>
+			/// <param name="mbps">The MBPS.</param>
 			public BitRate ( int mbps ) {
 				Mbps = mbps.RequirePositive ( );
 			}
 
+			/// <summary>
+			/// </summary>
+			/// <value>
+			/// The MBPS.
+			/// </value>
 			public int Mbps { get; private set; }
 
+			/// <summary>
+			/// Gets the display.
+			/// </summary>
+			/// <value>
+			/// The display.
+			/// </value>
 			public string Display {
 				get {
 					return "{0} Mbps".With ( Mbps );
 				}
 			}
 
+			/// <summary>
+			/// Gets the value.
+			/// </summary>
+			/// <value>
+			/// The value.
+			/// </value>
 			public int Value {
 				get {
 					return Mbps * 1000000;
@@ -268,12 +347,28 @@ namespace DroidExplorer.Plugins.UI {
 		/// 
 		/// </summary>
 		public class VideoSize {
+			/// <summary>
+			/// Initializes a new instance of the <see cref="VideoSize"/> class.
+			/// </summary>
+			/// <param name="size">The size.</param>
 			public VideoSize ( Size size ) {
 				Size = size;
 			}
 
+			/// <summary>
+			/// Gets the size.
+			/// </summary>
+			/// <value>
+			/// The size.
+			/// </value>
 			public Size Size { get; private set; }
 
+			/// <summary>
+			/// Gets the display.
+			/// </summary>
+			/// <value>
+			/// The display.
+			/// </value>
 			public string Display {
 				get {
 					return "{0}x{1}".With ( Size.Width, Size.Height );
@@ -281,14 +376,41 @@ namespace DroidExplorer.Plugins.UI {
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public class RotateArguments {
+			/// <summary>
+			/// Initializes a new instance of the <see cref="RotateArguments"/> class.
+			/// </summary>
+			/// <param name="display">The display.</param>
+			/// <param name="arguments">The arguments.</param>
+			/// <param name="shouldRotate">if set to <c>true</c> [should rotate].</param>
 			public RotateArguments ( string display, string arguments, bool shouldRotate ) {
 				Display = display;
 				Arguments = arguments;
 				ShouldRotate = shouldRotate;
 			}
+			/// <summary>
+			/// Gets or sets a value indicating whether [should rotate].
+			/// </summary>
+			/// <value>
+			///   <c>true</c> if [should rotate]; otherwise, <c>false</c>.
+			/// </value>
 			public bool ShouldRotate { get; set; }
+			/// <summary>
+			/// Gets or sets the display.
+			/// </summary>
+			/// <value>
+			/// The display.
+			/// </value>
 			public string Display { get; set; }
+			/// <summary>
+			/// Gets or sets the arguments.
+			/// </summary>
+			/// <value>
+			/// The arguments.
+			/// </value>
 			public string Arguments { get; set; }
 		}
 

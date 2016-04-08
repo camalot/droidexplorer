@@ -9,6 +9,7 @@ using DroidExplorer.Core;
 using System.Windows.Forms;
 using System.ComponentModel;
 using DroidExplorer.Plugins.Configuration;
+using Managed.Adb.IO;
 
 namespace DroidExplorer.Plugins {
 	/// <summary>
@@ -139,7 +140,7 @@ namespace DroidExplorer.Plugins {
 		/// </summary>
 		/// <param name="file">The file.</param>
 		public void Open ( DroidExplorer.Core.IO.FileInfo file ) {
-			Execute ( this.PluginHost, new DroidExplorer.Core.IO.LinuxDirectoryInfo ( DroidExplorer.Core.IO.Path.GetPathWithoutFile ( file.FullPath ) ), new string[ ] { string.Format ( CultureInfo.InvariantCulture, "/file=sh {0}", file.FullPath ) } );
+			Execute ( this.PluginHost, new DroidExplorer.Core.IO.LinuxDirectoryInfo ( LinuxPath.GetPathWithoutFile ( file.FullPath ) ), new string[ ] { string.Format ( CultureInfo.InvariantCulture, "/file=sh {0}", file.FullPath ) } );
 			//CommandRunner.Instance.LaunchShellWindow ( CommandRunner.Instance.DefaultDevice, string.Format ( CultureInfo.InvariantCulture, "sh {0}", file.FullPath ) );
 		}
 

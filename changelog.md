@@ -4,6 +4,13 @@
 * Making use of madb over the previous methods of adb communication
 * No longer requires root to work.
 * No longer depends on busybox toolset
+* added ability to connect to wearable devices
+* Source code migrated to [Github][desource100]. 
+* Builds moved to AppVeyor.
+* Releases will continue to be published on [CodePlex site][decodeplex100].
+
+[desource100]: http://github.com/camalot/droidexplorer
+[decodeplex100]: http://de.codeplex.com/
 
 
 #### Change log 0.9.0.4

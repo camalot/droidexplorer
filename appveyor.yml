@@ -19,7 +19,7 @@ environment:
   DE_PFX_KEY:
     secure: p7A0E/BfE4md3QJjC+BsCw==
   VS_PFX_KEY:
-    secure: JMDnzwvnrk5Px3jLkwENWadFtT2uRQWPfUJ+182a4kU=
+    secure: sTqamYuc9mDYZBi7lzv1YRqNqiZJ1ZSxJeltQ7ZMHew=
   ProductionApiDomain: de.bit13.com
   DevelopmentApiDomain: de.bit13.local
   ReleaseMode: Setup
@@ -61,7 +61,7 @@ deploy:
     branch: master
     CI_DEPLOY_GITHUB: True
 - provider: GitHub
-  tag: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)-nightly
+  tag: v$(CI_BUILD_VERSION)-nightly
   release: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)-nightly
   description: $(CI_RELEASE_DESCRIPTION)
   auth_token:

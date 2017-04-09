@@ -1,6 +1,8 @@
 Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\modules\Invoke-MsBuild.psm1";
 Import-Module "$env:APPVEYOR_BUILD_FOLDER\.appveyor\modules\Send-PushbulletMessage.psm1";
 
+
+
 function Publish-Release {
 	Param (
 		[Parameter(Mandatory=$true)]
@@ -22,11 +24,11 @@ function Publish-Release {
 
 
 	$post = @{
-		Id = $env:CP_RELEASE_ID;
 		Version = $env:CI_BUILD_VERSION;
 		Description = $publishNotes;
 		Name = $env:CP_RELEASE_NAME;
-		Url = "http://$env:CP_RELEASE_PROJECT.codeplex.com/releases/view/$env:CP_RELEASE_ID";
+		# Url = "http://$env:CP_RELEASE_PROJECT.codeplex.com/releases/view/$env:CP_RELEASE_ID";
+		Url = "https://github.com/camalot/$env:CI_PROJECT_NAME/releases/tag/v$env:CI_BUILD_VERSION";
 	};
 	$contentType = "application/x-www-form-urlencoded";
 	$method = "POST";

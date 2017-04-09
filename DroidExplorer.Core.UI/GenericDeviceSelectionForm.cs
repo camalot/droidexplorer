@@ -41,7 +41,7 @@ namespace DroidExplorer.Core.UI {
 			devicesList.Items.Clear ( );
 
 			// the default device type
-			String model = "[DEFAULT]";
+			string model = "[DEFAULT]";
 
 			DevicesGroup = new ListViewGroup ( "Devices", "Devices" );
 			OtherGroup = new ListViewGroup ( "Other", "Other" );

@@ -4,14 +4,12 @@
 
 A tool to manage your android device with the simplicity of Windows Explorer.
 
-_Releases will also continue to be available on the [CodePlex Project Site][1]._
-
 ### <div style="text-align:center;">Root No Longer Required</div>
 
 ----
 
 [![Build status][9]][10]
-[![Donate][11]][12] 
+[![Donate][11]][12]
 [![Open HUB][13]][14]
 
 
@@ -25,7 +23,7 @@ _Releases will also continue to be available on the [CodePlex Project Site][1]._
 
 ----
 ### [ASK FOR HELP][8]
-I am now monitoring Questions over on [Android Enthusiasts][8] tagged with [[DroidExplorer][8]]. If you have issues, that are not bugs, you should [ask a question][19] there and tag it with [[DroidExplorer][8]]. 
+I am now monitoring Questions over on [Android Enthusiasts][8] tagged with [[DroidExplorer][8]]. If you have issues, that are not bugs, you should [ask a question][19] there and tag it with [[DroidExplorer][8]].
 
 ![Ask for Help][25]
 

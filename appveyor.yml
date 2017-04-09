@@ -51,7 +51,7 @@ before_deploy:
 - ps: .\.appveyor\appveyor.before-deployment.ps1
 deploy:
 - provider: GitHub
-  tag: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)
+  tag: v$(CI_BUILD_VERSION)
   release: $(APPVEYOR_PROJECT_NAME)-v$(CI_BUILD_VERSION)
   description: $(CI_RELEASE_DESCRIPTION)
   auth_token:

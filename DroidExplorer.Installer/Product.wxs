@@ -63,9 +63,9 @@
 
 			<Publish Dialog="AndroidBackupLocationDialog" Control="Back" Event="NewDialog" Value="CustomizeDlg">1</Publish>
 			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="SetTargetPath" Value="[ANDROIDBACKUPDIR]" Order="1">1</Publish>
-			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
-			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
-			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">WIXUI_DONTVALIDATEPATH</Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[WIXUI_DONTVALIDATEPATH]]></Publish>
+			<Publish Dialog="AndroidBackupLocationDialog" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="4"><![CDATA[ANDROIDBACKUPDIR<>""]]></Publish>
 			<Publish Dialog="AndroidBackupLocationDialog" Control="ChangeFolder" Property="_BrowseProperty" Value="[ANDROIDBACKUPDIR]" Order="1">1</Publish>
 			<Publish Dialog="AndroidBackupLocationDialog" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
 
@@ -74,10 +74,10 @@
 		</UI>
 		<InstallExecuteSequence>
 			<RemoveExistingProducts Before="InstallInitialize" />
-			<Custom Action="RegisterShellExtension.cmd" After="InstallFiles"><![CDATA[NOT Installed AND (&ShellExtensionFeature=3 OR &ShellExtensionFeature=4)]]></Custom>
+			<Custom Action="CA_SETUSERBACKUPDIRECTORYSYSTEMFOLDER" After="InstallFiles">NOT Installed</Custom>
+			<Custom Action="RegisterShellExtension.cmd" After="CA_SETUSERBACKUPDIRECTORYSYSTEMFOLDER"><![CDATA[NOT Installed AND (&ShellExtensionFeature=3 OR &ShellExtensionFeature=4)]]></Custom>
 			<Custom Action="RegisterShellExtension" After="RegisterShellExtension.cmd"><![CDATA[NOT Installed AND (&ShellExtensionFeature=3 OR &ShellExtensionFeature=4)]]></Custom>
 
-			<Custom Action="CA_SETUSERBACKUPDIRECTORYSYSTEMFOLDER" After="RegisterShellExtension">NOT Installed</Custom>
 
 			<Custom Action="UnregisterShellExtension.cmd" After="InstallInitialize">Installed</Custom>
 			<Custom Action="UnregisterShellExtension" After="UnregisterShellExtension.cmd">Installed</Custom>

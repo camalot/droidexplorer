@@ -41,7 +41,7 @@ namespace DroidExplorer.Plugins.UI {
 			InitializeComponent ();
 			this.shell.OnProcessExit += shell_OnProcessExit;
 			this.shell.OutputProcessor = new LinuxConsoleOutputProcessor(this.shell);
-			Run(String.Empty);
+			Run(string.Empty);
 			this.deviceLabel.Text = PluginHost.CommandRunner.DefaultDevice;
 
 		}
@@ -127,6 +127,7 @@ namespace DroidExplorer.Plugins.UI {
 
 			var args = this.PluginHost.CommandRunner.AdbCommandArguments( this.PluginHost.Device, CommandRunner.AdbCommand.Shell);
 			var tool = FolderManagement.GetSdkTool (CommandRunner.ADB_COMMAND);
+			this.LogDebug ( $"{tool} {args}" );
 			this.shell.StartProcess(tool, args);
 			if(!string.IsNullOrWhiteSpace(command)) {
 				this.shell.WriteInput(command, Color.White, false);

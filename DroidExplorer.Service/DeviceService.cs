@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DroidExplorer.Core;
+using Managed.Adb;
 
 namespace DroidExplorer.Service {
   /// <summary>

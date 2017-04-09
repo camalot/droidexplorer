@@ -32,6 +32,7 @@ using System.Threading.Tasks;
 using Camalot.Common.Extensions;
 using DroidExplorer.Core.IO;
 using Managed.Adb.IO;
+using Managed.Adb;
 
 namespace DroidExplorer.UI {
 	public delegate void AddTreeNodeDelegate ( TreeNodeCollection parent, TreeNode node );
@@ -536,7 +537,7 @@ namespace DroidExplorer.UI {
 		void CommandRunner_DeviceStateChanged ( object sender, DeviceEventArgs e ) {
 			string title = CommandRunner.Instance.State.ToString ( );
 
-			if ( CommandRunner.Instance.State == CommandRunner.DeviceState.Device ) {
+			if ( CommandRunner.Instance.State == DeviceState.Device ) {
 				title = KnownDeviceManager.Instance.GetDeviceFriendlyName ( string.IsNullOrEmpty ( CommandRunner.Instance.DefaultDevice ) ? CommandRunner.Instance.GetSerialNumber ( ) : CommandRunner.Instance.DefaultDevice );
 			}
 

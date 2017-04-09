@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using DroidExplorer.Configuration;
 using DroidExplorer.Configuration.Net;
+using Managed.Adb;
 
 namespace DroidExplorer.Service {
 	// service account user directory:
@@ -76,7 +77,7 @@ namespace DroidExplorer.Service {
 
 				// unregister all connected devices and all "known" devices
 				Devices.Union(KnownDeviceManager.Instance.GetKnownDevices()).ToList().ForEach(d => {
-					OnDeviceStateChanged(new DeviceEventArgs(d, CommandRunner.DeviceState.Offline));
+					OnDeviceStateChanged(new DeviceEventArgs(d, DeviceState.Offline));
 				});
 
 				UpdateTimer.Change(-1, -1);
@@ -130,11 +131,11 @@ namespace DroidExplorer.Service {
 				var disconnected = Devices.Except(connected).ToList();
 
 				unknown.ForEach(d => {
-					OnDeviceAdded(new DeviceEventArgs(d, CommandRunner.DeviceState.Device));
+					OnDeviceAdded(new DeviceEventArgs(d, DeviceState.Device));
 				});
 
 				disconnected.ForEach(d => {
-					OnDeviceRemoved(new DeviceEventArgs(d, CommandRunner.DeviceState.Offline));
+					OnDeviceRemoved(new DeviceEventArgs(d, DeviceState.Offline));
 				});
 
 				Devices.Clear();
@@ -183,10 +184,10 @@ namespace DroidExplorer.Service {
 
 			if(DeviceStatusChangedListeners.ContainsKey(e.Device)) {
 				CommandRunner.Instance.DeviceStateChanged -= DeviceStatusChangedListeners[e.Device];
-				DeviceStatusChangedListeners.Remove(e.Device);
+				DeviceStatusChangedListeners.Remove(e.Device );
 			}
 
-			OnDeviceStateChanged(new DeviceEventArgs(e.Device, CommandRunner.DeviceState.Offline));
+			OnDeviceStateChanged(new DeviceEventArgs(e.Device, DeviceState.Offline));
 			this.LogInfo("Device Removed: {0}:{1}", e.Device, e.State);
 		}
 
@@ -208,7 +209,7 @@ namespace DroidExplorer.Service {
 
 
 
-			if(e.State == CommandRunner.DeviceState.Device) {
+			if(e.State == DeviceState.Device) {
 				OnDeviceStateChanged(e);
 			}
 
@@ -242,20 +243,20 @@ namespace DroidExplorer.Service {
 		/// <summary>
 		/// Raises the <see cref="E:DeviceStateChanged"/> event.
 		/// </summary>
-		/// <param name="e">The <see cref="DroidExplorer.Core.DeviceEventArgs"/> instance containing the event data.</param>
+		/// <param name="e">The <see cref="Managed.Adb.DeviceEventArgs"/> instance containing the event data.</param>
 		protected void OnDeviceStateChanged(DeviceEventArgs e) {
 			if(this.DeviceStateChanged != null) {
 				this.DeviceStateChanged(this, e);
 			}
 
 			switch(e.State) {
-				case CommandRunner.DeviceState.Device:
+				case DeviceState.Device:
 					DeviceExplorerRegistration.Instance.Register(e.Device);
 					break;
-				case CommandRunner.DeviceState.Unknown:
-				case CommandRunner.DeviceState.Offline:
-				case CommandRunner.DeviceState.Bootloader:
-					DeviceExplorerRegistration.Instance.Unregister(e.Device);
+				case DeviceState.Unknown:
+				case DeviceState.Offline:
+				case DeviceState.BootLoader:
+					DeviceExplorerRegistration.Instance.Unregister(e.Device );
 					break;
 			}
 			this.LogInfo("Device State Changed: {0}:{1}", e.Device, e.State);

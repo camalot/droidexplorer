@@ -56,32 +56,32 @@ namespace DroidExplorer.Core {
 		/// <summary>
 		/// 
 		/// </summary>
-		public enum DeviceState {
-			/// <summary>
-			/// 
-			/// </summary>
-			Unknown,
-			/// <summary>
-			/// 
-			/// </summary>
-			Device,
-			/// <summary>
-			/// 
-			/// </summary>
-			Offline,
-			/// <summary>
-			/// 
-			/// </summary>
-			Bootloader,
-			/// <summary>
-			/// 
-			/// </summary>
-			Recovery,
-			/// <summary>
-			/// 
-			/// </summary>
-			Unauthorized
-		}
+		//public enum DeviceState {
+		//	/// <summary>
+		//	/// 
+		//	/// </summary>
+		//	Unknown,
+		//	/// <summary>
+		//	/// 
+		//	/// </summary>
+		//	Device,
+		//	/// <summary>
+		//	/// 
+		//	/// </summary>
+		//	Offline,
+		//	/// <summary>
+		//	/// 
+		//	/// </summary>
+		//	Bootloader,
+		//	/// <summary>
+		//	/// 
+		//	/// </summary>
+		//	Recovery,
+		//	/// <summary>
+		//	/// 
+		//	/// </summary>
+		//	Unauthorized
+		//}
 
 		/// <summary>
 		/// 
@@ -323,7 +323,7 @@ namespace DroidExplorer.Core {
 		public const string APP_SD_PRIVATE_PATH = "/sd-ext/app-private/";
 
 
-		private DeviceState _deviceState = DeviceState.Unknown;
+		private Managed.Adb.DeviceState _deviceState = Managed.Adb.DeviceState.Unknown;
 		private BatteryInfo lastBatteryInfo = null;
 		private DateTime lastBatteryCheckTime = DateTime.MinValue;
 		private Managed.Adb.AndroidDebugBridge madb;
@@ -380,7 +380,7 @@ namespace DroidExplorer.Core {
 			var rOutput = result.Output.ToString ( );
 			// checks if we were able to launch adb as root.
 
-			if ( rOutput.IsMatch( DroidExplorer.Resources.Strings.CanAdbRootRegex, regexOptions ) ) {
+			if ( rOutput.IsMatch ( DroidExplorer.Resources.Strings.CanAdbRootRegex, regexOptions ) ) {
 				throw new AdbRootException ( );
 			}
 			this.LogDebug ( result.Output.ToString ( ) );
@@ -471,7 +471,7 @@ namespace DroidExplorer.Core {
 		/// <param name="package">The package.</param>
 		/// <param name="classFullName">Full name of the class.</param>
 		public void LaunchActivity ( string device, string package, string classFullName ) {
-			madb.Devices.Single ( m => m.SerialNumber == device ).ExecuteShellCommand ( "am start -a android.intent.action.MAIN -n {0}/{1}".With( package, classFullName ), 
+			madb.Devices.Single ( m => m.SerialNumber == device ).ExecuteShellCommand ( "am start -a android.intent.action.MAIN -n {0}/{1}".With ( package, classFullName ),
 				NullOutputReceiver.Instance );
 		}
 
@@ -515,7 +515,7 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		/// <param name="mount">The mount.</param>
 		public void Mount ( string device, string mount ) {
-			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Mount ( mount.Require() );
+			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Mount ( mount.Require ( ) );
 		}
 
 		/// <summary>
@@ -543,7 +543,7 @@ namespace DroidExplorer.Core {
 		private Process TopProcess { get; set; }
 
 
-		private DeviceMonitor DeviceMonitor { get; set; }
+		private IDeviceMonitor DeviceMonitor { get; set; }
 
 		/// <summary>
 		/// Connects the specified device.
@@ -551,25 +551,13 @@ namespace DroidExplorer.Core {
 		/// <param name="device">The device.</param>
 		public void Connect ( string device ) {
 			try {
-				
+
 				if ( DeviceMonitor != null ) {
 					DeviceMonitor.Stop ( );
 					DeviceMonitor = null;
 				}
 
-				DeviceMonitor = new DeviceMonitor ( device );
-				madb.DeviceChanged += (s, e) => {
-					// Managed.Adb.DeviceEventArgs
-					this.LogDebug ( e.Device.State.ToString ( ) );
-				};
-				madb.DeviceDisconnected += ( s, e ) => {
-					// Managed.Adb.DeviceEventArgs
-					this.LogDebug ( e.Device.State.ToString() );
-				};
-				madb.DeviceConnected += ( s, e ) => {
-					// Managed.Adb.DeviceEventArgs
-					this.LogDebug ( e.Device.State.ToString ( ) );
-				};
+				DeviceMonitor = new DeviceMonitor2 ( madb, device );
 				DeviceMonitor.Connected += ( s, e ) => {
 					if ( this.Connected != null ) {
 						this.State = e.State;
@@ -577,7 +565,6 @@ namespace DroidExplorer.Core {
 					}
 				};
 				DeviceMonitor.Disconnected += ( s, e ) => {
-					Disconnect ( e.Device );
 					if ( this.Disconnected != null ) {
 						this.State = e.State;
 						this.Disconnected ( this, e );
@@ -589,7 +576,6 @@ namespace DroidExplorer.Core {
 						this.DeviceStateChanged ( this, e );
 					}
 				};
-
 				DeviceMonitor.Start ( );
 			} catch ( Exception ex ) {
 				this.LogError ( ex.Message, ex );
@@ -621,7 +607,7 @@ namespace DroidExplorer.Core {
 				State = DeviceState.Unknown;
 			} finally {
 				if ( this.Disconnected != null ) {
-					this.Disconnected ( this, new DeviceEventArgs ( device ) );
+					this.Disconnected ( this, new DeviceEventArgs ( device, State ) );
 				}
 			}
 		}
@@ -1308,7 +1294,7 @@ namespace DroidExplorer.Core {
 		/// <param name="path">The path.</param>
 		/// <param name="newName">The new name.</param>
 		public void Rename ( string device, string path, string newName ) {
-			newName.Require().Require ( x => {
+			newName.Require ( ).Require ( x => {
 				return x.StartsWith ( "/" );
 			}, "newName must be full path" );
 			madb.Devices.Single ( m => m.SerialNumber == device ).FileSystem.Move ( path, newName );
@@ -1795,7 +1781,7 @@ namespace DroidExplorer.Core {
 			var children = dev.FileListingService.GetChildren ( item, true, null );
 
 			foreach ( var c in children ) {
-				if(c.IsDirectory) {
+				if ( c.IsDirectory ) {
 					if ( c.IsLink ) {
 						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User, c.Permissions.Group,
 							c.Permissions.Other, c.Date, true, false, c.FullPath ) );
@@ -1807,7 +1793,7 @@ namespace DroidExplorer.Core {
 					if ( c.IsLink ) {
 						result.Add ( new SymbolicLinkInfo ( c.Name, c.LinkName, c.Size, c.Permissions.User, c.Permissions.Group,
 							c.Permissions.Other, c.Date, false, c.IsExecutable, c.FullPath ) );
-					} else { 
+					} else {
 						result.Add ( new FileInfo ( c.Name, c.Size, c.Permissions.User, c.Permissions.Group,
 						c.Permissions.Other, c.Date, c.IsExecutable, c.FullPath ) );
 					}
@@ -1823,7 +1809,7 @@ namespace DroidExplorer.Core {
 		/// Gets or sets the state.
 		/// </summary>
 		/// <value>The state.</value>
-		public DeviceState State
+		public Managed.Adb.DeviceState State
 		{
 			get { return this._deviceState; }
 			private set { this._deviceState = value; }
@@ -1958,7 +1944,7 @@ namespace DroidExplorer.Core {
 		public IEnumerable<DeviceListItem> GetDevices ( ) {
 			var list = new List<DeviceListItem> ( );
 			foreach ( var d in madb.Devices ) {
-				list.Add ( new DeviceListItem ( d.SerialNumber, d.State.ToString(), d.Product, d.Model, d.DeviceProperty ) );
+				list.Add ( new DeviceListItem ( d.SerialNumber, d.State.ToString ( ), d.Product, d.Model, d.DeviceProperty ) );
 			}
 			return list;
 		}
@@ -2236,8 +2222,8 @@ namespace DroidExplorer.Core {
 
 
 			// we may need to re-tcp connect if adb root fails. so lets do that.
-			if ( device.IsMatch(DroidExplorer.Resources.Strings.IPDeviceRegex, regexOptions ) ||
-				device.IsMatch(DroidExplorer.Resources.Strings.HostDeviceRegex, regexOptions ) ) {
+			if ( device.IsMatch ( DroidExplorer.Resources.Strings.IPDeviceRegex, regexOptions ) ||
+				device.IsMatch ( DroidExplorer.Resources.Strings.HostDeviceRegex, regexOptions ) ) {
 				TcpConnect ( device );
 			}
 

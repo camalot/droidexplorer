@@ -8,6 +8,7 @@ using DroidExplorer.Core.UI;
 using DroidExplorer.Core;
 using System.IO;
 using System.ComponentModel;
+using Managed.Adb;
 
 namespace DroidExplorer.Plugins {
 	/// <summary>
@@ -33,10 +34,10 @@ namespace DroidExplorer.Plugins {
     void CommandRunner_DeviceStateChanged ( object sender, DeviceEventArgs e ) {
       if ( string.Compare ( e.Device, this.PluginHost.CommandRunner.DefaultDevice, true ) == 0 ) {
         if ( ToolStripMenuItem != null ) {
-          ToolStripMenuItem.Enabled = e.State != CommandRunner.DeviceState.Offline && e.State != CommandRunner.DeviceState.Unknown;
+          ToolStripMenuItem.Enabled = e.State != DeviceState.Offline && e.State != DeviceState.Unknown;
         }
         if ( ToolStripButton != null ) {
-          ToolStripButton.Enabled = e.State == CommandRunner.DeviceState.Offline && e.State != CommandRunner.DeviceState.Unknown;
+          ToolStripButton.Enabled = e.State == DeviceState.Offline && e.State != DeviceState.Unknown;
         }
       }
     }

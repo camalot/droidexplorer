@@ -6,6 +6,7 @@ using DroidExplorer.Core.Plugins;
 using System.ComponentModel;
 using System.Windows.Forms;
 using DroidExplorer.Core;
+using Managed.Adb;
 
 namespace DroidExplorer.Plugins {
 	/// <summary>
@@ -29,7 +30,7 @@ namespace DroidExplorer.Plugins {
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="DeviceEventArgs" /> instance containing the event data.</param>
     void CommandRunner_DeviceStateChanged ( object sender, DeviceEventArgs e ) {
-      bool enabled =  e.State != CommandRunner.DeviceState.Offline && e.State != CommandRunner.DeviceState.Unknown;
+      bool enabled =  e.State != DeviceState.Offline && e.State != DeviceState.Unknown;
       if ( string.Compare ( e.Device, CommandRunner.Instance.DefaultDevice, true ) == 0 ) {
         if ( ToolStripMenuItem != null ) {
           ToolStripMenuItem.SetEnabled ( enabled );

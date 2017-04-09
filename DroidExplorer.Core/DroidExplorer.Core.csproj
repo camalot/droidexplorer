@@ -112,7 +112,7 @@
       <HintPath>..\3rdParty\madb\$(Platform)\Managed.AndroidDebugBridge.dll</HintPath>
     </Reference>-->
     <Reference Include="Managed.Adb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=AMD64">
-      <HintPath>..\packages\Managed.Adb.x64.2.1.100.9917-alpha\lib\net45\Managed.Adb.dll</HintPath>
+      <HintPath>..\packages\Managed.Adb.x64.2.1.101.9917-alpha\lib\net45\Managed.Adb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MoreLinq, Version=1.4.18916.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
@@ -159,11 +159,9 @@
     <Compile Include="Configuration\Handlers\CloudConfigurationSectionHandler.cs" />
     <Compile Include="Configuration\ISettings.cs" />
     <Compile Include="Configuration\ISystemStoredSettings.cs" />
-    <Compile Include="DeviceEventArgs.cs" />
     <Compile Include="DeviceListCommandResult.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DeviceMonitor.cs" />
     <Compile Include="DirectoryListCommandResult.cs" />
     <Compile Include="Exceptions\AdbException.cs" />
     <Compile Include="Exceptions\AdbRootException.cs" />

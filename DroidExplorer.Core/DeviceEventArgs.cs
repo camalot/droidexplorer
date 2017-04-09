@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Managed.Adb;
 
 namespace DroidExplorer.Core {
   public class DeviceEventArgs : EventArgs {
 
     public DeviceEventArgs ( string device )
-      : this ( device, CommandRunner.DeviceState.Unknown ) {
+      : this ( device, DeviceState.Unknown ) {
     }
 
-    public DeviceEventArgs ( string device, CommandRunner.DeviceState state ) {
+    public DeviceEventArgs ( string device, DeviceState state ) {
       this.Device = device;
       this.State = state;
     }
 
     public string Device { get; set; }
-    public CommandRunner.DeviceState State { get; set; }
+    public DeviceState State { get; set; }
   }
 }

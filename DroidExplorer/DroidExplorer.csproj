@@ -120,7 +120,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Managed.Adb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=e53c7809c22fb533, processorArchitecture=AMD64">
-      <HintPath>..\packages\Managed.Adb.x64.2.1.101.9917-alpha\lib\net45\Managed.Adb.dll</HintPath>
+      <HintPath>..\packages\Managed.Adb.x64.2.1.137.9917-alpha\lib\net45\Managed.Adb.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">

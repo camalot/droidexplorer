@@ -175,6 +175,6 @@ buffer</comment>
 3 = access</comment>
   </data>
   <data name="DeviceListExRegexPattern" xml:space="preserve">
-    <value>^([a-z0-9_-]+(?:\s?[\.a-z0-9_-]+)?(?:\:\d{1,})?)\s+(device|offline|unknown|bootloader|recovery|download|unauthorized)(?:\s+product:([^:]+)\s+model\:([^:]+)\s+device\:([^:]+))?$</value>
+    <value>^([a-z0-9_-]+(?:\s?[\.a-z0-9_-]+)?(?:\:\d{1,})?)\s+(device|offline|unknown|bootloader|recovery|download|unauthorized)(?:\s+product:([^:]+)\s+model\:([^:]+)\s+device\:([^:]+))?(?:\s\w+(?::[0-9]?)?)?(\s)*$</value>
   </data>
 </root>
